@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="100%" height="100%" fill="none">
+  <rect width="800" height="450" fill="#111111" rx="8"/>
+  <!-- Wireframe Container -->
+  <rect x="40" y="40" width="720" height="370" rx="6" stroke="#262626" stroke-width="1.5" fill="#161616"/>
+  <!-- Top bar -->
+  <line x1="40" y1="80" x2="760" y2="80" stroke="#262626" stroke-width="1.5"/>
+  <circle cx="65" cy="60" r="4" fill="#333333"/>
+  <circle cx="80" cy="60" r="4" fill="#333333"/>
+  <circle cx="95" cy="60" r="4" fill="#333333"/>
+  <text x="400" y="64" fill="#666666" font-family="system-ui, sans-serif" font-size="12" text-anchor="middle" letter-spacing="1">SIGNIFY • ASL TRANSLATOR PIPELINE</text>
+  
+  <!-- Left: Media Pipe Landmark extraction -->
+  <rect x="70" y="110" width="310" height="270" rx="4" fill="#1A1A1A" stroke="#333333" stroke-width="1"/>
+  <!-- Landmark points and hand skeleton -->
+  <polyline points="130,320 150,280 180,240 210,210 240,190" stroke="#2563EB" stroke-width="2" stroke-dasharray="4 4"/>
+  <polyline points="180,240 195,200 215,160 230,135" stroke="#2563EB" stroke-width="2"/>
+  <polyline points="210,210 230,175 250,140 265,120" stroke="#2563EB" stroke-width="2"/>
+  <polyline points="240,190 255,165 270,145 285,130" stroke="#2563EB" stroke-width="2"/>
+  
+  <circle cx="130" cy="320" r="5" fill="#60A5FA"/>
+  <circle cx="150" cy="280" r="4" fill="#60A5FA"/>
+  <circle cx="180" cy="240" r="4" fill="#60A5FA"/>
+  <circle cx="210" cy="210" r="4" fill="#60A5FA"/>
+  <circle cx="240" cy="190" r="4" fill="#60A5FA"/>
+  <circle cx="230" cy="135" r="4" fill="#60A5FA"/>
+  <circle cx="265" cy="120" r="4" fill="#60A5FA"/>
+  <circle cx="285" cy="130" r="4" fill="#60A5FA"/>
+
+  <text x="85" y="135" fill="#888888" font-family="monospace" font-size="11">MediaPipe 21 Hand Landmarks</text>
+  <text x="85" y="360" fill="#2563EB" font-family="monospace" font-size="11">● Temporal Smoothing Active</text>
+
+  <!-- Right: Realtime Prediction & NLP Translation -->
+  <rect x="420" y="110" width="310" height="270" rx="4" fill="#1A1A1A" stroke="#333333" stroke-width="1"/>
+  <text x="440" y="140" fill="#888888" font-family="monospace" font-size="11">FastAPI + PyTorch Inference</text>
+  
+  <rect x="440" y="160" width="270" height="45" rx="4" fill="#222222" stroke="#333333"/>
+  <text x="455" y="187" fill="#F5F5F5" font-family="sans-serif" font-size="14" font-weight="600">Detected Gesture: "HELLO"</text>
+  <text x="670" y="187" fill="#60A5FA" font-family="monospace" font-size="12">99.4%</text>
+
+  <rect x="440" y="220" width="270" height="130" rx="4" fill="#141414" stroke="#262626"/>
+  <text x="455" y="245" fill="#666666" font-family="monospace" font-size="11">Output Sequence Stream:</text>
+  <text x="455" y="275" fill="#CCCCCC" font-family="sans-serif" font-size="13">"Hello, glad to meet you."</text>
+  <line x1="455" y1="295" x2="695" y2="295" stroke="#262626"/>
+  <text x="455" y="325" fill="#888888" font-family="monospace" font-size="11">Latency: 28ms | FPS: 60</text>
+</svg>

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Harshit Chhabi</title>
+
+  <!-- Meta & SEO Tags -->
+  <meta name="description"
+    content="Personal portfolio of Harshit Chhabi — Computer Science (Information Security) student at VIT Vellore. Full stack developer, cybersecurity analyst, AI/ML engineer, and data analytics enthusiast.">
+  <meta name="author" content="Harshit Chhabi">
+  <meta name="keywords"
+    content="Harshit Chhabi, Full Stack Developer, Cybersecurity, Information Security, AI, Data Analytics, VIT Vellore, Signify, Portfolio">
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Harshit Chhabi — CS Student · Full Stack Developer · Cybersecurity">
+  <meta property="og:description"
+    content="Building full-stack applications, AI-powered tools, and secure systems. CS student at VIT Vellore.">
+  <meta property="og:url" content="https://github.com/harshitchhabi">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Harshit Chhabi — CS Student · Full Stack Developer · Cybersecurity">
+  <meta name="twitter:description" content="Building full-stack applications, AI-powered tools, and secure systems.">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+  <link rel="apple-touch-icon" href="assets/images/favicon.svg">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- =========================================================================
+       1. HEADER & STICKY NAVIGATION
+       ========================================================================= -->
+  <header class="header-nav">
+    <div class="container">
+      <a href="#" class="nav-brand" aria-label="Harshit Chhabi Homepage">
+        <span class="nav-brand-status" title="Open to Opportunities"></span>
+        Harshit Chhabi
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#work" class="nav-link">Work</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+          <li>
+            <button id="theme-toggle" class="theme-toggle-btn" aria-label="Toggle Dark/Light Theme">
+              <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="m4.93 4.93 1.41 1.41"></path>
+                <path d="m17.66 17.66 1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="m6.34 17.66-1.41 1.41"></path>
+                <path d="m19.07 4.93-1.41 1.41"></path>
+              </svg>
+              <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+              </svg>
+            </button>
+          </li>
+        </ul>
+      </nav>
+
+      <button id="mobile-menu-toggle" class="mobile-menu-btn" aria-label="Toggle Mobile Navigation"
+        aria-expanded="false">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="4" x2="20" y1="12" y2="12"></line>
+          <line x1="4" x2="20" y1="6" y2="6"></line>
+          <line x1="4" x2="20" y1="18" y2="18"></line>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Overlay -->
+  <div id="mobile-nav-overlay" class="mobile-nav-overlay">
+    <ul class="mobile-nav-links">
+      <li><a href="#work" class="mobile-nav-link">Work</a></li>
+      <li><a href="#about" class="mobile-nav-link">About</a></li>
+      <li><a href="#contact" class="mobile-nav-link">Contact</a></li>
+    </ul>
+  </div>
+
+  <main>
+    <!-- =========================================================================
+         2. HERO SECTION (with profile photo)
+         ========================================================================= -->
+    <section class="hero-section">
+      <div class="container">
+        <div class="hero-layout fade-in">
+          <div class="hero-content">
+            <span class="hero-tag">Computer Science · Information Security · VIT Vellore</span>
+            <h1 class="hero-title">Harshit<br>Chhabi</h1>
+            <p class="hero-role">Full Stack Developer &bull; AI/ML Engineer &bull; Cybersecurity Analyst</p>
+            <p class="hero-bio">
+              I build end-to-end web applications, AI-powered tools, and secure systems. Currently pursuing B.Tech in
+              Computer Science with a specialization in Information Security at VIT Vellore.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#work" class="btn btn-primary">
+                View Selected Work
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="5" y1="12" x2="19" y2="12"></line>
+                  <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+              </a>
+
+              <a href="assets/documents/Harshit_Chhabi_Resume.pdf" class="btn btn-secondary" target="_blank"
+                rel="noopener noreferrer">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                  <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                  <path d="M10 9H8"></path>
+                  <path d="M16 13H8"></path>
+                  <path d="M16 17H8"></path>
+                </svg>
+                Download Resume
+              </a>
+
+              <a href="https://github.com/harshitchhabi" target="_blank" rel="noopener noreferrer"
+                class="btn btn-icon-only" aria-label="GitHub Profile">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path
+                    d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4">
+                  </path>
+                  <path d="M9 18c-4.51 2-5-2-7-2"></path>
+                </svg>
+              </a>
+
+              <a href="https://www.linkedin.com/in/harshit-chhabi-6007b4368/" target="_blank" rel="noopener noreferrer"
+                class="btn btn-icon-only" aria-label="LinkedIn Profile">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                  <rect x="2" y="9" width="4" height="12"></rect>
+                  <circle cx="4" cy="4" r="2"></circle>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <div class="hero-photo">
+            <img src="assets/images/profile.jpg" alt="Harshit Chhabi — Computer Science Student at VIT Vellore"
+              width="400" height="520">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         3. WORK SECTION
+         ========================================================================= -->
+    <section id="work" class="work-section">
+      <div class="container">
+        <header class="section-header fade-in">
+          <span class="section-number">01 / SELECTED WORK</span>
+          <h2 class="section-title">Projects I've Built</h2>
+          <p class="section-subtitle">Full-stack web applications, AI/ML systems, and cryptographic security tools — all
+            backed by real code.</p>
+        </header>
+
+        <div class="projects-grid">
+
+          <!-- Project 01: Signify -->
+          <article class="project-card fade-in">
+            <div class="project-preview">
+              <img src="assets/images/signify-screenshot.png"
+                alt="Signify — Real-time ASL to English Translator Interface" loading="lazy">
+            </div>
+            <div class="project-info">
+              <span class="project-num">PROJECT 01</span>
+              <h3 class="project-title">Signify</h3>
+              <p class="project-description">
+                Real-time American Sign Language (ASL) to English translator. Integrates MediaPipe hand-landmark
+                extraction with temporal smoothing algorithms for stable gesture predictions across live camera feeds
+                and uploaded video files.
+              </p>
+
+              <div class="tech-pills">
+                <span class="tech-pill">Next.js</span>
+                <span class="tech-pill">React</span>
+                <span class="tech-pill">FastAPI</span>
+                <span class="tech-pill">PyTorch</span>
+                <span class="tech-pill">MediaPipe</span>
+                <span class="tech-pill">Tailwind CSS</span>
+                <span class="tech-pill">Radix UI</span>
+                <span class="tech-pill">Framer Motion</span>
+              </div>
+
+              <div class="project-links">
+                <a href="https://github.com/harshitchhabi/Signify" target="_blank" rel="noopener noreferrer"
+                  class="link-btn">
+                  GitHub Repository
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h6v6"></path>
+                    <path d="M10 14 21 3"></path>
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 02: Secure File Hashing & Encryption -->
+          <article class="project-card reverse fade-in">
+            <div class="project-preview">
+              <img src="assets/images/file-hash.svg"
+                alt="Secure File Hashing — SHA-256 / AES-256-CBC / RSA-2048 Pipeline" loading="lazy">
+            </div>
+            <div class="project-info">
+              <span class="project-num">PROJECT 02</span>
+              <h3 class="project-title">Secure File Hashing & Dual Encryption</h3>
+              <p class="project-description">
+                Cryptographic web application combining SHA-256 file integrity hashing, AES-256-CBC symmetric
+                encryption, and RSA-2048 asymmetric key exchange. Features a session-based dashboard for uploading,
+                downloading, and decrypting files securely.
+              </p>
+
+              <div class="tech-pills">
+                <span class="tech-pill">Node.js</span>
+                <span class="tech-pill">Express</span>
+                <span class="tech-pill">MySQL</span>
+                <span class="tech-pill">AES-256-CBC</span>
+                <span class="tech-pill">RSA-2048</span>
+                <span class="tech-pill">SHA-256</span>
+                <span class="tech-pill">JavaScript</span>
+              </div>
+
+              <div class="project-links">
+                <a href="https://github.com/harshitchhabi/File-hash" target="_blank" rel="noopener noreferrer"
+                  class="link-btn">
+                  GitHub Repository
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h6v6"></path>
+                    <path d="M10 14 21 3"></path>
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Project 03: GreenRoute -->
+          <article class="project-card fade-in">
+            <div class="project-preview">
+              <img src="assets/images/greenroute-screenshot.png"
+                alt="GreenRoute (FlashCar) — Sustainable Transportation Platform for India" loading="lazy">
+            </div>
+            <div class="project-info">
+              <span class="project-num">PROJECT 03</span>
+              <h3 class="project-title">GreenRoute (FlashCar)</h3>
+              <p class="project-description">
+                Sustainable urban transportation platform for Indian cities. Features intelligent eco-carpooling,
+                real-time smart parking detection via Google Maps API, carbon emission tracking, and full Firebase
+                authentication with Google & email providers.
+              </p>
+
+              <div class="tech-pills">
+                <span class="tech-pill">React 18</span>
+                <span class="tech-pill">Vite</span>
+                <span class="tech-pill">Firebase Auth</span>
+                <span class="tech-pill">Google Maps API</span>
+                <span class="tech-pill">Framer Motion</span>
+                <span class="tech-pill">Tailwind CSS</span>
+              </div>
+
+              <div class="project-links">
+                <a href="https://github.com/harshitchhabi/FlashCar" target="_blank" rel="noopener noreferrer"
+                  class="link-btn">
+                  GitHub Repository
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M15 3h6v6"></path>
+                    <path d="M10 14 21 3"></path>
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+                  </svg>
+                </a>
+                <a href="https://flashcar.vercel.app" target="_blank" rel="noopener noreferrer" class="link-btn">
+                  Live Deployment
+                  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="7" y1="17" x2="17" y2="7"></line>
+                    <polyline points="7 7 17 7 17 17"></polyline>
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         4. ABOUT ME SECTION
+         ========================================================================= -->
+    <section id="about" class="about-section">
+      <div class="container">
+        <header class="section-header fade-in">
+          <span class="section-number">02 / ABOUT ME</span>
+          <h2 class="section-title">Who I Am</h2>
+        </header>
+
+        <!-- About Me Bio Block -->
+        <div class="about-bio-block fade-in">
+          <div class="about-bio-text">
+            <p>
+              Hey! I'm <strong>Harshit</strong>. I'm a Computer Science student at <strong>VIT Vellore</strong>
+              specializing in Information Security, with a CGPA of <strong>9.00</strong>. I'm the kind of developer who
+              genuinely enjoys the process: planning an architecture, writing clean code, debugging at 2 AM, and
+              shipping something I'm proud of.
+            </p>
+            <p>
+              My technical interests span across the stack. I build <strong>full-stack web applications</strong> with
+              React, Next.js, and Node.js. I work on <strong>AI and computer vision</strong> projects using PyTorch,
+              MediaPipe, and FastAPI. I design <strong>cryptographic security systems</strong> with real encryption
+              standards (AES-256, RSA-2048). And I enjoy working with <strong>databases and data analytics</strong>,
+              structuring data in PostgreSQL, MySQL, and Firebase to meaningful insights.
+            </p>
+            <p>
+              Beyond coding, I've interned as a <strong>Cybersecurity Analyst at State Bank of India</strong> (Global IT
+              Centre), where I analyzed enterprise security infrastructure and evaluated vulnerability landscapes. On
+              campus, I serve as <strong>Technical Head at Dream Merchants</strong>, where I architected a real-time
+              auction platform with Next.js, Node.js, and PostgreSQL. I'm also a <strong>Core Member at Bulls &
+                Bears</strong>, contributing to fintech initiatives and student community projects.
+            </p>
+            <p>
+              I care about building things that are <strong>useful, well-designed, and secure by default</strong> and
+              not just functional. Whether it's a transportation platform with real-time maps, an ASL translator with
+              live camera feeds, or a file encryption pipeline with dual-layer security, I always aim for
+              production-quality work.
+            </p>
+          </div>
+        </div>
+
+        <!-- Skills Grid -->
+        <div class="section-divider"></div>
+        <header class="section-header fade-in">
+          <span class="section-number">TECHNICAL SKILLS</span>
+          <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2.25rem);">What I Work With</h2>
+        </header>
+
+        <div class="skills-grid-full fade-in">
+
+          <div class="skills-category">
+            <h3 class="category-name">01. Languages</h3>
+            <div class="skills-tags">
+              <span class="skill-tag">JavaScript (ES6+)</span>
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">Python 3</span>
+              <span class="skill-tag">HTML5 / CSS3</span>
+              <span class="skill-tag">SQL</span>
+              <span class="skill-tag">C/C++</span>
+            </div>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="category-name">02. Frontend & Frameworks</h3>
+            <div class="skills-tags">
+              <span class="skill-tag">Next.js</span>
+              <span class="skill-tag">React 18</span>
+              <span class="skill-tag">Vite</span>
+              <span class="skill-tag">Tailwind CSS</span>
+              <span class="skill-tag">Framer Motion</span>
+              <span class="skill-tag">Radix UI</span>
+            </div>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="category-name">03. Backend & APIs</h3>
+            <div class="skills-tags">
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">Express.js</span>
+              <span class="skill-tag">FastAPI</span>
+              <span class="skill-tag">RESTful API Design</span>
+              <span class="skill-tag">Firebase Authentication</span>
+              <span class="skill-tag">Session Management</span>
+            </div>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="category-name">04. Data Analytics & Databases</h3>
+            <div class="skills-tags">
+              <span class="skill-tag">PostgreSQL</span>
+              <span class="skill-tag">MySQL</span>
+              <span class="skill-tag">Firebase Firestore</span>
+              <span class="skill-tag">Database Schema Design</span>
+              <span class="skill-tag">SQL Query Optimization</span>
+              <span class="skill-tag">Data Modeling</span>
+            </div>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="category-name">05. AI, ML & Computer Vision</h3>
+            <div class="skills-tags">
+              <span class="skill-tag">PyTorch</span>
+              <span class="skill-tag">MediaPipe</span>
+              <span class="skill-tag">Computer Vision</span>
+              <span class="skill-tag">Landmark Extraction</span>
+              <span class="skill-tag">Model Inference Pipelines</span>
+            </div>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="category-name">06. Cybersecurity & Cryptography</h3>
+            <div class="skills-tags">
+              <span class="skill-tag">AES-256-CBC Encryption</span>
+              <span class="skill-tag">RSA-2048 Key Exchange</span>
+              <span class="skill-tag">SHA-256 Integrity Hashing</span>
+              <span class="skill-tag">Applied Cryptography</span>
+              <span class="skill-tag">Vulnerability Assessment</span>
+              <span class="skill-tag">Network Security Analysis</span>
+              <span class="skill-tag">Enterprise Security Protocols</span>
+              <span class="skill-tag">Secure Session Management</span>
+            </div>
+          </div>
+
+          <div class="skills-category">
+            <h3 class="category-name">07. Tools & DevOps</h3>
+            <div class="skills-tags">
+              <span class="skill-tag">Git & GitHub</span>
+              <span class="skill-tag">Vercel</span>
+              <span class="skill-tag">VS Code</span>
+              <span class="skill-tag">Linux CLI</span>
+              <span class="skill-tag">npm / pnpm</span>
+              <span class="skill-tag">Postman</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Experience & Timeline -->
+        <div class="section-divider"></div>
+        <header class="section-header fade-in">
+          <span class="section-number">EXPERIENCE & EDUCATION</span>
+          <h2 class="section-title" style="font-size: clamp(1.5rem, 3vw, 2.25rem);">Background</h2>
+        </header>
+
+        <div class="timeline-grid fade-in">
+          <div class="timeline-column">
+            <h3 class="timeline-title">Experience</h3>
+            <div class="timeline-card">
+              <div class="timeline-card-header">
+                <span class="timeline-role">Cybersecurity Analyst Intern</span>
+                <span class="timeline-date">GLOBAL IT CENTRE</span>
+              </div>
+              <span class="timeline-company">State Bank of India</span>
+              <p class="timeline-desc">
+                Analyzed enterprise cybersecurity infrastructure and evaluated vulnerability landscapes across critical
+                banking systems. Assessed security protocols and contributed to incident response documentation.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-column">
+            <h3 class="timeline-title">Leadership</h3>
+            <div class="timeline-card">
+              <div class="timeline-card-header">
+                <span class="timeline-role">Technical Head</span>
+                <span class="timeline-date">DREAM MERCHANTS</span>
+              </div>
+              <p class="timeline-desc">
+                Lead technical operations and platform architecture. Built <strong>my-bid</strong>, a real-time auction
+                platform using Next.js, Node.js, and PostgreSQL.
+              </p>
+            </div>
+            <div class="timeline-card">
+              <div class="timeline-card-header">
+                <span class="timeline-role">Core Member</span>
+                <span class="timeline-date">BULLS & BEARS</span>
+              </div>
+              <p class="timeline-desc">
+                Contributing to fintech initiatives, technical workshops, and community-driven student projects.
+              </p>
+            </div>
+          </div>
+
+          <div class="timeline-column">
+            <h3 class="timeline-title">Education</h3>
+            <div class="timeline-card">
+              <div class="timeline-card-header">
+                <span class="timeline-role">B.Tech in CS (Information Security)</span>
+                <span class="timeline-date">CGPA: 9.00</span>
+              </div>
+              <span class="timeline-company">VIT Vellore</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         5. CONTACT SECTION
+         ========================================================================= -->
+    <section id="contact" class="contact-section">
+      <div class="container">
+        <div class="contact-box fade-in">
+          <span class="section-number">03 / CONTACT</span>
+          <h2 class="contact-headline">Let's build something together.</h2>
+          <p class="contact-subtext">Got an idea, a project, or just want to connect? I'd love to hear from you.</p>
+
+          <a href="mailto:harshitchhabi@gmail.com" class="email-link">harshitchhabi@gmail.com</a>
+
+          <div class="contact-links">
+            <a href="https://github.com/harshitchhabi" target="_blank" rel="noopener noreferrer"
+              class="btn btn-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path
+                  d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4">
+                </path>
+                <path d="M9 18c-4.51 2-5-2-7-2"></path>
+              </svg>
+              GitHub Profile
+            </a>
+
+            <a href="https://www.linkedin.com/in/harshit-chhabi-6007b4368/" target="_blank" rel="noopener noreferrer"
+              class="btn btn-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                <rect x="2" y="9" width="4" height="12"></rect>
+                <circle cx="4" cy="4" r="2"></circle>
+              </svg>
+              LinkedIn Profile
+            </a>
+
+            <a href="assets/documents/Harshit_Chhabi_Resume.pdf" class="btn btn-primary" target="_blank"
+              rel="noopener noreferrer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"></path>
+                <path d="M14 2v4a2 2 0 0 0 2 2h4"></path>
+                <path d="M10 9H8"></path>
+                <path d="M16 13H8"></path>
+                <path d="M16 17H8"></path>
+              </svg>
+              Resume PDF
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       6. FOOTER
+       ========================================================================= -->
+  <footer class="footer">
+    <div class="container">
+
+      <p>&copy; <span id="current-year">2026</span> Harshit Chhabi</p>
+
+      <ul class="footer-socials">
+        <li><a href="https://github.com/harshitchhabi" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+        <li><a href="https://www.linkedin.com/in/harshit-chhabi-6007b4368/" target="_blank"
+            rel="noopener noreferrer">LinkedIn</a></li>
+        <li><a href="mailto:harshitchhabi@gmail.com">Email</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <!-- Main JavaScript Engine -->
+  <script src="script.js"></script>
+</body>
+
+</html>
