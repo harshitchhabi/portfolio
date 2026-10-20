@@ -1,0 +1,45 @@
+---
+pos: 2
+code: VYU
+title: 'Vayu Rakshak: HCHO Pollution Hotspot Detection'
+oneLiner: Formaldehyde hotspots from Sentinel-5P, checked against real fires and tied to ground AQI.
+type: ML
+year: '2026'
+status: latest
+role: 'TODO(harshit): your role on Team GEMs'
+team: Team GEMs, Bharatiya Antariksh Hackathon 2026
+stack: [Python, scikit-learn, XGBoost, Streamlit, Google Earth Engine]
+repo: https://github.com/harshitchhabi/S5P
+metrics:
+  - { label: 'Area AQI R², 2025-26 (unseen years)', value: '0.83' }
+  - { label: City-days in training, value: '255,807' }
+  - { label: Stations in out-of-time check, value: '519' }
+order: 2
+diagram:
+  sector: 2
+  caption: The detection pipeline. Each stage only passes on what the next one can check.
+  rows:
+    - nodes:
+        - { text: SENTINEL-5P HCHO }
+        - { text: HOTSPOT DETECTION }
+        - { text: FIRMS FIRE CROSS-CHECK }
+        - { text: AQI CORRELATION, state: best }
+---
+
+## Problem
+
+Every October and November, stubble burning in Punjab and Haryana sends smoke across north India. Ground monitors are sparse outside big cities, so most of the affected area has no direct measurement. Satellites see the whole region every day, but a raw formaldehyde (HCHO) map is noisy and doesn't tell you what's burning or what people are breathing.
+
+## Build
+
+I pull Sentinel-5P TROPOMI HCHO columns through Google Earth Engine and grid them at 0.25° (about 28 km). A z-score test on the HCHO grid flags hotspots. Each hotspot is then matched against NASA FIRMS active-fire detections from the last 7 days, so a high reading with no fire nearby gets treated with suspicion instead of reported. Confirmed hotspots are correlated with AQI from CPCB monitors.
+
+The trade-off: I tried XGBoost for the AQI model and dropped it. Early stopping was unstable and it scored worse (MAE 30.75) than a random forest, which also gives a cheap uncertainty band.
+
+## Result
+
+The project grew past the hackathon into a satellite AQI map for all of India. Scored on years it never saw (Jan 2025 to Oct 2026, 519 stations), the area-level AQI estimate reaches R² 0.83 with an error of about ±19 AQI points.
+
+Built at Bharatiya Antariksh Hackathon 2026 with Team GEMs. We're extending it for Smart India Hackathon 2026.
+
+TODO(harshit): how many hotspots matched a FIRMS fire in the 2023 season.
