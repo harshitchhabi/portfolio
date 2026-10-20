@@ -65,7 +65,7 @@ export const STATION: Record<string, StationExtras> = {
     daemon: 'forge',
     foil: 'Forge bricks the Intruder into a wall.',
     notes: [
-      { text: 'anvil’s half built. so is the newest pass.', arrow: 'right', color: 'pink' },
+      { text: 'compiler, passes and an IDE. all of it mine.', arrow: 'right', color: 'pink' },
     ],
     doodle: 'signal',
   },
