@@ -26,8 +26,13 @@ const underline = roughLine(2, 6, 158, 5, { seed: 21, roughness: 1.8, strokeWidt
           ))
         }
         <li>
+          <button type="button" data-music-toggle aria-pressed="false" title="Background music. Starts only when you click.">
+            music: <span data-music-label>off</span>
+          </button>
+        </li>
+        <li>
           <button type="button" data-audio-toggle aria-pressed="false" title="128 BPM kick and hat, made in your browser">
-            sound: <span data-audio-label>off</span>
+            beat: <span data-audio-label>off</span>
           </button>
         </li>
         <li>

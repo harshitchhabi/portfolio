@@ -27,6 +27,11 @@ const later = (fn: () => void) => ('requestIdleCallback' in window ? requestIdle
 later(() => import('./cursor').then((m) => m.cursor()));
 later(() => import('./walkman').then((m) => m.walkman()));
 
+// Music only ever starts from a click on the nav's music button (or the Walkman's play).
+document.addEventListener('click', (e) => {
+  if ((e.target as Element).closest?.('[data-music-toggle]')) void import('./walkman').then((m) => m.toggleMusic());
+});
+
 // "Skip the show": a plain, fast view for people in a hurry. Remembered.
 const skipBtns = () => Array.from(document.querySelectorAll<HTMLButtonElement>('[data-skip-toggle]'));
 const renderSkip = () => {
