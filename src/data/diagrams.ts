@@ -96,11 +96,11 @@ export const DIAGRAMS: Record<string, DiagramSpec> = {
     ],
   },
   novacraft: {
-    caption: 'fig. a · solid stages work end to end; the dashed one is what I’m building now',
+    caption: 'fig. a · the compiler stage by stage, with my own IDE on top',
     rows: [
       { label: 'front', nodes: [{ text: 'lexer' }, { text: 'parser' }, { text: 'semantic analysis' }, { text: 'three-address IR' }] },
       { label: 'back', nodes: [{ text: 'fold + DCE' }, { text: 'range analysis' }, { text: 'linear-scan regalloc' }, { text: 'WAT codegen' }] },
-      { label: 'next', nodes: [{ text: 'risk-adaptive check policy', state: 'wip' }] },
+      { label: 'tools', nodes: [{ text: 'NovaCraft IDE', state: 'best' }] },
     ],
   },
 };
