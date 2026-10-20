@@ -12,6 +12,12 @@ const disc = new CircleGeometry(1, 14);
 const tmp = new Vector3();
 const sheets = new Map<string, Texture>();
 
+/** Free every character texture (the floor is going away). */
+export function disposeSheets() {
+  sheets.forEach((t) => t.dispose());
+  sheets.clear();
+}
+
 /** One texture per character, shared by every copy of it. */
 function sheet(id: string) {
   let t = sheets.get(id);

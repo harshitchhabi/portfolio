@@ -10,12 +10,10 @@ import { gsap } from 'gsap';
 import { buildWorld } from './world';
 import { shared } from './materials';
 import { InkShader } from './ink-pass';
-import { Sprite3D } from './sprites';
+import { Sprite3D, disposeSheets } from './sprites';
 import { BASEMENT_Y, BASEMENT_Z, STATIONS, STOPS, camPath, lookPath } from './layout';
 
 gsap.registerPlugin(ScrollTrigger);
-// keep ScrollTrigger in step with the smooth scroller
-window.lenis?.on('scroll', ScrollTrigger.update);
 
 const DAEMONS = ['signe', 'vayu', 'honeybot', 'redacto', 'lockjaw', 'auctioneers', 'forge'] as const;
 const FOIL_MS = 2000;
@@ -28,6 +26,8 @@ export interface Floor {
   removeIntruder(): void;
   /** The Intruder creeps toward this screen point (NDC), or stops when null. */
   creep(ndc: { x: number; y: number } | null): void;
+  /** Stop everything and free the GPU (leaving the home page). */
+  dispose(): void;
 }
 
 // Hold still near each stop, then move with a deliberate ease that brakes hard.
@@ -36,6 +36,8 @@ const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 
 
 export function startFloor(canvas: HTMLCanvasElement): Floor {
   const renderer = new WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
+  // keep ScrollTrigger in step with the smooth scroller
+  const unLenis = window.lenis?.on('scroll', ScrollTrigger.update);
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   renderer.setPixelRatio(dpr);
   renderer.setClearColor(0x000000, 0);
@@ -102,6 +104,7 @@ export function startFloor(canvas: HTMLCanvasElement): Floor {
   };
   resize();
   window.addEventListener('resize', resize);
+  let raf = 0;
 
   // ---------- scroll → camera ----------
   const stops = STOPS.map((s) => ({ ...s, el: document.getElementById(s.id) })).filter((s): s is typeof s & { el: HTMLElement } => !!s.el);
@@ -187,14 +190,11 @@ export function startFloor(canvas: HTMLCanvasElement): Floor {
   let frames = 0;
   let lastFps = performance.now();
 
-  window.addEventListener(
-    'pointermove',
-    (e) => (look = { x: (e.clientX / window.innerWidth) * 2 - 1, y: -(e.clientY / window.innerHeight) * 2 + 1 }),
-    { passive: true },
-  );
+  const onMove = (e: PointerEvent) => (look = { x: (e.clientX / window.innerWidth) * 2 - 1, y: -(e.clientY / window.innerHeight) * 2 + 1 });
+  window.addEventListener('pointermove', onMove, { passive: true });
 
   function frame(now: number) {
-    requestAnimationFrame(frame);
+    raf = requestAnimationFrame(frame);
     if (paused || document.hidden) return;
 
     const { u, moving, at } = cameraParam();
@@ -242,10 +242,8 @@ export function startFloor(canvas: HTMLCanvasElement): Floor {
       lastFps = now;
     }
   }
-  requestAnimationFrame(frame);
+  raf = requestAnimationFrame(frame);
   ScrollTrigger.refresh();
-  // the home page never unmounts, so the loop and triggers live as long as it does
-  void triggers;
 
   return {
     pause(on) {
@@ -260,6 +258,23 @@ export function startFloor(canvas: HTMLCanvasElement): Floor {
     },
     creep(ndc) {
       creepTo = ndc;
+    },
+    dispose() {
+      cancelAnimationFrame(raf);
+      triggers.forEach((t) => t.kill());
+      window.removeEventListener('resize', resize);
+      window.removeEventListener('pointermove', onMove);
+      unLenis?.();
+      scene.traverse((o) => {
+        const m = o as unknown as { geometry?: { dispose(): void }; material?: { dispose(): void } };
+        m.geometry?.dispose();
+        m.material?.dispose();
+      });
+      disposeSheets();
+      normalTarget.dispose();
+      composer.dispose();
+      renderer.dispose();
+      renderer.forceContextLoss();
     },
   };
 }
