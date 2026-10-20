@@ -245,3 +245,15 @@ button {
 .riso-text.riso-green::before {
   mix-blend-mode: normal;
 }
+
+/* redaction bars that peel off headlines (added by scripts/details.ts) */
+.has-redact {
+  position: relative;
+}
+
+.redact-bar {
+  position: absolute;
+  inset: 0.08em -0.06em;
+  background: var(--ink);
+  pointer-events: none;
+}
