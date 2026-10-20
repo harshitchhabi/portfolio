@@ -327,7 +327,8 @@ button {
   width: 14vw;
   height: 100vh;
   background: var(--text);
-  transform: translateX(-100%);
+  /* parked just off-screen; only the view transition moves it */
+  transform: translateX(-110%);
   pointer-events: none;
   view-transition-name: wipe;
 }
