@@ -87,14 +87,14 @@ function stop() {
   void ctx?.suspend();
 }
 
-export function audio() {
+export function sound() {
   const btn = document.querySelector<HTMLButtonElement>('[data-audio-toggle]');
   const label = document.querySelector<HTMLElement>('[data-audio-label]');
   if (!btn || !label) return;
 
   const render = () => {
     btn.setAttribute('aria-pressed', String(playing));
-    label.textContent = playing ? 'On' : 'Off';
+    label.textContent = playing ? 'on' : 'off';
   };
 
   if (reducedMotion() || !('AudioContext' in window)) {
@@ -112,7 +112,7 @@ export function audio() {
 
   // Never autoplays. If it was on last page, it comes back on the visitor's next click or key press.
   if (getPref('audio') === 'on') {
-    label.textContent = 'Resumes on click';
+    label.textContent = 'resumes on click';
     const resume = async (e: Event) => {
       window.removeEventListener('pointerdown', resume, true);
       window.removeEventListener('keydown', resume, true);

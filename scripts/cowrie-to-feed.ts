@@ -1,7 +1,7 @@
-// Converts Cowrie honeypot logs (JSON lines) into the Race Control feed format
-// in src/data/race-control.json.
+// Converts Cowrie honeypot logs (JSON lines) into Honeybot's log on the IDS case
+// study page: src/data/honeybot-log.json.
 //
-//   node scripts/cowrie-to-feed.ts path/to/cowrie.json [--out src/data/race-control.json] [--limit 12]
+//   node scripts/cowrie-to-feed.ts path/to/cowrie.json [--out src/data/honeybot-log.json] [--limit 12]
 //
 // Privacy rules, applied before anything is written:
 //   - IPv4 addresses keep their first two octets only (45.83.xx.xx).
@@ -40,7 +40,7 @@ if (!input) {
   console.error('usage: node scripts/cowrie-to-feed.ts <cowrie.json> [--out file] [--limit n]');
   process.exit(1);
 }
-const out = flag('out', 'src/data/race-control.json');
+const out = flag('out', 'src/data/honeybot-log.json');
 const limit = Number(flag('limit', '12'));
 
 export function anonymiseIp(ip: string | undefined): string {
