@@ -63,7 +63,8 @@ function prime(el: Element, job: Job) {
   }
 }
 
-export function details(root: ParentNode = document) {
+/** Watch the arrivals in `root`. Returns a cleanup for page changes. */
+export function details(root: ParentNode = document): () => void {
   const reduced = reducedMotion();
   const near = new IntersectionObserver(
     (entries) => {
@@ -106,4 +107,9 @@ export function details(root: ParentNode = document) {
   add('svg.draw', 'draw');
   add('[data-logentry] [data-ink]', 'ink');
   add('[data-redact]', 'redact');
+
+  return () => {
+    near.disconnect();
+    inView.disconnect();
+  };
 }
