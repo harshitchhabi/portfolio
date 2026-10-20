@@ -206,9 +206,35 @@ export function walkman() {
     if (station.kind === 'yt') setPref('music-station', JSON.stringify(station));
   }
 
-  function open() {
-    root.hidden = false;
-  }
+  // Tucked away, the player slides off the edge and leaves a tab; the music
+  // keeps going. It tucks itself once you scroll on, so it never sits over
+  // what you came to read.
+  const body = $<HTMLElement>('.wm-body');
+  let anchor = 0;
+  const tuck = (on: boolean) => {
+    const hadFocus = body.contains(document.activeElement);
+    root.toggleAttribute('data-tucked', on);
+    body.inert = on;
+    if (on && hadFocus) $<HTMLButtonElement>('[data-w-untuck]').focus({ preventScroll: true });
+    anchor = window.scrollY;
+  };
+
+  const open = () => {
+    if (root.hidden) {
+      root.hidden = false;
+      tuck(false);
+    }
+  };
+
+  window.addEventListener(
+    'scroll',
+    () => {
+      if (root.hidden || root.hasAttribute('data-tucked') || !chooser.hidden) return;
+      if (Math.abs(window.scrollY - anchor) > 160) tuck(true);
+    },
+    { passive: true },
+  );
+  document.addEventListener('astro:after-swap', () => !root.hidden && !root.hasAttribute('data-tucked') && tuck(true));
 
   function play() {
     open();
@@ -269,10 +295,10 @@ export function walkman() {
     root.hidden = true;
     render();
   });
-  $<HTMLButtonElement>('[data-w-mini]').addEventListener('click', (e) => {
-    const mini = !root.hasAttribute('data-mini');
-    root.toggleAttribute('data-mini', mini);
-    (e.currentTarget as HTMLElement).setAttribute('aria-pressed', String(mini));
+  $<HTMLButtonElement>('[data-w-tuck]').addEventListener('click', () => tuck(true));
+  $<HTMLButtonElement>('[data-w-untuck]').addEventListener('click', () => {
+    tuck(false);
+    playBtn.focus({ preventScroll: true });
   });
   $<HTMLButtonElement>('[data-w-loser]').addEventListener('click', () => choose({ ...LOSER }));
 

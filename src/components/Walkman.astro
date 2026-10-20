@@ -18,14 +18,18 @@ const tapeLine = roughLine(4, 10, 156, 12, { seed: 77, strokeWidth: 2, roughness
 const screws = [8, 252].map((x, i) => roughCircle(x, 8, 7, { seed: 90 + i, strokeWidth: 1.2 })).join('') + roughBox(116, 0, 28, 10, { seed: 95, strokeWidth: 1.4 });
 ---
 
-<aside class="walkman" data-walkman hidden aria-label="Music player">
+<aside class="walkman" data-walkman hidden aria-label="Music player" data-lenis-prevent>
+  <button type="button" class="wm-tab" data-w-untuck aria-label="Bring the music player back">
+    <svg class="reel" viewBox="0 0 60 60" aria-hidden="true" set:html={reel(221)} />
+    <span class="hand">tape</span>
+  </button>
   <Tape class="wm-tape" seed={141} w={84} />
   <RoughFrame class="wm-body" seed={147} w={300} h={560}>
     <svg class="screws" viewBox="0 0 260 14" aria-hidden="true" set:html={screws} />
     <div class="wm-head">
       <p class="brand hand">daemon-man <span class="mono">auto reverse · stereo</span></p>
       <div class="wm-win-btns">
-        <button type="button" class="mini mono" data-w-mini aria-pressed="false" aria-label="Make the player smaller">_</button>
+        <button type="button" class="mini mono" data-w-tuck aria-label="Tuck the player away (the music keeps playing)" title="Tuck away">_</button>
         <button type="button" class="mini mono" data-w-close aria-label="Stop the music and close the player">×</button>
       </div>
     </div>
@@ -167,7 +171,10 @@ const screws = [8, 252].map((x, i) => roughCircle(x, 8, 7, { seed: 90 + i, strok
     place-items: center;
   }
 
+  /* the Walkman's own keys drive the player; the frame never catches the
+     wheel or touch, so scrolling over it scrolls the page */
   .window :global(iframe) {
+    pointer-events: none;
     position: absolute;
     inset: 4px;
     width: calc(100% - 8px);
@@ -360,17 +367,48 @@ const screws = [8, 252].map((x, i) => roughCircle(x, 8, 7, { seed: 90 + i, strok
     display: none;
   }
 
-  /* smaller: just the window and the keys */
-  .walkman[data-mini] .brand .mono,
-  .walkman[data-mini] .reels,
-  .walkman[data-mini] .vol,
-  .walkman[data-mini] .chooser,
-  .walkman[data-mini] .screws {
-    display: none;
+  /* Tucked: the Walkman slides off the right edge, leaving a tab with a
+     spinning reel. The music keeps playing; the page is clear. */
+  @media (prefers-reduced-motion: no-preference) {
+    .walkman {
+      transition: translate 420ms var(--ease-out);
+    }
   }
 
-  .walkman[data-mini] {
-    width: 260px;
+  .walkman[data-tucked] {
+    translate: calc(100% + clamp(8px, 2vw, 24px) + 4px) 0;
+    overflow: visible;
+  }
+
+  .wm-tab {
+    position: absolute;
+    left: -54px;
+    bottom: 18px;
+    width: 54px;
+    padding: 8px 4px 6px;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: var(--paper-2);
+    border: 2px solid var(--ink);
+    border-right: 0;
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1;
+  }
+
+  .wm-tab .reel {
+    width: 34px;
+    height: 34px;
+  }
+
+  .wm-tab:hover {
+    color: var(--riso-pink);
+  }
+
+  .walkman[data-tucked] .wm-tab {
+    display: flex;
   }
 
   @media (max-width: 640px) {
@@ -379,6 +417,7 @@ const screws = [8, 252].map((x, i) => roughCircle(x, 8, 7, { seed: 90 + i, strok
       left: auto;
       bottom: 8px;
       width: min(284px, calc(100vw - 16px));
+      max-height: calc(100dvh - var(--nav-h) - 16px);
     }
   }
 </style>
