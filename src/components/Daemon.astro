@@ -1,0 +1,153 @@
+---
+// One character, drawn by scripts/build-characters.ts. All its poses are in
+// the markup; only one shows at a time (data-show), and switching pose is just
+// changing that attribute. Each pose stacks its three boil frames, which CSS
+// cycles at ~10fps. Pupils sit in an SVG overlay so they can follow the cursor.
+import cast from '../data/characters.json';
+
+type Id = keyof typeof cast;
+interface Props {
+  id: Id;
+  pose?: string;
+  /** Which poses to include. Default: all of them. */
+  poses?: string[];
+  size?: 'sm' | 'md' | 'lg' | 'xl';
+  class?: string;
+  /** Load frames eagerly (above the fold). */
+  eager?: boolean;
+}
+
+const { id, pose = 'idle', size = 'md', class: cls, eager = false } = Astro.props;
+const c = cast[id];
+const all = Object.keys(c.poses);
+const poses = Astro.props.poses ?? all;
+const frames = Array.from({ length: c.frames }, (_, i) => i);
+const S = c.size;
+---
+
+<figure class:list={['daemon', `d-${size}`, cls]} data-daemon={id} data-show={pose}>
+  {
+    poses.map((name) => {
+      const p = c.poses[name as keyof typeof c.poses] as { alt: string; gaze: number[]; eyes: { cx: number; cy: number; r: number }[] };
+      return (
+        <div class="pose" data-pose={name}>
+          <div class="boil">
+            {frames.map((f) => (
+              <img
+                src={`/characters/${id}/${name}-${f}.svg`}
+                alt={f === 0 ? p.alt : ''}
+                aria-hidden={f === 0 ? undefined : 'true'}
+                width={S}
+                height={S}
+                loading={eager && name === pose ? 'eager' : 'lazy'}
+                decoding="async"
+              />
+            ))}
+          </div>
+          <svg class="pupils" viewBox={`0 0 ${S} ${S}`} aria-hidden="true">
+            {p.eyes.map((e) => (
+              <circle
+                cx={e.cx}
+                cy={e.cy}
+                r={(e.r * 0.42).toFixed(1)}
+                data-r={e.r}
+                transform={`translate(${(p.gaze[0] * e.r * 0.42).toFixed(1)} ${(p.gaze[1] * e.r * 0.42).toFixed(1)})`}
+              />
+            ))}
+          </svg>
+        </div>
+      );
+    })
+  }
+</figure>
+
+<style>
+  .daemon {
+    position: relative;
+    margin: 0;
+    aspect-ratio: 1;
+    width: var(--daemon-w, 220px);
+  }
+
+  .d-sm {
+    --daemon-w: 120px;
+  }
+  .d-md {
+    --daemon-w: 220px;
+  }
+  .d-lg {
+    --daemon-w: min(340px, 80vw);
+  }
+  .d-xl {
+    --daemon-w: min(480px, 88vw);
+  }
+
+  .pose {
+    display: none;
+    position: absolute;
+    inset: 0;
+  }
+
+  .daemon[data-show='idle'] [data-pose='idle'],
+  .daemon[data-show='react'] [data-pose='react'],
+  .daemon[data-show='action'] [data-pose='action'],
+  .daemon[data-show='caught'] [data-pose='caught'] {
+    display: block;
+  }
+
+  .boil,
+  .boil img,
+  .pupils {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .pupils circle {
+    fill: var(--ink);
+    transition: transform 120ms linear;
+  }
+
+  /* Line boil: three frames, one visible at a time, ~10 fps. */
+  .boil img {
+    visibility: hidden;
+    animation: boil 0.3s steps(1) infinite;
+  }
+  .boil img:nth-child(2) {
+    animation-delay: -0.2s;
+  }
+  .boil img:nth-child(3) {
+    animation-delay: -0.1s;
+  }
+
+  /* With sound on, the beat picks the frame instead (see sound.ts). */
+  :global(html[data-frame]) .boil img {
+    animation: none;
+  }
+  :global(html[data-frame='0']) .boil img:nth-child(1),
+  :global(html[data-frame='1']) .boil img:nth-child(2),
+  :global(html[data-frame='2']) .boil img:nth-child(3) {
+    visibility: visible;
+  }
+
+  @keyframes boil {
+    0%,
+    33.3% {
+      visibility: visible;
+    }
+    33.4%,
+    100% {
+      visibility: hidden;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .boil img {
+      animation: none;
+    }
+    .boil img:first-child {
+      visibility: visible;
+    }
+  }
+</style>

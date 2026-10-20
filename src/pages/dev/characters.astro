@@ -1,0 +1,70 @@
+---
+// Character sheet for checking the cast. Not linked anywhere, not in the sitemap.
+import Base from '../../layouts/Base.astro';
+import Daemon from '../../components/Daemon.astro';
+import cast from '../../data/characters.json';
+
+const ids = Object.keys(cast) as (keyof typeof cast)[];
+---
+
+<Base title="Character sheet · Daemons" description="Every daemon, every pose." noindex>
+  <section class="sheet wrap">
+    <p class="label">dev · character sheet · 3 boil frames per pose · pupils follow the cursor</p>
+    <h1 class="head">The cast</h1>
+    {
+      ids.map((id) => {
+        const c = cast[id];
+        return (
+          <section class="row">
+            <h2 class="hand">{c.name}</h2>
+            <p class="label">{c.project ? `guards /projects/${c.project}` : 'antagonist'}</p>
+            <div class="poses">
+              {Object.keys(c.poses).map((pose) => (
+                <div class="cell">
+                  <Daemon id={id} pose={pose} poses={[pose]} />
+                  <p class="label">{pose}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        );
+      })
+    }
+  </section>
+  <script>
+    import { trackEyes } from '../../scripts/eyes';
+    trackEyes();
+  </script>
+</Base>
+
+<style>
+  .sheet {
+    padding-top: calc(var(--nav-h) + 40px);
+    padding-bottom: 80px;
+  }
+
+  h1 {
+    font-size: 48px;
+    margin: 8px 0 32px;
+  }
+
+  .row {
+    padding: 20px 0;
+    border-top: 1px dashed var(--ink-dim);
+  }
+
+  .row h2 {
+    font-size: 34px;
+  }
+
+  .poses {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 28px;
+    margin-top: 12px;
+  }
+
+  .cell .label {
+    text-align: center;
+  }
+</style>

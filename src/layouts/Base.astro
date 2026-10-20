@@ -16,9 +16,10 @@ interface Props {
   title: string;
   description: string;
   ogImage?: string;
+  noindex?: boolean;
 }
 
-const { title, description, ogImage = '/og.png' } = Astro.props;
+const { title, description, ogImage = '/og.png', noindex = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const og = new URL(ogImage, Astro.site);
 ---
@@ -31,6 +32,7 @@ const og = new URL(ogImage, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
     <meta name="color-scheme" content="dark" />
     <meta name="theme-color" content="#0e0e10" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
