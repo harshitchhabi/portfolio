@@ -1,0 +1,22 @@
+---
+// Printer's registration mark (⊕), drawn by hand. Purely decorative.
+import { roughCircle, roughLine } from '../../lib/rough';
+
+interface Props {
+  seed?: number;
+  class?: string;
+}
+const { seed = 7, class: cls } = Astro.props;
+const svg =
+  roughCircle(14, 14, 16, { seed, roughness: 1, strokeWidth: 1 }) +
+  roughLine(1, 14, 27, 14, { seed: seed + 1, roughness: 0.6, strokeWidth: 1 }) +
+  roughLine(14, 1, 14, 27, { seed: seed + 2, roughness: 0.6, strokeWidth: 1 });
+---
+
+<svg class:list={['reg', cls]} viewBox="0 0 28 28" width="28" height="28" aria-hidden="true" set:html={svg} />
+
+<style>
+  .reg {
+    opacity: 0.55;
+  }
+</style>

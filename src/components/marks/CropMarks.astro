@@ -1,0 +1,36 @@
+---
+// Crop marks at the four corners of the parent (which must be positioned).
+import { roughLine } from '../../lib/rough';
+
+const corner = (seed: number) =>
+  roughLine(0, 10, 22, 10, { seed, roughness: 0.7, strokeWidth: 1 }) +
+  roughLine(10, 0, 10, 22, { seed: seed + 1, roughness: 0.7, strokeWidth: 1 });
+const corners = ['tl', 'tr', 'bl', 'br'];
+---
+
+{corners.map((c, i) => <svg class:list={['crop', c]} viewBox="0 0 22 22" width="22" height="22" aria-hidden="true" set:html={corner(i * 3 + 11)} />)}
+
+<style>
+  .crop {
+    position: absolute;
+    opacity: 0.45;
+    pointer-events: none;
+  }
+
+  .tl {
+    top: -11px;
+    left: -11px;
+  }
+  .tr {
+    top: -11px;
+    right: -11px;
+  }
+  .bl {
+    bottom: -11px;
+    left: -11px;
+  }
+  .br {
+    bottom: -11px;
+    right: -11px;
+  }
+</style>
