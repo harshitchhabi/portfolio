@@ -10,7 +10,7 @@ import { gsap } from 'gsap';
 import { buildWorld } from './world';
 import { shared } from './materials';
 import { InkShader } from './ink-pass';
-import { Sprite3D, disposeSheets } from './sprites';
+import { Sprite3D, allSheets, disposeSheets, sheetsLoaded } from './sprites';
 import { BASEMENT_Y, BASEMENT_Z, STATIONS, STOPS, camPath, lookPath } from './layout';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,6 +19,8 @@ const DAEMONS = ['signe', 'vayu', 'honeybot', 'redacto', 'lockjaw', 'auctioneers
 const FOIL_MS = 2000;
 
 export interface Floor {
+  /** Resolves once textures are up and shaders compiled, so it can fade in whole. */
+  ready: Promise<void>;
   pause(on: boolean): void;
   /** Called when the camera settles at a station (index) or leaves (-1). */
   onSettle(cb: (stop: string | null) => void): void;
@@ -242,10 +244,23 @@ export function startFloor(canvas: HTMLCanvasElement): Floor {
       lastFps = now;
     }
   }
-  raf = requestAnimationFrame(frame);
-  ScrollTrigger.refresh();
+  // Don't draw anything until the drawings and shaders are ready: compiling on
+  // the first frame is what made the page hitch as the floor came in.
+  let disposed = false;
+  const ready = (async () => {
+    await sheetsLoaded();
+    if (disposed) return;
+    allSheets().forEach((t) => renderer.initTexture(t));
+    await renderer.compileAsync(scene, camera);
+    if (disposed) return;
+    ScrollTrigger.refresh();
+    raf = requestAnimationFrame(frame);
+    // two frames on screen (still invisible) so the ink pass is compiled too
+    await new Promise((res) => requestAnimationFrame(() => requestAnimationFrame(res)));
+  })();
 
   return {
+    ready,
     pause(on) {
       paused = on;
       if (!on) ScrollTrigger.refresh();
@@ -260,6 +275,7 @@ export function startFloor(canvas: HTMLCanvasElement): Floor {
       creepTo = ndc;
     },
     dispose() {
+      disposed = true;
       cancelAnimationFrame(raf);
       triggers.forEach((t) => t.kill());
       window.removeEventListener('resize', resize);

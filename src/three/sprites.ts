@@ -11,18 +11,32 @@ const plane = new PlaneGeometry(1, 1);
 const disc = new CircleGeometry(1, 14);
 const tmp = new Vector3();
 const sheets = new Map<string, Texture>();
+const loading = new Set<Promise<void>>();
+
+/** Resolves once every sheet asked for so far has loaded (or failed). */
+export function sheetsLoaded(): Promise<void> {
+  return Promise.all(loading).then(() => undefined);
+}
+
+/** Every character texture loaded so far. */
+export function allSheets(): Texture[] {
+  return [...sheets.values()];
+}
 
 /** Free every character texture (the floor is going away). */
 export function disposeSheets() {
   sheets.forEach((t) => t.dispose());
   sheets.clear();
+  loading.clear();
 }
 
 /** One texture per character, shared by every copy of it. */
 function sheet(id: string) {
   let t = sheets.get(id);
   if (!t) {
-    t = loader.load(`/characters/${id}/sheet.webp`);
+    let done = () => {};
+    loading.add(new Promise<void>((res) => (done = res)));
+    t = loader.load(`/characters/${id}/sheet.webp`, done, undefined, done);
     t.colorSpace = NoColorSpace; // the drawing's colours go to the screen untouched
     t.anisotropy = 4;
     sheets.set(id, t);

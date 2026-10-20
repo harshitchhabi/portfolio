@@ -29,7 +29,11 @@ export function mount(): () => void {
     try {
       const { startFloor } = await import('../three/floor');
       if (!alive) return;
-      window.floor = startFloor(canvas);
+      const floor = startFloor(canvas);
+      window.floor = floor;
+      // fade in only once it can draw the whole scene, not a half-loaded one
+      await floor.ready;
+      if (!alive || window.floor !== floor) return;
       html.dataset.floor = 'on';
       armCreep();
     } catch (err) {
