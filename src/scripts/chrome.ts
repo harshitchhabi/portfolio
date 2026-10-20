@@ -14,7 +14,7 @@ const themeLabel = document.querySelector<HTMLElement>('[data-theme-label]');
 function applyTheme(t: 'light' | 'dark') {
   root.setAttribute('data-theme', t);
   if (themeLabel) themeLabel.textContent = t === 'dark' ? 'Theme: Dark' : 'Theme: Light';
-  themeBtn?.setAttribute('aria-label', `Switch to ${t === 'dark' ? 'light' : 'dark'} theme`);
+  themeBtn?.setAttribute('title', `Switch to ${t === 'dark' ? 'light' : 'dark'} theme`);
 }
 
 applyTheme(root.getAttribute('data-theme') === 'light' ? 'light' : 'dark');
