@@ -46,5 +46,4 @@ An auction and city-building game in three stages: a materials auction, trading 
 
 Stockastic's load test, on a laptop with the real server: 750 teams trading at six times the allowed pace gave 0 errors and 0 dropped sockets, with a 99th-percentile trade of 12 ms. 1,000 logins at the same moment took 1.2 s at worst. A hard kill mid-session loses nothing that was confirmed.
 
-- TODO(harshit): Dream Team: number of teams and how the event went.
-- TODO(harshit): Bricks by Bid: number of participants and what you'd change.
+All three ran as live events at graVITas, VIT's tech fest, and all three went off successfully.
