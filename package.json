@@ -10,6 +10,7 @@
     "feed": "tsx scripts/cowrie-to-feed.ts"
   },
   "dependencies": {
+    "@astrojs/markdown-satteri": "^0.4.4",
     "@fontsource-variable/archivo": "^5.3.0",
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "astro": "^7.4.1",
