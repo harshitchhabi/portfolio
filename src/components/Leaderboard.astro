@@ -1,0 +1,282 @@
+---
+import Legend from './Legend.astro';
+import Cover from './Cover.astro';
+import { projectHref, statusClass, statusLabel, type Project } from '../lib/projects';
+
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+const filters = ['All', 'Security', 'ML', 'Systems', 'Web'];
+---
+
+<section id="leaderboard" class="section wrap" aria-labelledby="lb-title">
+  <div class="section-head">
+    <h2 id="lb-title" class="display section-title">Leaderboard</h2>
+    <p class="label">{projects.length} entries · click a row</p>
+  </div>
+
+  <div class="lb-tools">
+    <Legend compact />
+    <div class="chips" role="group" aria-label="Filter projects by type" data-filters>
+      {
+        filters.map((f, i) => (
+          <button type="button" class="chip" data-filter={f} aria-pressed={i === 0 ? 'true' : 'false'}>
+            {f}
+          </button>
+        ))
+      }
+    </div>
+  </div>
+
+  <p class="sr-only" aria-live="polite" data-filter-status></p>
+
+  <table class="lb">
+    <caption class="sr-only">Projects in leaderboard order, with type, year, stack and status</caption>
+    <thead>
+      <tr>
+        <th scope="col">Pos</th>
+        <th scope="col">Code</th>
+        <th scope="col">Project</th>
+        <th scope="col" class="opt">Type</th>
+        <th scope="col" class="opt">Year</th>
+        <th scope="col" class="opt">Stack</th>
+        <th scope="col">Status</th>
+      </tr>
+    </thead>
+    <tbody data-lb-body>
+      {
+        projects.map((p) => (
+          <tr
+            id={`lb-${p.data.code.toLowerCase()}`}
+            class:list={['row', statusClass(p.data.status)]}
+            data-type={p.data.type}
+            data-code={p.data.code}
+          >
+            <td class="pos">P{p.data.pos}</td>
+            <td class="code">{p.data.code}</td>
+            <th scope="row" class="title">
+              <a href={projectHref(p)} data-vt-title>
+                {p.data.title}
+              </a>
+            </th>
+            <td class="opt">{p.data.type}</td>
+            <td class="opt num">{p.data.year}</td>
+            <td class="opt stack">{p.data.stack.slice(0, 4).join(' / ')}</td>
+            <td class="status">
+              <span class="dot" aria-hidden="true" />
+              <span class="st-label">{statusLabel[p.data.status]}</span>
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+
+  <div class="lb-preview" aria-hidden="true" data-lb-preview>
+    {
+      projects.map((p) => (
+        <div class="lb-preview-item" data-preview={p.data.code}>
+          <Cover project={p} widths={[400, 800]} sizes="360px" />
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .lb-tools {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px 32px;
+    margin-bottom: 20px;
+  }
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    padding: 8px 14px;
+    border: 1px solid var(--line);
+    margin-left: -1px;
+    color: var(--muted);
+    transition:
+      color var(--t-fast) linear,
+      background var(--t-fast) linear;
+  }
+
+  .chip:hover {
+    color: var(--text);
+  }
+
+  .chip[aria-pressed='true'] {
+    background: var(--text);
+    color: var(--bg);
+    border-color: var(--text);
+  }
+
+  .lb {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  thead th {
+    text-align: left;
+    font-weight: 400;
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--text);
+  }
+
+  .row {
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+    transition: background var(--t-fast) linear;
+  }
+
+  .row:hover,
+  .row:focus-within,
+  .row.is-hot {
+    background: var(--surface);
+  }
+
+  .row td,
+  .row th {
+    padding: 16px 12px;
+    vertical-align: middle;
+    text-align: left;
+  }
+
+  /* status bar on the left edge */
+  .row .pos {
+    position: relative;
+    padding-left: 18px;
+    color: var(--muted);
+    width: 5ch;
+  }
+
+  .row .pos::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 6px;
+    bottom: 6px;
+    width: 5px;
+    background: var(--st);
+  }
+
+  .row.is-hot .pos::before,
+  .row:hover .pos::before {
+    transform: scaleX(calc(1 + var(--beat) * 0.8));
+    transform-origin: left;
+  }
+
+  .code {
+    font-weight: 700;
+    width: 6ch;
+  }
+
+  .title {
+    font-family: var(--font-body);
+    font-weight: 650;
+    font-size: clamp(16px, 1.3vw, 20px);
+    text-transform: none;
+    letter-spacing: 0;
+    line-height: 1.25;
+  }
+
+  .title a {
+    text-decoration: none;
+  }
+
+  .title a:hover {
+    text-decoration: underline;
+  }
+
+  .opt {
+    color: var(--muted);
+  }
+
+  .stack {
+    font-size: 11px;
+    max-width: 26ch;
+  }
+
+  .status {
+    white-space: nowrap;
+  }
+
+  .status .dot {
+    margin-right: 8px;
+  }
+
+  .lb-preview {
+    display: none;
+  }
+
+  /* The hover preview only exists for a mouse on a wide screen. JS turns it on. */
+  .lb-preview.is-on {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 360px;
+    z-index: 30;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 150ms linear;
+  }
+
+  .lb-preview.is-on.is-visible {
+    opacity: 1;
+  }
+
+  .lb-preview-item {
+    display: none;
+  }
+
+  .lb-preview-item.is-active {
+    display: block;
+  }
+
+  @media (max-width: 900px) {
+    .opt {
+      display: none;
+    }
+  }
+
+  @media (max-width: 520px) {
+    .row td,
+    .row th {
+      padding: 14px 6px;
+    }
+
+    .status .st-label {
+      font-size: 10px;
+    }
+
+    .code {
+      display: none;
+    }
+
+    thead th:nth-child(2) {
+      display: none;
+    }
+  }
+</style>
