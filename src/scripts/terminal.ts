@@ -42,11 +42,11 @@ export function terminal() {
   let opener: HTMLElement | null = null;
   let greeted = false;
 
-  const line = (text: string, cls = '') => {
+  const line = (text: string, cls = '', into: HTMLElement = out) => {
     const div = document.createElement('div');
     if (cls) div.className = cls;
     div.textContent = text;
-    out.append(div);
+    into.append(div);
     out.scrollTop = out.scrollHeight;
   };
 
@@ -70,7 +70,11 @@ export function terminal() {
   };
 
   async function headers() {
-    line('HEAD ' + location.href, 'dim');
+    // Reserve a spot so the answer stays under its command even if more are typed meanwhile.
+    const box = document.createElement('div');
+    out.append(box);
+    const say = (text: string, cls = '') => line(text, cls, box);
+    say('HEAD ' + location.href, 'dim');
     try {
       const res = await fetch(location.href, { method: 'HEAD', cache: 'no-store' });
       let pass = 0;
@@ -78,11 +82,11 @@ export function terminal() {
         const v = res.headers.get(h);
         if (v) pass += 1;
         const shown = v ? (v.length > 72 ? v.slice(0, 72) + '…' : v) : 'missing';
-        line(`${v ? '✓' : '✗'} ${h.padEnd(27)} ${shown}`, v ? 'ok' : 'bad');
+        say(`${v ? '✓' : '✗'} ${h.padEnd(27)} ${shown}`, v ? 'ok' : 'bad');
       }
-      line(`${pass}/${SECURITY_HEADERS.length} present${pass < SECURITY_HEADERS.length ? ' (local dev servers skip these; production sets them in vercel.json)' : ''}`, 'dim');
+      say(`${pass}/${SECURITY_HEADERS.length} present${pass < SECURITY_HEADERS.length ? ' (local dev servers skip these; production sets them in vercel.json)' : ''}`, 'dim');
     } catch {
-      line('✗ request failed', 'bad');
+      say('✗ request failed', 'bad');
     }
   }
 
