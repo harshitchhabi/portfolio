@@ -1,35 +1,36 @@
-// The station title morphs into the case-study header (shared-element view
-// transition). The header always carries view-transition-name: project-title;
-// on the home page that name is given to the clicked title just before the
-// page swaps, and to the matching title when coming back.
-
-type SwapEvent = Event & { viewTransition: ViewTransition | null; activation: { entry: { url: string } } | null };
-type RevealEvent = Event & { viewTransition: ViewTransition | null };
+// The station title morphs into the case-study header. The header's title
+// always carries view-transition-name: project-title (global.css). On the way
+// in, the clicked station title gets that name just before the swap; on the
+// way back, the matching station title gets it in the new page. Set from
+// script, because Astro's transition:name writes inline styles the CSP blocks.
 
 const NAME = 'project-title';
+const slugOf = (url: URL | string) => new URL(url, location.href).pathname.match(/^\/projects\/([a-z0-9-]+)/)?.[1];
+const titleFor = (slug: string | undefined) => (slug ? document.querySelector<HTMLElement>(`a[data-vt-title="${slug}"]`) : null);
 
-function titleFor(url: string | undefined) {
-  if (!url) return null;
-  const m = new URL(url).pathname.match(/^\/projects\/([a-z0-9-]+)/);
-  return m ? document.querySelector<HTMLElement>(`a[data-vt-title="${m[1]}"]`) : null;
-}
+let named: HTMLElement | null = null;
+let fromUrl = '';
+const clear = () => {
+  if (named) named.style.viewTransitionName = '';
+  named = null;
+};
 
 export function titleTransitions() {
-  window.addEventListener('pageswap', (e) => {
-    const ev = e as SwapEvent;
-    if (!ev.viewTransition || !ev.activation) return;
-    const a = titleFor(ev.activation.entry.url);
-    if (!a) return;
-    a.style.viewTransitionName = NAME;
-    ev.viewTransition.finished.finally(() => (a.style.viewTransitionName = ''));
+  document.addEventListener('astro:before-preparation', (e) => {
+    clear();
+    fromUrl = location.href;
+    const a = titleFor(slugOf((e as Event & { to: URL }).to));
+    if (a) {
+      a.style.viewTransitionName = NAME;
+      named = a;
+    }
   });
-  window.addEventListener('pagereveal', (e) => {
-    const ev = e as RevealEvent;
-    const from = (window as unknown as { navigation?: { activation?: { from?: { url?: string } } } }).navigation?.activation?.from?.url;
-    if (!ev.viewTransition) return;
-    const a = titleFor(from);
-    if (!a) return;
-    a.style.viewTransitionName = NAME;
-    ev.viewTransition.finished.finally(() => (a.style.viewTransitionName = ''));
+  document.addEventListener('astro:after-swap', () => {
+    const a = titleFor(fromUrl ? slugOf(fromUrl) : undefined);
+    if (a) {
+      a.style.viewTransitionName = NAME;
+      named = a;
+    }
   });
+  document.addEventListener('astro:page-load', () => requestAnimationFrame(clear));
 }
