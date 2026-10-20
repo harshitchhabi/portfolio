@@ -7,7 +7,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "feed": "tsx scripts/cowrie-to-feed.ts"
+    "feed": "node scripts/cowrie-to-feed.ts"
   },
   "dependencies": {
     "@astrojs/markdown-satteri": "^0.4.4",
