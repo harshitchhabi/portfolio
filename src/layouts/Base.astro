@@ -1,13 +1,16 @@
 ---
-import '@fontsource-variable/archivo/wdth.css';
-import '@fontsource-variable/jetbrains-mono/wght.css';
+import '@fontsource/redaction-50/latin-400.css';
+import '@fontsource/redaction/latin-400.css';
+import '@fontsource/redaction/latin-700.css';
+import '@fontsource/delicious-handrawn/latin-400.css';
+import '@fontsource-variable/schibsted-grotesk/wght.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
-import archivoUrl from '@fontsource-variable/archivo/files/archivo-latin-wdth-normal.woff2?url';
-import monoUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
-import TopBar from '../components/TopBar.astro';
-import Footer from '../components/Footer.astro';
-import Terminal from '../components/Terminal.astro';
+import displayUrl from '@fontsource/redaction-50/files/redaction-50-latin-400-normal.woff2?url';
+import bodyUrl from '@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2?url';
+import monoUrl from '../fonts/departure-mono/DepartureMono-Regular.woff2?url';
+import Nav from '../components/Nav.astro';
+import Shell from '../components/Shell.astro';
 
 interface Props {
   title: string;
@@ -28,9 +31,8 @@ const og = new URL(ogImage, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
-    <meta name="color-scheme" content="dark light" />
-    <meta name="theme-color" content="#0a0a0b" media="(prefers-color-scheme: dark)" />
-    <meta name="theme-color" content="#f2f1ec" media="(prefers-color-scheme: light)" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="theme-color" content="#0e0e10" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="sitemap" href="/sitemap.xml" />
 
@@ -43,25 +45,20 @@ const og = new URL(ogImage, Astro.site);
     <meta property="og:image:height" content="630" />
     <meta name="twitter:card" content="summary_large_image" />
 
-    <link rel="preload" href={archivoUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={displayUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={bodyUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={monoUrl} as="font" type="font/woff2" crossorigin />
-    <script is:inline src="/theme-init.js"></script>
     <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <div class="grid-overlay" aria-hidden="true">
-      <div>{Array.from({ length: 12 }, () => <span />)}</div>
-    </div>
-    <TopBar />
+    <Nav />
     <main id="main" tabindex="-1">
       <slot />
     </main>
-    <Footer />
-    <Terminal />
-    <div class="wipe" aria-hidden="true"></div>
+    <Shell />
     <script>
-      import '../scripts/chrome';
+      import '../scripts/site';
     </script>
   </body>
 </html>

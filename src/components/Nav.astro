@@ -1,0 +1,134 @@
+---
+import { roughLine } from '../lib/rough';
+
+const links = [
+  { href: '/#work', label: 'work' },
+  { href: '/#logbook', label: 'logbook' },
+  { href: '/#contact', label: 'contact' },
+];
+const underline = roughLine(2, 6, 158, 5, { seed: 21, roughness: 1.8, strokeWidth: 1.6 });
+---
+
+<header class="nav">
+  <div class="nav-inner wrap">
+    <a class="me hand" href="/">
+      harshit
+      <svg class="me-line ink-pink" viewBox="0 0 160 10" aria-hidden="true" set:html={underline} />
+    </a>
+
+    <nav aria-label="Main">
+      <ul class="links mono">
+        {
+          links.map((l) => (
+            <li>
+              <a href={l.href}>{l.label}</a>
+            </li>
+          ))
+        }
+        <li>
+          <button type="button" data-audio-toggle aria-pressed="false" title="128 BPM kick and hat, made in your browser">
+            sound: <span data-audio-label>off</span>
+          </button>
+        </li>
+        <li>
+          <button type="button" class="tilde" data-shell-open aria-label="~ open shell" title="Shell (press ~)" aria-haspopup="dialog">~</button>
+        </li>
+        <li>
+          <button type="button" class="skip" data-skip-toggle aria-pressed="false">skip the show</button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 50;
+    pointer-events: none;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: var(--nav-h);
+  }
+
+  .nav a,
+  .nav button {
+    pointer-events: auto;
+  }
+
+  .me {
+    position: relative;
+    font-size: 30px;
+    text-decoration: none;
+    line-height: 1;
+    padding-bottom: 6px;
+  }
+
+  .me-line {
+    position: absolute;
+    left: -4px;
+    bottom: -2px;
+    width: calc(100% + 8px);
+    height: 10px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 4px 18px;
+    font-size: 13px;
+    padding: 6px 10px;
+    background: var(--paper);
+  }
+
+  .links a,
+  .links button {
+    text-decoration: none;
+    color: var(--ink-dim);
+  }
+
+  .links a:hover,
+  .links button:hover {
+    color: var(--ink);
+  }
+
+  .links button[aria-pressed='true'] {
+    color: var(--riso-pink);
+  }
+
+  .links button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .tilde {
+    font-size: 16px;
+  }
+
+  .skip {
+    border: 1px dashed var(--ink-dim);
+    padding: 2px 8px;
+  }
+
+  @media (max-width: 640px) {
+    .nav-inner {
+      align-items: flex-start;
+      padding-top: 8px;
+    }
+
+    .links {
+      gap: 2px 12px;
+      max-width: 230px;
+    }
+  }
+</style>
