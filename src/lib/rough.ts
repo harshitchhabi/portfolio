@@ -16,13 +16,17 @@ function paths(d: Drawable): string {
     .toPaths(d)
     .map((p) => {
       const fill = p.fill && p.fill !== 'none' ? p.fill : 'none';
-      return `<path d="${p.d}" stroke="${p.stroke}" stroke-width="${p.strokeWidth}" fill="${fill}" stroke-linecap="round" stroke-linejoin="round"/>`;
+      return `<path d="${p.d.replace(/-?\d+\.\d+/g, (n) => (+n).toFixed(1))}" stroke="${p.stroke}" stroke-width="${p.strokeWidth}" fill="${fill}" stroke-linecap="round" stroke-linejoin="round"/>`;
     })
     .join('');
 }
 
 export const roughRect = (w: number, h: number, o: Options = {}) =>
   paths(gen.rectangle(3, 3, w - 6, h - 6, { ...INK, ...o }));
+
+/** A rectangle at (x, y), unlike roughRect which fills its own box. */
+export const roughBox = (x: number, y: number, w: number, h: number, o: Options = {}) =>
+  paths(gen.rectangle(x, y, w, h, { ...INK, ...o }));
 
 export const roughLine = (x1: number, y1: number, x2: number, y2: number, o: Options = {}) =>
   paths(gen.line(x1, y1, x2, y2, { ...INK, ...o }));
