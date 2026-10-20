@@ -1,0 +1,40 @@
+---
+// The page-transition wipe: a big hand-scribbled ink fill, parked off-screen.
+// Only the view transition moves it (see global.css).
+import rough from 'roughjs';
+
+const gen = rough.generator();
+const shape = gen.polygon(
+  [
+    [40, 0], [300, 0], [260, 120], [320, 260], [270, 420], [330, 560], [290, 700], [320, 800], [20, 800], [60, 640], [0, 480], [50, 320], [10, 160],
+  ],
+  { seed: 9, fill: '#f2eee4', fillStyle: 'zigzag', hachureGap: 7, fillWeight: 6, stroke: '#f2eee4', strokeWidth: 4, roughness: 2.4 },
+);
+const d = gen
+  .toPaths(shape)
+  .map((p) => `<path d="${p.d.replace(/-?\d+\.\d+/g, (n) => (+n).toFixed(1))}" stroke="${p.stroke}" stroke-width="${p.strokeWidth}" fill="${p.fill ?? 'none'}" stroke-linecap="round"/>`)
+  .join('');
+---
+
+<div class="wipe" aria-hidden="true">
+  <svg viewBox="0 0 330 800" preserveAspectRatio="none" set:html={d} />
+</div>
+
+<style>
+  .wipe {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 34vw;
+    height: 100vh;
+    pointer-events: none;
+    transform: translateX(-120%);
+    view-transition-name: wipe;
+    z-index: 99;
+  }
+
+  .wipe svg {
+    width: 100%;
+    height: 100%;
+  }
+</style>

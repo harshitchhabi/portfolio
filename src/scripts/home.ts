@@ -5,10 +5,12 @@ import { pickMode, setMode } from '../lib/mode';
 import { trackEyes } from './eyes';
 import { details } from './details';
 import { smooth } from './smooth';
+import { titleTransitions } from './vt';
 import type { Floor } from '../three/floor';
 
 const mode = pickMode();
 setMode(mode);
+titleTransitions();
 trackEyes();
 smooth();
 details();

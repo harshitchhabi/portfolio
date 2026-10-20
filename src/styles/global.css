@@ -17,6 +17,7 @@ html {
   text-size-adjust: 100%;
   scroll-padding-top: calc(var(--nav-h) + 16px);
   background: var(--paper);
+  overflow-x: clip;
 }
 
 body {
@@ -256,4 +257,54 @@ button {
   inset: 0.08em -0.06em;
   background: var(--ink);
   pointer-events: none;
+}
+
+/* ---------- page transitions ----------
+   The station title morphs into the case-study header; everything else is
+   wiped by a scribbled ink fill sweeping across. Off under reduced motion. */
+
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
+::view-transition-group(wipe) {
+  animation: wipe-sweep 620ms cubic-bezier(0.7, 0, 0.3, 1) both;
+}
+
+::view-transition-old(wipe),
+::view-transition-new(wipe) {
+  animation: none;
+}
+
+::view-transition-old(root) {
+  animation: none;
+}
+
+::view-transition-new(root) {
+  animation: wipe-reveal 620ms cubic-bezier(0.7, 0, 0.3, 1) both;
+}
+
+::view-transition-group(project-title) {
+  animation-duration: 620ms;
+  animation-timing-function: cubic-bezier(0.7, 0, 0.3, 1);
+}
+
+@keyframes wipe-sweep {
+  from {
+    transform: translateX(-34vw);
+  }
+  to {
+    transform: translateX(100vw);
+  }
+}
+
+@keyframes wipe-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
 }

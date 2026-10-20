@@ -12,6 +12,7 @@ import monoUrl from '../fonts/departure-mono/DepartureMono-Regular.woff2?url';
 import Nav from '../components/Nav.astro';
 import Shell from '../components/Shell.astro';
 import Cursor from '../components/Cursor.astro';
+import Wipe from '../components/Wipe.astro';
 
 interface Props {
   title: string;
@@ -61,6 +62,7 @@ const og = new URL(ogImage, Astro.site);
     </main>
     <Shell />
     <Cursor />
+    <Wipe />
     <script>
       import '../scripts/site';
     </script>
