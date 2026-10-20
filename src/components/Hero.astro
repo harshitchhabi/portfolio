@@ -137,6 +137,11 @@ import Daemon from './Daemon.astro';
     rotate: -3deg;
   }
 
+  .crew,
+  .peek {
+    transition: opacity 600ms linear;
+  }
+
   :global(html[data-floor='on']) .crew {
     opacity: 0;
   }
