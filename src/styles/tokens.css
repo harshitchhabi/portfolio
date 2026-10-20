@@ -53,6 +53,25 @@
   --red: #c4180e;
 }
 
+/* No JS: follow the OS setting. With JS, theme-init.js always sets data-theme. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    color-scheme: light;
+
+    --bg: #f2f1ec;
+    --surface: #e7e6e0;
+    --line: #cfcec7;
+    --text: #0a0a0b;
+    --muted: #5e5e59;
+    --timing: #7a5a00;
+
+    --purple: #7a2bc9;
+    --green: #0b6b33;
+    --blue: #1260b0;
+    --red: #c4180e;
+  }
+}
+
 @media (max-width: 760px) {
   :root {
     --cols: 4;
