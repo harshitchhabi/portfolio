@@ -114,11 +114,22 @@ export function sound() {
 
   const toggle = async () => {
     if (playing) stop();
-    else await play();
+    else {
+      window.dispatchEvent(new CustomEvent('beat:play'));
+      await play();
+    }
     setPref('audio', playing ? 'on' : 'off');
     render();
   };
   btns.forEach((b) => b.addEventListener('click', toggle));
+
+  // real music started: the beat steps aside
+  window.addEventListener('music:play', () => {
+    if (!playing) return;
+    stop();
+    setPref('audio', 'off');
+    render();
+  });
 
   // Never autoplays. If it was on last page, it comes back on the visitor's next click or key press.
   if (getPref('audio') === 'on') {
