@@ -35,6 +35,7 @@ const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
 
 <Base page="case" title={`${d.title} · Harshit Chhabi`} description={d.oneLiner}>
   <article class="case wrap">
+    <a href="/#work" class="back-btn mono" data-back data-cursor="inspect">← back</a>
     <RegMark class="reg r1" seed={5} />
     <RegMark class="reg r2" seed={8} />
     <Doodle kind={x.doodle} class="cd" seed={33} />
@@ -116,6 +117,27 @@ const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
     padding-bottom: 96px;
     max-width: 1180px;
     margin-inline: auto;
+  }
+
+  /* stays in reach while you read; goes back where you came from (scripts/anchors.ts) */
+  .back-btn {
+    position: sticky;
+    top: calc(var(--nav-h) + 10px);
+    z-index: 5;
+    display: inline-block;
+    margin-bottom: 18px;
+    padding: 6px 12px;
+    border: 1px dashed var(--ink-dim);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 14px;
+    text-decoration: none;
+  }
+
+  .back-btn:hover,
+  .back-btn:focus-visible {
+    color: var(--riso-pink);
+    border-color: var(--riso-pink);
   }
 
   .case :global(.reg) {
