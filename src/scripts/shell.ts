@@ -1,4 +1,7 @@
 // The ~ shell. Output is always written with textContent, never innerHTML.
+import { gsap } from 'gsap';
+import { caught } from './jar';
+import { reducedMotion } from '../lib/prefs';
 
 interface P {
   daemon: string;
@@ -23,6 +26,8 @@ const COMMANDS: Record<string, string> = {
   ls: 'list the daemons with their PIDs',
   open: 'open <daemon>: go to its case study, e.g. open honeybot',
   headers: "check this site's real security headers",
+  ps: 'list running daemons',
+  kill: 'kill intruder: put the Intruder in the jar',
   contact: 'how to reach me',
   clear: 'clear the screen',
 };
@@ -36,6 +41,30 @@ export function shell() {
   if (!root || !out || !form || !input || !closeBtn) return;
 
   const projects: P[] = JSON.parse(root.dataset.projects ?? '[]');
+  let intruderGone = false;
+
+  // the Intruder gets yanked across the screen into the jar
+  const yank = () => {
+    const img = document.createElement('img');
+    img.src = '/characters/intruder/action-still.svg';
+    img.alt = '';
+    img.className = 'yanked';
+    document.body.append(img);
+    const jar = document.querySelector('[data-jar]')?.getBoundingClientRect();
+    const onScreen = jar && jar.bottom > 0 && jar.top < window.innerHeight;
+    const tx = onScreen ? jar.left + jar.width / 2 - 60 : window.innerWidth + 120;
+    const ty = onScreen ? jar.top + jar.height * 0.55 - 60 : window.innerHeight * 0.85;
+    gsap.set(img, { x: window.innerWidth * 0.15, y: window.innerHeight * 0.18, rotation: -10 });
+    if (reducedMotion()) {
+      img.remove();
+      return;
+    }
+    gsap
+      .timeline({ onComplete: () => img.remove() })
+      .to(img, { y: '-=40', rotation: 14, duration: 0.25, ease: 'power2.out' })
+      .to(img, { x: tx, y: ty, rotation: 380, scale: 0.4, duration: 0.8, ease: 'power3.in' })
+      .to(img, { opacity: 0, duration: 0.15 });
+  };
   const history: string[] = [];
   let hIndex = 0;
   let opener: HTMLElement | null = null;
@@ -126,6 +155,35 @@ export function shell() {
         line('github    github.com/harshitchhabi');
         line('resume    ' + location.origin + '/resume.pdf');
         return;
+      case 'ps': {
+        line('  PID  %CPU %MEM STAT DAEMON           PROJECT', 'dim');
+        projects.forEach((p, i) => {
+          const cpu = (((p.pid * 7) % 31) / 10 + 0.1).toFixed(1);
+          const mem = (((p.pid * 13) % 47) / 10 + 0.4).toFixed(1);
+          line(`${String(p.pid).padStart(5)} ${cpu.padStart(5)} ${mem.padStart(4)} ${i === 6 ? 'R+ ' : 'S  '}  ${p.daemon.padEnd(16)} ${p.title.split(':')[0]}`);
+        });
+        line(intruderGone ? '    ?   0.0  0.0 Z    intruder         (in the jar)' : ' 6666  99.9 66.6 R    intruder         (not one of mine)', intruderGone ? 'dim' : 'bad');
+        return;
+      }
+      case 'kill': {
+        const who = args.join(' ').toLowerCase();
+        if (who === 'intruder' || who === '6666' || who === '-9 intruder' || who === '-9 6666') {
+          if (intruderGone) {
+            line('kill: (6666) - no such process. it’s already in the jar.', 'dim');
+            return;
+          }
+          intruderGone = true;
+          yank();
+          window.floor?.removeIntruder();
+          const n = caught(1);
+          line(`killed. the jar now holds ${n}.`, 'ok');
+        } else if (who) {
+          line(`kill: ${who}: operation not permitted. daemons don’t die that easily.`, 'bad');
+        } else {
+          line('usage: kill intruder', 'bad');
+        }
+        return;
+      }
       case 'clear':
         out.replaceChildren();
         return;

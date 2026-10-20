@@ -308,3 +308,14 @@ button {
     clip-path: inset(0 0 0 0);
   }
 }
+
+/* the Intruder, mid-yank (shell: kill intruder) */
+.yanked {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 120px;
+  height: 120px;
+  z-index: 97;
+  pointer-events: none;
+}
