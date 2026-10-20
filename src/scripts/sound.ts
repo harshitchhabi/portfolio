@@ -1,8 +1,10 @@
 import { getPref, reducedMotion, setPref } from '../lib/prefs';
 
 // A minimal 4/4 kick with an off-beat closed hat at 128 BPM, synthesised with
-// the Web Audio API: no files, nothing copyrighted. While it plays, --beat on
-// <html> decays from 1 to 0 after every kick, read from the AudioContext clock.
+// the Web Audio API: no files, nothing copyrighted. While it plays, two things
+// follow the AudioContext clock (not a timer):
+//   --beat on <html>      decays 1 → 0 after every kick (basement bobbing, strobes)
+//   data-frame on <html>  the line-boil frame, stepping once per 8th note
 
 const BPM = 128;
 const SPB = 60 / BPM;
@@ -57,7 +59,9 @@ function pulse() {
   if (!ctx || !playing) return;
   const phase = (ctx.currentTime - start) / SPB;
   const frac = phase < 0 ? 1 : phase - Math.floor(phase);
-  document.documentElement.style.setProperty('--beat', Math.exp(-frac * 6).toFixed(3));
+  const html = document.documentElement;
+  html.style.setProperty('--beat', Math.exp(-frac * 6).toFixed(3));
+  html.dataset.frame = String(Math.floor(Math.max(phase, 0) * 2) % 3);
   raf = requestAnimationFrame(pulse);
 }
 
@@ -84,39 +88,45 @@ function stop() {
   window.clearInterval(timer);
   cancelAnimationFrame(raf);
   document.documentElement.style.setProperty('--beat', '0');
+  delete document.documentElement.dataset.frame;
   void ctx?.suspend();
 }
 
 export function sound() {
-  const btn = document.querySelector<HTMLButtonElement>('[data-audio-toggle]');
-  const label = document.querySelector<HTMLElement>('[data-audio-label]');
-  if (!btn || !label) return;
+  const btns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-audio-toggle]'));
+  if (!btns.length) return;
 
-  const render = () => {
-    btn.setAttribute('aria-pressed', String(playing));
-    label.textContent = playing ? 'on' : 'off';
+  const render = (label?: string) => {
+    btns.forEach((b) => {
+      b.setAttribute('aria-pressed', String(playing));
+      const l = b.querySelector<HTMLElement>('[data-audio-label]');
+      if (l) l.textContent = label ?? (playing ? 'on' : 'off');
+    });
   };
 
   if (reducedMotion() || !('AudioContext' in window)) {
-    btn.disabled = true;
-    btn.title = reducedMotion() ? 'Off because reduced motion is on' : 'Not supported in this browser';
+    btns.forEach((b) => {
+      b.disabled = true;
+      b.title = reducedMotion() ? 'Off because reduced motion is on' : 'Not supported in this browser';
+    });
     return;
   }
 
-  btn.addEventListener('click', async () => {
+  const toggle = async () => {
     if (playing) stop();
     else await play();
     setPref('audio', playing ? 'on' : 'off');
     render();
-  });
+  };
+  btns.forEach((b) => b.addEventListener('click', toggle));
 
   // Never autoplays. If it was on last page, it comes back on the visitor's next click or key press.
   if (getPref('audio') === 'on') {
-    label.textContent = 'resumes on click';
+    render('resumes on click');
     const resume = async (e: Event) => {
       window.removeEventListener('pointerdown', resume, true);
       window.removeEventListener('keydown', resume, true);
-      if (btn.contains(e.target as Node)) return render(); // the button's own handler decides
+      if (btns.some((b) => b.contains(e.target as Node))) return render(); // the button's own handler decides
       await play();
       render();
     };
