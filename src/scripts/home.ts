@@ -43,6 +43,15 @@ if (mode === '3d') {
   else window.addEventListener('load', () => idle(boot), { once: true });
 }
 
+// Toggling "skip the show" pauses the floor, or brings it (back) up.
+window.addEventListener('skip:change', (e) => {
+  const on = (e as CustomEvent<{ on: boolean }>).detail.on;
+  if (on) window.floor?.pause(true);
+  else if (window.floor) window.floor.pause(false);
+  else if (document.documentElement.dataset.mode === '3d') boot();
+  import('gsap/ScrollTrigger').then(({ ScrollTrigger }) => ScrollTrigger.refresh());
+});
+
 // Static drawings react when the cursor comes close (Signe waves back, and so on).
 if (window.matchMedia('(pointer: fine)').matches) {
   const arts = Array.from(document.querySelectorAll<HTMLElement>('[data-near-react]'));

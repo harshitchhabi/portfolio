@@ -2,6 +2,10 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Station from '../components/Station.astro';
+import Logbook from '../components/Logbook.astro';
+import Basement from '../components/Basement.astro';
+import Jar from '../components/Jar.astro';
+import SkipList from '../components/SkipList.astro';
 import { getProjects } from '../lib/projects';
 
 const projects = await getProjects();
@@ -12,15 +16,15 @@ const projects = await getProjects();
   description="I build security tools, ML systems and real-time platforms. Information Security student at VIT Vellore."
 >
   <canvas class="floor" aria-hidden="true"></canvas>
+  <SkipList />
   <Hero />
-  <div id="work">
+  <div id="work" class="show-only">
     <h2 class="sr-only">Projects</h2>
     {projects.map((p, i) => <Station project={p} index={i} />)}
   </div>
-
-  <section id="logbook" class="stop wrap"><h2 class="head">Logbook</h2></section>
-  <section id="basement" class="stop wrap"><h2 class="head">The Basement</h2></section>
-  <section id="contact" class="stop wrap"><h2 class="head">The Jar</h2></section>
+  <Logbook />
+  <Basement />
+  <Jar />
 
   <script>
     import '../scripts/home';
@@ -40,13 +44,15 @@ const projects = await getProjects();
     transition: opacity 600ms linear;
   }
 
-  :global(html[data-floor='on']) .floor {
+  :global(html[data-floor='on']:not([data-mode='skip'])) .floor {
     opacity: 1;
   }
 
-  .stop {
-    position: relative;
-    z-index: 1;
-    min-height: 100vh;
+  /* Skip the show: only the plain list, the logbook and contact remain. */
+  :global(html[data-mode='skip']) .floor,
+  :global(html[data-mode='skip'] #hero),
+  :global(html[data-mode='skip'] #work),
+  :global(html[data-mode='skip'] #basement) {
+    display: none;
   }
 </style>

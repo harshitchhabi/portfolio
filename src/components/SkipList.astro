@@ -1,0 +1,110 @@
+---
+// "Skip the show": the plain, fast version for people in a hurry.
+// Same type and colours, no 3D, no Intruder, no cursor effects.
+import { getProjects, projectHref, shortUrl } from '../lib/projects';
+
+const projects = await getProjects();
+---
+
+<section class="skip-view wrap" aria-labelledby="skip-title">
+  <p class="label">the plain version · <button type="button" class="back" data-skip-toggle>bring the show back</button></p>
+  <h1 id="skip-title" class="head s-name">Harshit Chhabi</h1>
+  <p class="s-lede">
+    I build security tools, ML systems and real-time platforms. B.Tech CSE (Information Security) at VIT Vellore, 2024–2028, CGPA 9.00.
+    Technical Head of the Dream Merchants club; previously a cybersecurity analyst intern at SBI Global IT Centre.
+  </p>
+  <p class="s-links mono">
+    <a href="/resume.pdf">resume (pdf)</a>
+    <a href="mailto:harshitchhabi@gmail.com">harshitchhabi@gmail.com</a>
+    <a href="https://github.com/harshitchhabi" rel="noopener">github ↗</a>
+    <a href="https://www.linkedin.com/in/harshit-chhabi-6007b4368" rel="noopener">linkedin ↗</a>
+  </p>
+  <h2 class="label s-h">Projects</h2>
+  <ol class="s-list">
+    {
+      projects.map((p) => (
+        <li>
+          <a class="head s-title" href={projectHref(p)}>
+            {p.data.title}
+          </a>
+          <p>{p.data.oneLiner}</p>
+          <p class="mono s-meta">
+            {p.data.type} · {p.data.year} · {p.data.stack.slice(0, 4).join(', ')} · <a href={p.data.repo} rel="noopener">{shortUrl(p.data.repo)}</a>
+          </p>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .skip-view {
+    display: none;
+    position: relative;
+    z-index: 1;
+    padding-top: calc(var(--nav-h) + 48px);
+    padding-bottom: 24px;
+    max-width: 920px;
+  }
+
+  :global(html[data-mode='skip']) .skip-view {
+    display: block;
+  }
+
+  .back {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    color: var(--riso-pink);
+    font: inherit;
+    text-transform: inherit;
+  }
+
+  .s-name {
+    font-size: clamp(40px, 6vw, 72px);
+    margin-top: 10px;
+  }
+
+  .s-lede {
+    margin-top: 16px;
+    max-width: 62ch;
+    font-size: 19px;
+  }
+
+  .s-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    margin-top: 18px;
+    font-size: 14px;
+  }
+
+  .s-h {
+    margin-top: 48px;
+    padding-bottom: 8px;
+    border-bottom: 1px dashed var(--ink-dim);
+  }
+
+  .s-list {
+    display: grid;
+    gap: 26px;
+    margin-top: 20px;
+  }
+
+  .s-title {
+    font-size: clamp(22px, 2.4vw, 30px);
+    text-decoration: none;
+  }
+
+  .s-title:hover {
+    text-decoration: underline;
+  }
+
+  .s-list p {
+    margin-top: 4px;
+  }
+
+  .s-meta {
+    font-size: 12px;
+    color: var(--ink-dim);
+  }
+</style>

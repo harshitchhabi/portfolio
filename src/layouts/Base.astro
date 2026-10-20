@@ -52,6 +52,7 @@ const og = new URL(ogImage, Astro.site);
     <link rel="preload" href={displayUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={bodyUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={monoUrl} as="font" type="font/woff2" crossorigin />
+    <script is:inline src="/mode-init.js"></script>
     <slot name="head" />
   </head>
   <body>
