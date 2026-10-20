@@ -11,6 +11,10 @@ role: Technical Head, Dream Merchants Club, VIT Vellore
 team: Club tech team
 stack: [Go, TypeScript, Next.js, React, PostgreSQL, WebSockets, Docker, Caddy, AWS]
 repo: https://github.com/harshitchhabi/Stockastic
+platforms:
+  - { name: Stockastic, what: live stock-market simulation, repo: https://github.com/harshitchhabi/Stockastic }
+  - { name: Dream Team, what: real-time IPL-style player auction, repo: https://github.com/harshitchhabi/test_dream_team }
+  - { name: Bricks by Bid, what: auction and city-building game, repo: https://github.com/harshitchhabi/test_BBB }
 metrics:
   - { label: platforms, value: '3' }
   - { label: Stockastic participants, value: '~700' }

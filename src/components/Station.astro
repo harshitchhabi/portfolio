@@ -48,6 +48,17 @@ const n = index + 1;
         <a href={projectHref(project)} class="title-link" data-vt-title={d.slug} data-cursor="inspect">{d.title}</a>
       </h2>
       <p class="blurb">{d.oneLiner}</p>
+      {
+        d.platforms.length > 0 && (
+          <ul class="platforms">
+            {d.platforms.map((pl) => (
+              <li>
+                <a href={pl.repo} rel="noopener" class="hand">{pl.name} ↗</a> <span>{pl.what}</span>
+              </li>
+            ))}
+          </ul>
+        )
+      }
       <StackLabels items={d.stack.slice(0, 5)} seed={n * 13} />
       {
         d.metrics.length > 0 && (
@@ -60,7 +71,7 @@ const n = index + 1;
       }
       <p class="links mono">
         <a href={projectHref(project)} data-cursor="inspect">read the file →</a>
-        <a href={d.repo} rel="noopener">{shortUrl(d.repo)} ↗</a>
+        {d.platforms.length === 0 && <a href={d.repo} rel="noopener">{shortUrl(d.repo)} ↗</a>}
       </p>
       {d.slug === 'ids' && <IdsTwist />}
       <Stamp text={d.stamp} color={index % 3 === 1 ? 'pink' : 'stamp'} tilt={index % 2 ? 8 : -10} seed={n * 19} class="panel-stamp" />
@@ -168,6 +179,25 @@ const n = index + 1;
 
   .blurb {
     margin: 14px 0 16px;
+  }
+
+  .platforms {
+    display: grid;
+    gap: 4px;
+    margin: -4px 0 16px;
+    padding: 0;
+    list-style: none;
+    font-size: 15px;
+    color: var(--ink-dim);
+  }
+
+  .platforms a {
+    font-size: 21px;
+    color: var(--riso-green);
+  }
+
+  .platforms a:hover {
+    color: var(--riso-pink);
   }
 
   .metrics {

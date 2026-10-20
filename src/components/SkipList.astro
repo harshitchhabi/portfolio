@@ -29,7 +29,8 @@ const projects = await getProjects();
           </a>
           <p>{p.data.oneLiner}</p>
           <p class="mono s-meta">
-            {p.data.type} · {p.data.year} · {p.data.stack.slice(0, 4).join(', ')} · <a href={p.data.repo} rel="noopener">{shortUrl(p.data.repo)}</a>
+            {p.data.type} · {p.data.year} · {p.data.stack.slice(0, 4).join(', ')} · {p.data.platforms.length === 0 && <a href={p.data.repo} rel="noopener">{shortUrl(p.data.repo)}</a>}
+            {p.data.platforms.map((pl, i) => <>{i > 0 && ' · '}<a href={pl.repo} rel="noopener">{pl.name}</a></>)}
           </p>
         </li>
       ))
