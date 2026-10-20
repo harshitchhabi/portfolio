@@ -1,0 +1,247 @@
+@font-face {
+  font-family: 'Departure Mono';
+  src: url('../fonts/departure-mono/DepartureMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  scroll-padding-top: calc(var(--nav-h) + 16px);
+  background: var(--paper);
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: clamp(17px, 0.25vw + 16px, 18px);
+  line-height: 1.6;
+  overflow-x: clip;
+}
+
+/* Paper grain over everything: procedural noise, no image download. */
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  opacity: 0.09;
+  mix-blend-mode: screen;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.4 -.35'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+ol,
+ul,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ol,
+ul {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.22em;
+}
+
+a:hover {
+  color: var(--riso-pink);
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--riso-pink);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--riso-pink);
+  color: var(--paper);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 100;
+  padding: 8px 12px;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  transform: translateY(-200%);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.wrap {
+  padding-inline: var(--margin);
+}
+
+/* ---------- type roles ---------- */
+
+.display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.01em;
+}
+
+.head {
+  font-family: var(--font-head);
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.hand {
+  font-family: var(--font-hand);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.mono,
+.label {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.label {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+}
+
+.prose {
+  max-width: var(--measure);
+}
+
+.prose p + p,
+.prose p + ul,
+.prose ul + p {
+  margin-top: 1em;
+}
+
+/* ---------- riso print layers ----------
+   .riso-pink / .riso-green: a flat halftone fill that sits behind the ink,
+   slightly out of register. Put one on any positioned element. */
+
+.riso-pink,
+.riso-green {
+  position: relative;
+  isolation: isolate;
+}
+
+.riso-pink::before,
+.riso-green::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  translate: var(--misregister) calc(var(--misregister) * -0.6);
+  background-image: radial-gradient(var(--riso) 42%, transparent 46%);
+  background-size: var(--halftone) var(--halftone);
+  mix-blend-mode: screen;
+}
+
+.riso-pink {
+  --riso: var(--riso-pink);
+}
+
+.riso-green {
+  --riso: var(--riso-green);
+}
+
+/* Solid riso ink for small marks (dots, LEDs, underline strokes). */
+.ink-pink {
+  color: var(--riso-pink);
+}
+
+.ink-green {
+  color: var(--riso-green);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* .riso-text: a halftone copy of the letters printed in a riso ink, slipped
+   off the ink layer. Needs data-text with the same text. */
+.riso-text {
+  position: relative;
+  isolation: isolate;
+}
+
+.riso-text::before {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  translate: calc(var(--misregister) * 2.4) calc(var(--misregister) * 1.4);
+  color: transparent;
+  background-image: radial-gradient(var(--riso) 46%, transparent 50%);
+  background-size: var(--halftone) var(--halftone);
+  -webkit-background-clip: text;
+  background-clip: text;
+  white-space: inherit;
+}
+
+.riso-text.riso-pink::before,
+.riso-text.riso-green::before {
+  mix-blend-mode: normal;
+}

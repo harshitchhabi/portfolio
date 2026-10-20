@@ -1,0 +1,36 @@
+/* Ink on black paper, printed in two riso layers. Every colour on the site
+   comes from here. Yellow is only for rubber stamps. */
+
+:root {
+  color-scheme: dark;
+
+  --paper: #0e0e10; /* black sketchbook paper */
+  --paper-2: #16161a; /* slightly lifted paper for panels */
+  --ink: #f2eee4; /* white gel-pen ink */
+  --ink-dim: #9b978e; /* pencil-grey notes */
+  --riso-pink: #ff48b0; /* riso layer 1 */
+  --riso-green: #00a95c; /* riso layer 2 */
+  --stamp: #ffe800; /* rubber stamps only, sparingly */
+
+  /* type. --font-hand is the one to swap for my own handwriting later. */
+  --font-display: 'Redaction 50', 'Redaction', Georgia, serif;
+  --font-head: 'Redaction', Georgia, serif;
+  --font-hand: 'Delicious Handrawn', 'Comic Sans MS', cursive;
+  --font-mono: 'Departure Mono', ui-monospace, monospace;
+  --font-body: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', system-ui, sans-serif;
+
+  /* print */
+  --misregister: 3px; /* how far the pink layer slips off the ink */
+  --halftone: 4px; /* dot pitch on riso fills */
+
+  /* layout */
+  --margin: clamp(16px, 4vw, 56px);
+  --measure: 65ch;
+  --nav-h: 52px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* driven by the audio clock when sound is on, 0 otherwise */
+  --beat: 0;
+}
