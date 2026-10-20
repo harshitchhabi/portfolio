@@ -1,0 +1,265 @@
+---
+// One stop on the server floor: the daemon (drawn here when there's no 3D, or
+// as a still of the foiled moment), and the HTML panel with the project.
+import Daemon from './Daemon.astro';
+import Stamp from './marks/Stamp.astro';
+import Tape from './marks/Tape.astro';
+import Note from './marks/Note.astro';
+import Doodle from './marks/Doodle.astro';
+import Metric from './marks/Metric.astro';
+import StackLabels from './marks/StackLabels.astro';
+import RegMark from './marks/RegMark.astro';
+import RoughFrame from './marks/RoughFrame.astro';
+import IdsTwist from './IdsTwist.astro';
+import { projectHref, shortUrl, type Project } from '../lib/projects';
+import { STATION } from '../data/stations';
+
+interface Props {
+  project: Project;
+  index: number;
+}
+const { project, index } = Astro.props;
+const d = project.data;
+const x = STATION[d.slug];
+const side = index % 2 === 0 ? 'left' : 'right'; // where the daemon stands
+const n = index + 1;
+---
+
+<section id={`station-${n}`} class:list={['stop', 'station', `daemon-${side}`]} data-station={n} aria-labelledby={`st-${n}-title`}>
+  <RegMark class="reg reg-a" seed={n * 3} />
+  <RegMark class="reg reg-b" seed={n * 5} />
+  <Doodle kind={x.doodle} class="doodle-a" seed={n * 7} />
+
+  <div class="art" data-near-react>
+    <p class="label fig">fig. {String(n).padStart(2, '0')} · {x.foil}</p>
+    <div class="scene">
+      <Daemon id={x.daemon} pose="action" poses={['action', 'react']} size="lg" class="art-daemon" />
+      <Daemon id="intruder" pose="action" poses={['action']} size="sm" class="art-intruder" />
+    </div>
+  </div>
+
+  <div class="panel-wrap" data-panel>
+    <Tape class="tape-a" seed={n} />
+    <Tape class="tape-b" seed={n + 20} w={84} />
+    <RoughFrame class="panel" seed={n * 11} w={560} h={640}>
+      <p class="label">daemon #{n} · pid {d.pid} · {d.type.toLowerCase()}</p>
+      <p class="hand who">{d.daemon}</p>
+      <h2 id={`st-${n}-title`} class="head title" data-redact>
+        <a href={projectHref(project)} class="title-link" data-vt-title={d.slug} data-cursor="inspect">{d.title}</a>
+      </h2>
+      <p class="blurb">{d.oneLiner}</p>
+      <StackLabels items={d.stack.slice(0, 5)} seed={n * 13} />
+      {
+        d.metrics.length > 0 && (
+          <div class="metrics">
+            {d.metrics.slice(0, 3).map((m, i) => (
+              <Metric value={m.value} label={m.label} seed={n * 17 + i} />
+            ))}
+          </div>
+        )
+      }
+      <p class="links mono">
+        <a href={projectHref(project)} data-cursor="inspect">read the file →</a>
+        <a href={d.repo} rel="noopener">{shortUrl(d.repo)} ↗</a>
+      </p>
+      {d.slug === 'ids' && <IdsTwist />}
+      <Stamp text={d.stamp} color={index % 3 === 1 ? 'pink' : 'stamp'} tilt={index % 2 ? 8 : -10} seed={n * 19} class="panel-stamp" />
+    </RoughFrame>
+    <div class="notes">
+      {
+        x.notes.map((note, i) => (
+          <Note arrow={note.arrow} color={note.color} seed={n * 23 + i} class={`note-${i}`}>
+            {note.text}
+          </Note>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .station {
+    position: relative;
+    z-index: 1;
+    min-height: 140vh;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    column-gap: clamp(16px, 4vw, 64px);
+    padding: 12vh var(--margin);
+  }
+
+  .daemon-right .art {
+    order: 2;
+  }
+
+  .art {
+    position: relative;
+    align-self: center;
+    justify-self: center;
+    transition: opacity 400ms linear;
+  }
+
+  /* With the 3D floor running, the daemon stands in the scene instead. */
+  :global(html[data-floor='on']) .art {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .scene {
+    position: relative;
+  }
+
+  .scene :global(.art-intruder) {
+    position: absolute;
+    right: -24px;
+    bottom: -8px;
+  }
+
+  .daemon-right .scene :global(.art-intruder) {
+    right: auto;
+    left: -24px;
+  }
+
+  .fig {
+    max-width: 30ch;
+    margin-bottom: 8px;
+    text-transform: none;
+  }
+
+  .panel-wrap {
+    position: relative;
+    max-width: 560px;
+    width: 100%;
+    justify-self: center;
+  }
+
+  .panel-wrap :global(.panel) {
+    background: var(--paper-2);
+  }
+
+  .panel-wrap :global(.tape-a) {
+    top: -14px;
+    left: 18px;
+    rotate: -6deg;
+  }
+
+  .panel-wrap :global(.tape-b) {
+    bottom: -12px;
+    right: 26px;
+    rotate: 9deg;
+  }
+
+  .who {
+    font-size: 28px;
+    color: var(--riso-pink);
+    margin-top: 2px;
+  }
+
+  .title {
+    font-size: clamp(28px, 3.1vw, 44px);
+    margin-top: 2px;
+    position: relative;
+  }
+
+  .title-link {
+    text-decoration: none;
+  }
+
+  .blurb {
+    margin: 14px 0 16px;
+  }
+
+  .metrics {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin-top: 16px;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
+    margin-top: 22px;
+    font-size: 14px;
+  }
+
+  .panel-wrap :global(.panel-stamp) {
+    position: absolute;
+    top: 18px;
+    right: -18px;
+  }
+
+  .notes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .notes :global(.note-0) {
+    position: absolute;
+    top: -64px;
+    right: -10px;
+  }
+
+  .notes :global(.note-1) {
+    position: absolute;
+    bottom: -76px;
+    left: 0;
+  }
+
+  .daemon-left .notes :global(.note-0.note-left) {
+    right: auto;
+    left: -40px;
+  }
+
+  .station :global(.reg) {
+    position: absolute;
+  }
+
+  .station :global(.reg-a) {
+    top: 10vh;
+    left: 10px;
+  }
+
+  .station :global(.reg-b) {
+    bottom: 10vh;
+    right: 10px;
+  }
+
+  .station :global(.doodle-a) {
+    bottom: 14vh;
+    left: 4%;
+  }
+
+  .daemon-left :global(.doodle-a) {
+    left: auto;
+    right: 4%;
+    top: 14vh;
+    bottom: auto;
+  }
+
+  @media (max-width: 900px) {
+    .station {
+      grid-template-columns: 1fr;
+      row-gap: 40px;
+      min-height: 0;
+      padding-block: 14vh;
+    }
+
+    .daemon-right .art {
+      order: 0;
+    }
+
+    .notes :global(.note-0) {
+      top: -56px;
+      right: 0;
+    }
+
+    .panel-wrap :global(.panel-stamp) {
+      right: 4px;
+      top: -24px;
+    }
+  }
+</style>

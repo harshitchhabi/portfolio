@@ -1,0 +1,63 @@
+---
+// The IDS station's twist, as two comic frames: the poisoning finding, then the defence.
+import RoughFrame from './marks/RoughFrame.astro';
+---
+
+<div class="twist" aria-label="The twist">
+  <figure>
+    <RoughFrame class="cell" seed={41} w={240} h={200}>
+      <div class="pair">
+        <img src="/characters/intruder/idle-still.svg" alt="The Intruder tiptoeing up with a lockpick" width="256" height="256" loading="lazy" />
+        <img src="/characters/honeybot/idle-still.svg" alt="Honeybot on its honeypot, not noticing" width="256" height="256" loading="lazy" />
+      </div>
+    </RoughFrame>
+    <figcaption class="hand">the twist: it slips poison into the honey. auto-labelled honeypot data can poison the IDS.</figcaption>
+  </figure>
+  <figure>
+    <RoughFrame class="cell" seed={43} w={240} h={200}>
+      <div class="pair">
+        <img src="/characters/honeybot/action-still.svg" alt="Honeybot slamming the lid down on the jar, the poison bottle knocked over" width="256" height="256" loading="lazy" />
+      </div>
+    </RoughFrame>
+    <figcaption class="hand">Honeybot caps how much of the jar gets eaten. that cap is the defence.</figcaption>
+  </figure>
+</div>
+
+<style>
+  .twist {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-top: 22px;
+  }
+
+  figure {
+    margin: 0;
+  }
+
+  .twist :global(.cell) {
+    padding: 8px;
+  }
+
+  .pair {
+    display: flex;
+    justify-content: center;
+  }
+
+  .pair img {
+    width: 50%;
+    max-width: 110px;
+    height: auto;
+  }
+
+  .pair img:only-child {
+    width: 70%;
+  }
+
+  figcaption {
+    margin-top: 6px;
+    font-size: 18px;
+    line-height: 1.1;
+    color: var(--ink-dim);
+  }
+</style>
