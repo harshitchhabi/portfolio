@@ -1,0 +1,101 @@
+---
+import Base from '../layouts/Base.astro';
+import Note from '../components/marks/Note.astro';
+import RegMark from '../components/marks/RegMark.astro';
+import Doodle from '../components/marks/Doodle.astro';
+import { roughLine } from '../lib/rough';
+
+const floor = roughLine(0, 6, 600, 8, { seed: 404, strokeWidth: 2, roughness: 2 });
+---
+
+<Base title="Segmentation fault · Harshit Chhabi" description="This page crashed. The daemons are fine.">
+  <section class="crash wrap">
+    <RegMark class="reg" seed={404} />
+    <Doodle kind="plug" class="pl" seed={44} />
+    <p class="label">pid ??? · exit code 139</p>
+    <h1 class="mono fault">segmentation fault (core dumped)</h1>
+    <p class="why">This page doesn’t exist, or it crashed trying. Redacto went to check and is now having a lie down.</p>
+    <figure class="body" aria-label="Redacto, the tall green robot, lying flat on the floor next to its marker">
+      <img class="down" src="/characters/redacto/idle-still.svg" alt="" width="256" height="256" />
+      <span class="zz hand" aria-hidden="true">z z z</span>
+      <svg class="floorline" viewBox="0 0 600 14" preserveAspectRatio="none" aria-hidden="true" set:html={floor} />
+    </figure>
+    <Note arrow="up" color="pink" seed={405} class="n">it’s fine. probably.</Note>
+    <p class="home mono"><a href="/" data-cursor="inspect">← back to the server floor</a></p>
+  </section>
+</Base>
+
+<style>
+  .crash {
+    position: relative;
+    min-height: 90vh;
+    padding-top: calc(var(--nav-h) + 12vh);
+  }
+
+  .crash :global(.reg) {
+    position: absolute;
+    top: calc(var(--nav-h) + 10px);
+    right: 12px;
+  }
+
+  .crash :global(.pl) {
+    right: 8%;
+    bottom: 10%;
+  }
+
+  .fault {
+    margin-top: 12px;
+    font-size: clamp(22px, 4vw, 52px);
+    font-weight: 400;
+    color: var(--riso-pink);
+    overflow-wrap: anywhere;
+  }
+
+  .why {
+    margin-top: 16px;
+    max-width: 46ch;
+  }
+
+  .body {
+    position: relative;
+    margin: 48px 0 0;
+    width: min(600px, 100%);
+    height: 170px;
+  }
+
+  .down {
+    position: absolute;
+    left: 40px;
+    bottom: -40px;
+    width: 220px;
+    height: 220px;
+    rotate: 90deg;
+  }
+
+  .zz {
+    position: absolute;
+    left: 250px;
+    top: 0;
+    font-size: 32px;
+    color: var(--ink-dim);
+    rotate: -12deg;
+  }
+
+  .floorline {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 14px;
+    color: var(--ink-dim);
+  }
+
+  .crash :global(.n) {
+    margin: 10px 0 0 120px;
+  }
+
+  .home {
+    margin-top: 32px;
+    font-size: 16px;
+  }
+</style>
