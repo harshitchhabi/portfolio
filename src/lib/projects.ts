@@ -1,23 +1,13 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 
 export type Project = CollectionEntry<'projects'>;
-export type Status = Project['data']['status'];
-
-export const statusLabel: Record<Status, string> = {
-  best: 'Session best',
-  latest: 'Personal best',
-  wip: 'In progress',
-  team: 'In pit',
-};
-
-export const statusClass = (s: Status) => `st-${s}`;
 
 export async function getProjects(): Promise<Project[]> {
   const all = await getCollection('projects');
-  return all.sort((a, b) => a.data.pos - b.data.pos);
+  return all.sort((a, b) => a.data.order - b.data.order);
 }
 
-export const projectHref = (p: Project) => `/projects/${p.id}`;
+export const projectHref = (p: Project) => `/projects/${p.data.slug}`;
 
-/** "github.com/harshitchhabi/IDS" style, for mono header strips. */
+/** "github.com/harshitchhabi/IDS" style, for mono metadata lines. */
 export const shortUrl = (u: string) => u.replace(/^https?:\/\//, '').replace(/\/$/, '');
