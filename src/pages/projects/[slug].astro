@@ -33,7 +33,7 @@ const { Content } = await render(project);
 const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
 ---
 
-<Base title={`${d.title} · Harshit Chhabi`} description={d.oneLiner}>
+<Base page="case" title={`${d.title} · Harshit Chhabi`} description={d.oneLiner}>
   <article class="case wrap">
     <RegMark class="reg r1" seed={5} />
     <RegMark class="reg r2" seed={8} />
@@ -106,9 +106,6 @@ const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
       }
     </nav>
   </article>
-  <script>
-    import '../../scripts/case';
-  </script>
 </Base>
 
 <style>

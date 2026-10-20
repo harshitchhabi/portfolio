@@ -9,6 +9,7 @@ import '../styles/tokens.css';
 import '../styles/global.css';
 import displayUrl from '@fontsource/redaction-50/files/redaction-50-latin-400-normal.woff2?url';
 import bodyUrl from '@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-400-normal.woff2?url';
+import { ClientRouter } from 'astro:transitions';
 import Nav from '../components/Nav.astro';
 import Shell from '../components/Shell.astro';
 import Cursor from '../components/Cursor.astro';
@@ -19,9 +20,11 @@ interface Props {
   description: string;
   ogImage?: string;
   noindex?: boolean;
+  /** Which page script to mount: home, case, or none. */
+  page?: 'home' | 'case' | 'other';
 }
 
-const { title, description, ogImage = '/og.png', noindex = false } = Astro.props;
+const { title, description, ogImage = '/og.png', noindex = false, page = 'other' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const og = new URL(ogImage, Astro.site);
 ---
@@ -52,17 +55,18 @@ const og = new URL(ogImage, Astro.site);
     <link rel="preload" href={displayUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={bodyUrl} as="font" type="font/woff2" crossorigin />
     <script is:inline src="/mode-init.js"></script>
+    <ClientRouter />
     <slot name="head" />
   </head>
   <body>
     <a class="skip-link" href="#main">Skip to content</a>
-    <Nav />
-    <main id="main" tabindex="-1">
+    <div transition:persist="nav"><Nav /></div>
+    <main id="main" tabindex="-1" data-page={page}>
       <slot />
     </main>
-    <Shell />
-    <Cursor />
-    <Wipe />
+    <div transition:persist="shell"><Shell /></div>
+    <div transition:persist="cursor"><Cursor /></div>
+    <div transition:persist="wipe"><Wipe /></div>
     <script>
       import '../scripts/site';
     </script>

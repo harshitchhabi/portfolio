@@ -263,12 +263,6 @@ button {
    The station title morphs into the case-study header; everything else is
    wiped by a scribbled ink fill sweeping across. Off under reduced motion. */
 
-@media (prefers-reduced-motion: no-preference) {
-  @view-transition {
-    navigation: auto;
-  }
-}
-
 ::view-transition-group(wipe) {
   animation: wipe-sweep 620ms cubic-bezier(0.7, 0, 0.3, 1) both;
 }

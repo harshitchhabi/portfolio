@@ -1,47 +1,66 @@
-// Global behaviour shared by every page.
+// Everything that lives for the whole visit, plus the page lifecycle.
+// Navigation happens in-page (Astro's ClientRouter) so the music keeps going:
+// global things start once here; page things mount on every astro:page-load and
+// are cleaned up before the next swap.
+
 import { getPref, setPref } from '../lib/prefs';
-import { pickMode, setMode } from '../lib/mode';
+import { pickMode, setMode, type Mode } from '../lib/mode';
 import { shell } from './shell';
 import { sound } from './sound';
 import { caught } from './jar';
+import { smooth } from './smooth';
+import { details } from './details';
+import { mountEyes } from './eyes';
+import { titleTransitions } from './vt';
 
+const html = document.documentElement;
+
+// ---------- once per visit ----------
+let mode: Mode = pickMode();
+setMode(mode);
 shell();
 sound();
+smooth();
+titleTransitions();
+
+const later = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2000 }) : window.setTimeout(fn, 300));
+later(() => import('./cursor').then((m) => m.cursor()));
+later(() => import('./walkman').then((m) => m.walkman()));
 
 // "Skip the show": a plain, fast view for people in a hurry. Remembered.
-const html = document.documentElement;
-const skipBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-skip-toggle]'));
+const skipBtns = () => Array.from(document.querySelectorAll<HTMLButtonElement>('[data-skip-toggle]'));
 const renderSkip = () => {
-  const on = html.dataset.mode === 'skip';
-  skipBtns.forEach((b) => {
+  const on = mode === 'skip';
+  skipBtns().forEach((b) => {
     b.setAttribute('aria-pressed', String(on));
     b.textContent = on ? 'resume the show' : 'skip the show';
   });
 };
-if (getPref('skip-show') === 'on') setMode('skip');
-renderSkip();
-skipBtns.forEach((b) =>
-  b.addEventListener('click', () => {
-    const on = html.dataset.mode !== 'skip';
-    setPref('skip-show', on ? 'on' : 'off');
-    setMode(on ? 'skip' : pickMode());
-    renderSkip();
-    window.scrollTo({ top: 0 });
-    window.dispatchEvent(new CustomEvent('skip:change', { detail: { on } }));
-  }),
-);
+document.addEventListener('click', (e) => {
+  if (!(e.target as Element).closest?.('[data-skip-toggle]')) return;
+  const on = mode !== 'skip';
+  setPref('skip-show', on ? 'on' : 'off');
+  mode = on ? 'skip' : pickMode();
+  setMode(mode);
+  renderSkip();
+  window.scrollTo({ top: 0 });
+  window.dispatchEvent(new CustomEvent('skip:change', { detail: { on } }));
+});
+if (getPref('skip-show') === 'on') mode = 'skip';
 
-// the custom cursor isn't needed for first paint
-const later = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2000 }) : setTimeout(fn, 300));
-later(() => import('./cursor').then((m) => m.cursor()));
+// Astro resets <html> attributes on every swap; put ours back.
+document.addEventListener('astro:after-swap', () => setMode(mode));
 
-caught();
+// ---------- every page ----------
+let cleanups: (() => void)[] = [];
+let token = 0;
 
-// Click the email to copy it, with a handwritten "copied!".
-document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
-  const note = btn.parentElement?.querySelector<HTMLElement>('[data-copied]');
-  let t = 0;
-  btn.addEventListener('click', async () => {
+function bindCopy(): () => void {
+  const timers: number[] = [];
+  const handler = async (e: Event) => {
+    const btn = (e.target as Element).closest<HTMLButtonElement>('[data-copy]');
+    if (!btn) return;
+    const note = btn.parentElement?.querySelector<HTMLElement>('[data-copied]');
     try {
       await navigator.clipboard.writeText(btn.dataset.copy!);
       if (note) note.textContent = 'copied!';
@@ -49,7 +68,31 @@ document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
       window.location.href = `mailto:${btn.dataset.copy}`;
       return;
     }
-    window.clearTimeout(t);
-    t = window.setTimeout(() => note && (note.textContent = ''), 1800);
-  });
-});
+    timers.push(window.setTimeout(() => note && (note.textContent = ''), 1800));
+  };
+  document.addEventListener('click', handler);
+  return () => {
+    document.removeEventListener('click', handler);
+    timers.forEach((t) => window.clearTimeout(t));
+  };
+}
+
+async function mountPage() {
+  const mine = ++token;
+  renderSkip();
+  caught();
+  window.lenis?.resize();
+  cleanups.push(details(), mountEyes(), bindCopy());
+  const page = document.querySelector<HTMLElement>('main[data-page]')?.dataset.page;
+  const mod = page === 'home' ? await import('./home') : page === 'case' ? await import('./case') : null;
+  if (mod && mine === token) cleanups.push(mod.mount());
+}
+
+function unmountPage() {
+  token++;
+  cleanups.forEach((f) => f());
+  cleanups = [];
+}
+
+document.addEventListener('astro:page-load', mountPage);
+document.addEventListener('astro:before-swap', unmountPage);
