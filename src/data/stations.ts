@@ -24,7 +24,7 @@ export const STATION: Record<string, StationExtras> = {
     foil: 'Vayu sniffs the Intruder out of a smoke plume.',
     notes: [
       { text: 'satellite → fire check → ground AQI', arrow: 'right', color: 'green' },
-      { text: 'built at a hackathon, still going', arrow: 'none', color: 'pink' },
+      { text: 'built at one hackathon, extended at another', arrow: 'none', color: 'pink' },
     ],
     doodle: 'circuit',
   },

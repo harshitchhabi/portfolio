@@ -32,6 +32,6 @@ The trade-off: I tried XGBoost for the AQI model and dropped it. Early stopping 
 
 The project grew past the hackathon into a satellite AQI map for all of India. Scored on years it never saw (Jan 2025 to Oct 2026, 519 stations), the area-level AQI estimate reaches R² 0.83 with an error of about ±19 AQI points.
 
-Built at Bharatiya Antariksh Hackathon 2026 with Team GEMs. We're extending it for Smart India Hackathon 2026.
+Built at Bharatiya Antariksh Hackathon 2026 with Team GEMs, then extended for Smart India Hackathon 2026.
 
 TODO(harshit): how many hotspots matched a FIRMS fire in the 2023 season.
