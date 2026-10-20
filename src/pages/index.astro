@@ -2,6 +2,9 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Leaderboard from '../components/Leaderboard.astro';
+import RaceControl from '../components/RaceControl.astro';
+import Lineup from '../components/Lineup.astro';
+import BoxBox from '../components/BoxBox.astro';
 import { getProjects } from '../lib/projects';
 
 const projects = await getProjects();
@@ -13,6 +16,9 @@ const projects = await getProjects();
 >
   <Hero projects={projects} />
   <Leaderboard projects={projects} />
+  <RaceControl />
+  <Lineup />
+  <BoxBox />
   <script>
     import '../scripts/home';
   </script>
