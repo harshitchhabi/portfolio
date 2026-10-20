@@ -282,14 +282,32 @@ const n = index + 1;
       order: 0;
     }
 
-    .notes :global(.note-0) {
-      top: -56px;
-      right: 0;
-    }
-
     .panel-wrap :global(.panel-stamp) {
       right: 4px;
-      top: -24px;
+      top: -46px;
+      scale: 0.8;
+    }
+  }
+
+  /* On a phone there's no margin for scribbles: notes sit under the card,
+     in the flow, instead of over its text. */
+  @media (max-width: 640px) {
+    .notes {
+      position: static;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px 20px;
+      margin-top: 22px;
+      padding-inline: 4px;
+    }
+
+    .notes :global(.note-0),
+    .notes :global(.note-1),
+    .daemon-left .notes :global(.note-0.note-left) {
+      position: relative;
+      inset: auto;
+      max-width: 60%;
     }
   }
 </style>
