@@ -7,6 +7,7 @@ import archivoUrl from '@fontsource-variable/archivo/files/archivo-latin-wdth-no
 import monoUrl from '@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2?url';
 import TopBar from '../components/TopBar.astro';
 import Footer from '../components/Footer.astro';
+import Terminal from '../components/Terminal.astro';
 
 interface Props {
   title: string;
@@ -57,6 +58,7 @@ const og = new URL(ogImage, Astro.site);
       <slot />
     </main>
     <Footer />
+    <Terminal />
     <div class="wipe" aria-hidden="true"></div>
     <script>
       import '../scripts/chrome';

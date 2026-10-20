@@ -1,4 +1,9 @@
 import { getPref, setPref } from '../lib/prefs';
+import { audio } from './audio';
+import { terminal } from './terminal';
+
+terminal();
+audio();
 
 // ---------- theme ----------
 
