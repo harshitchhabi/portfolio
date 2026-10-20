@@ -12,6 +12,7 @@ import { smooth } from './smooth';
 import { details } from './details';
 import { mountEyes } from './eyes';
 import { titleTransitions } from './vt';
+import { anchors } from './anchors';
 
 const html = document.documentElement;
 
@@ -22,6 +23,7 @@ shell();
 sound();
 smooth();
 titleTransitions();
+anchors();
 
 const later = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2000 }) : window.setTimeout(fn, 300));
 later(() => import('./cursor').then((m) => m.cursor()));
