@@ -1,0 +1,221 @@
+---
+// The Basement: under the server floor the daemons are at a rave. With the 3D
+// floor it's a room in the scene; without it, this drawing is the room.
+import Daemon from './Daemon.astro';
+import Tape from './marks/Tape.astro';
+import Note from './marks/Note.astro';
+import RegMark from './marks/RegMark.astro';
+import RoughFrame from './marks/RoughFrame.astro';
+
+const crowd = [
+  { id: 'signe', pose: 'react' },
+  { id: 'vayu', pose: 'idle' },
+  { id: 'honeybot', pose: 'react' },
+  { id: 'redacto', pose: 'idle' },
+  { id: 'auctioneers', pose: 'react' },
+] as const;
+---
+
+<section id="basement" class="stop basement wrap" aria-labelledby="bs-title">
+  <RegMark class="reg br1" seed={61} />
+  <div class="bs-panel">
+    <Tape class="bt1" seed={101} />
+    <RoughFrame class="bs-frame" seed={103} w={520} h={380}>
+      <p class="label">sub-level b1 · after hours</p>
+      <h2 id="bs-title" class="display bs-title" data-redact><span>The Basement</span></h2>
+      <p>
+        Under the server floor the daemons unwind. Forge is on the decks, Lockjaw is on the door, and the Intruder is not on the list.
+      </p>
+      <p class="sound-row">
+        <button type="button" class="sound-btn mono" data-audio-toggle aria-pressed="false">sound: <span data-audio-label>off</span></button>
+        <span class="hand sound-note">a 128 BPM kick and hat, made live in your browser. quiet. no files.</span>
+      </p>
+    </RoughFrame>
+  </div>
+
+  <div class="rave" aria-label="The daemons dancing at a rave, Forge on the decks, Lockjaw on the door keeping the Intruder out" role="img">
+    <div class="strobes" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    <div class="booth">
+      <Daemon id="forge" pose="action" poses={['action']} size="sm" class="dj" />
+      <span class="decks" aria-hidden="true"></span>
+    </div>
+    <div class="dancers">
+      {crowd.map((c, i) => <Daemon id={c.id} pose={c.pose} poses={[c.pose]} size="sm" class={`dancer d${i}`} />)}
+    </div>
+    <div class="door">
+      <Daemon id="lockjaw" pose="react" poses={['react']} size="sm" class="bouncer" />
+      <Daemon id="intruder" pose="idle" poses={['idle']} size="sm" class="outside" />
+      <Note arrow="left" color="pink" seed={107} class="door-note">not on the list</Note>
+    </div>
+  </div>
+</section>
+
+<style>
+  .basement {
+    position: relative;
+    z-index: 1;
+    min-height: 120vh;
+    padding-block: 14vh;
+    display: grid;
+    grid-template-columns: minmax(0, 520px) minmax(0, 1fr);
+    gap: clamp(20px, 4vw, 60px);
+    align-items: center;
+  }
+
+  .basement :global(.reg) {
+    position: absolute;
+    top: 8vh;
+    right: 10px;
+  }
+
+  .bs-panel {
+    position: relative;
+  }
+
+  .bs-panel :global(.bs-frame) {
+    background: var(--paper-2);
+  }
+
+  .bs-panel :global(.bt1) {
+    top: -14px;
+    left: 30px;
+    rotate: -5deg;
+  }
+
+  .bs-title {
+    font-size: clamp(48px, 6vw, 92px);
+    margin: 8px 0 16px;
+  }
+
+  .sound-row {
+    display: grid;
+    gap: 8px;
+    margin-top: 20px;
+  }
+
+  .sound-btn {
+    justify-self: start;
+    padding: 10px 16px;
+    border: 2px dashed var(--riso-pink);
+    color: var(--ink);
+    font-size: 16px;
+  }
+
+  .sound-btn[aria-pressed='true'] {
+    background: var(--riso-pink);
+    color: var(--paper);
+    border-style: solid;
+  }
+
+  .sound-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .sound-note {
+    font-size: 19px;
+    color: var(--ink-dim);
+  }
+
+  /* ---------- the static rave ---------- */
+  .rave {
+    position: relative;
+    min-height: 520px;
+    border: 2px solid var(--ink);
+    overflow: hidden;
+    background: var(--paper);
+  }
+
+  :global(html[data-floor='on']) .rave {
+    opacity: 0;
+  }
+
+  .strobes {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  .strobes span {
+    --riso: var(--riso-pink);
+    background-image: radial-gradient(var(--riso) 42%, transparent 46%);
+    background-size: 6px 6px;
+    opacity: calc(0.12 + var(--beat) * 0.55);
+  }
+
+  .strobes span:nth-child(even) {
+    --riso: var(--riso-green);
+  }
+
+  .booth {
+    position: absolute;
+    left: 50%;
+    top: 6%;
+    translate: -50% 0;
+    display: grid;
+    justify-items: center;
+  }
+
+  .decks {
+    width: 200px;
+    height: 34px;
+    margin-top: -18px;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+  }
+
+  .dancers {
+    position: absolute;
+    left: 4%;
+    right: 26%;
+    bottom: 4%;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-end;
+  }
+
+  .dancers :global(.dancer) {
+    --daemon-w: clamp(70px, 9vw, 120px);
+    translate: 0 calc(var(--beat) * -10px);
+  }
+
+  .dancers :global(.d1),
+  .dancers :global(.d3) {
+    translate: 0 calc(var(--beat) * -6px);
+  }
+
+  .door {
+    position: absolute;
+    right: 2%;
+    bottom: 4%;
+    display: flex;
+    align-items: flex-end;
+  }
+
+  .door :global(.bouncer) {
+    --daemon-w: clamp(80px, 10vw, 130px);
+  }
+
+  .door :global(.outside) {
+    --daemon-w: clamp(54px, 6vw, 80px);
+    margin-left: -10px;
+    opacity: 0.9;
+  }
+
+  .door :global(.door-note) {
+    position: absolute;
+    right: 10px;
+    top: -42px;
+    font-size: 19px;
+  }
+
+  @media (max-width: 960px) {
+    .basement {
+      grid-template-columns: 1fr;
+    }
+    .rave {
+      min-height: 380px;
+    }
+  }
+</style>
