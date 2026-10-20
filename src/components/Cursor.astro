@@ -34,6 +34,8 @@ const pick = (f: number) => roughLine(4, 36, 30, 10, o(f, { strokeWidth: 2 })) +
     inset: 0;
     z-index: 95;
     pointer-events: none;
+    /* white ink on black paper, dark ink on the cream pages (logbook, log, shell) */
+    mix-blend-mode: difference;
   }
 
   .cursor[hidden] {
