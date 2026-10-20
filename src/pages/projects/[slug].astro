@@ -1,0 +1,140 @@
+---
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Cover from '../../components/Cover.astro';
+import { getProjects, projectHref, shortUrl, statusClass, statusLabel, type Project } from '../../lib/projects';
+import { readoutsHtml } from '../../lib/sectors-plugin';
+import '../../styles/case.css';
+
+export async function getStaticPaths() {
+  const projects = await getProjects();
+  return projects.map((project, i) => ({
+    params: { slug: project.id },
+    props: { project, prev: projects[i - 1] ?? null, next: projects[i + 1] ?? null },
+  }));
+}
+
+interface Props {
+  project: Project;
+  prev: Project | null;
+  next: Project | null;
+}
+
+const { project, prev, next } = Astro.props;
+const d = project.data;
+const { Content, headings } = await render(project);
+const sectors = headings.filter((h) => h.depth === 2).slice(0, 3);
+const resultSector = d.resultSector;
+
+const strip: { k: string; v: string; href?: string }[] = [
+  { k: 'Pos', v: `P${d.pos}` },
+  { k: 'Type', v: d.type },
+  { k: 'Year', v: d.year },
+  { k: 'Role', v: d.role },
+  { k: 'Team', v: d.team },
+  { k: 'Stack', v: d.stack.join(' / ') },
+  { k: 'Repo', v: `${shortUrl(d.repo)} ↗`, href: d.repo },
+  ...(d.live ? [{ k: 'Live', v: `${shortUrl(d.live)} ↗`, href: d.live }] : []),
+];
+---
+
+<Base title={`${d.title} · Harshit Chhabi`} description={d.oneLiner}>
+  <article class:list={['case', statusClass(d.status)]}>
+    <header class="case-head wrap">
+      <p class="label crumb">
+        <a href="/#leaderboard">← Leaderboard</a>
+        <span aria-hidden="true">/</span>
+        <span>P{d.pos} · {d.code}</span>
+        <span class="st">
+          <span class="dot" aria-hidden="true"></span>
+          <span class="st-label">{statusLabel[d.status]}</span>
+        </span>
+      </p>
+      <h1 class="case-title">{d.title}</h1>
+
+      <dl class="strip head-strip">
+        {
+          strip.map((s) => (
+            <div>
+              <dt>{s.k}</dt>
+              <dd>
+                {s.href ? (
+                  <a href={s.href} rel="noopener">
+                    {s.v}
+                  </a>
+                ) : (
+                  s.v
+                )}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </header>
+
+    <section class="result-first wrap grid" aria-label="Outcome">
+      <div class="result-media">
+        <Cover project={project} eager sizes="(min-width: 1000px) 58vw, 100vw" />
+      </div>
+      <div class="result-text">
+        <p class="label">Outcome</p>
+        <p class="outcome">{d.oneLiner}</p>
+        {d.stints && <Fragment set:html={readoutsHtml(d.metrics)} />}
+      </div>
+    </section>
+
+    {
+      sectors.length > 0 && (
+        <nav class="sector-bar" aria-label="Sectors on this page" data-sector-bar>
+          <ol class="wrap">
+            {sectors.map((s, i) => (
+              <li class:list={['seg', { 'is-result': i + 1 === resultSector }]} data-seg={i + 1}>
+                <a href={`#s${i + 1}`}>
+                  <span class="seg-label">
+                    S{i + 1} <span class="seg-name">{s.text}</span>
+                  </span>
+                  <span class="seg-track" aria-hidden="true">
+                    <span class="seg-fill" />
+                  </span>
+                </a>
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
+    <div class="case-body wrap">
+      <Content />
+    </div>
+
+    <nav class="case-nav wrap" aria-label="Other projects">
+      {
+        prev ? (
+          <a href={projectHref(prev)} class="prev">
+            <span class="label">← Prev · P{prev.data.pos}</span>
+            <span class="nav-title">{prev.data.title}</span>
+          </a>
+        ) : (
+          <span />
+        )
+      }
+      {
+        next ? (
+          <a href={projectHref(next)} class="next">
+            <span class="label">Next · P{next.data.pos} →</span>
+            <span class="nav-title">{next.data.title}</span>
+          </a>
+        ) : (
+          <a href="/#leaderboard" class="next">
+            <span class="label">Back to →</span>
+            <span class="nav-title">Leaderboard</span>
+          </a>
+        )
+      }
+    </nav>
+  </article>
+  <script>
+    import '../../scripts/case';
+  </script>
+</Base>
