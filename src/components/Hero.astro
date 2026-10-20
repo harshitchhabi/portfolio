@@ -1,0 +1,158 @@
+---
+import { statusClass, statusLabel, type Project } from '../lib/projects';
+
+interface Props {
+  projects: Project[];
+}
+const { projects } = Astro.props;
+---
+
+<section class="hero wrap grid" aria-labelledby="hero-name">
+  <div class="intro">
+    <p class="label kicker">Pit wall · session 2026</p>
+    <h1 id="hero-name" class="display name" data-hero-name>
+      <span class="line">Harshit</span>
+      <span class="line">Chhabi</span>
+    </h1>
+    <p class="lede">
+      I build security tools, ML systems and real-time platforms. Information Security student at VIT Vellore.
+    </p>
+    <p class="links">
+      <a class="link-mono" href="#leaderboard">View leaderboard ↓</a>
+      <a class="link-mono" href="/resume.pdf">Resume (PDF)</a>
+    </p>
+  </div>
+
+  <aside class="tower" aria-labelledby="tower-title">
+    <div class="tower-head">
+      <h2 id="tower-title" class="label">Timing tower</h2>
+      <span class="label">{projects.length} entries</span>
+    </div>
+    <ol class="tower-list" data-tower>
+      {
+        projects.map((p) => (
+          <li class={statusClass(p.data.status)} data-tower-row data-code={p.data.code}>
+            <a href={`#lb-${p.data.code.toLowerCase()}`}>
+              <span class="pos" data-pos={p.data.pos}>
+                P{p.data.pos}
+              </span>
+              <span class="code">{p.data.code}</span>
+              <span class="pname">{p.data.title.split(':')[0]}</span>
+              <span class="dot" aria-hidden="true" />
+              <span class="sr-only">{statusLabel[p.data.status]}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </aside>
+</section>
+
+<style>
+  .hero {
+    padding-block: clamp(40px, 7vw, 112px) clamp(48px, 6vw, 96px);
+    row-gap: 48px;
+    align-items: end;
+  }
+
+  .intro {
+    grid-column: 1 / span 7;
+  }
+
+  .kicker {
+    margin-bottom: 20px;
+  }
+
+  .name {
+    font-size: min(10.4vw, 200px);
+    margin-left: -0.04em;
+  }
+
+  .line {
+    display: block;
+  }
+
+  .lede {
+    max-width: 34ch;
+    margin-top: clamp(24px, 3vw, 40px);
+    font-size: clamp(18px, 1.4vw, 22px);
+    line-height: 1.45;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 32px;
+    margin-top: 28px;
+  }
+
+  .tower {
+    grid-column: 9 / span 4;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .tower-head {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .tower-list li + li {
+    border-top: 1px solid var(--line);
+  }
+
+  .tower-list a {
+    display: grid;
+    grid-template-columns: 3.2ch 4ch 1fr auto;
+    align-items: center;
+    gap: 12px;
+    padding: 9px 14px;
+    text-decoration: none;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    transition:
+      background var(--t-fast) linear,
+      color var(--t-fast) linear;
+  }
+
+  .tower-list a:hover,
+  .tower-list a:focus-visible {
+    background: var(--surface);
+  }
+
+  .pos {
+    color: var(--muted);
+  }
+
+  .code {
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .pname {
+    color: var(--muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: 11px;
+  }
+
+  @media (max-width: 1100px) {
+    .intro {
+      grid-column: 1 / -1;
+    }
+
+    .tower {
+      grid-column: 1 / -1;
+    }
+
+    .name {
+      font-size: min(15vw, 200px);
+    }
+  }
+</style>
