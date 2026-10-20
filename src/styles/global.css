@@ -313,3 +313,8 @@ button {
   z-index: 97;
   pointer-events: none;
 }
+
+/* set by public/mode-init.js for a moment on first load (see there) */
+html.fonts-wait :is(h1, .display) {
+  visibility: hidden;
+}
