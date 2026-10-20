@@ -13,7 +13,10 @@ const html = document.documentElement;
 const skipBtns = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-skip-toggle]'));
 const renderSkip = () => {
   const on = html.dataset.mode === 'skip';
-  skipBtns.forEach((b) => b.setAttribute('aria-pressed', String(on)));
+  skipBtns.forEach((b) => {
+    b.setAttribute('aria-pressed', String(on));
+    b.textContent = on ? 'resume the show' : 'skip the show';
+  });
 };
 if (getPref('skip-show') === 'on') setMode('skip');
 renderSkip();
