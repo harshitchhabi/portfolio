@@ -59,6 +59,10 @@ function stintHtml(s: Stint, n: number): string {
   );
 }
 
+// Sätteri drops a top-level node that is removed and re-attached, so each one is
+// re-wrapped in a fresh object (its descendants can be reused as they are).
+const clone = (n: Node): Node => ({ ...n, ...(n.children ? { children: [...n.children] } : {}) });
+
 export const sectorsPlugin = {
   name: 'sectors',
   after(root: { children: Node[] }, ctx: SectorCtx) {
@@ -69,7 +73,8 @@ export const sectorsPlugin = {
     const sectors: Node[][] = [];
     const sections: Node[] = [];
 
-    for (const child of root.children) {
+    for (const original of root.children) {
+      const child = clone(original);
       if (child.type === 'element' && child.tagName === 'h2') {
         n += 1;
         const heading: Node = { ...child, properties: { ...child.properties, className: ['sector-title'] } };
