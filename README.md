@@ -1,43 +1,145 @@
 # Daemons
 
-My portfolio, being rebuilt as "Daemons": hand-drawn daemon characters, one per project, guarding a 3D server floor at night, printed in ink and two riso colours.
+My portfolio. In Unix a daemon is a process that runs quietly in the background, keeping things safe and working. Here each project is guarded by a hand-drawn daemon on a 3D server floor at night, printed in white ink and two riso colours. A scribbly Intruder sneaks through the whole site, gets stopped at every station, and ends up in a jar at the bottom.
 
-Built with Astro (static) and TypeScript. Three.js, GSAP, Lenis, Rough.js and perfect-freehand arrive phase by phase. No trackers, no third-party requests, no inline scripts.
+Astro (static) + TypeScript, Three.js for the floor, GSAP and Lenis for motion, Rough.js and perfect-freehand for everything hand-drawn. No trackers, no third-party requests, no inline scripts or styles.
 
 ## Run it
 
-Needs Node 22.18 or newer.
+Needs Node 22.18 or newer (the build scripts are TypeScript run directly by Node).
 
 ```bash
 npm install
-npm run dev       # http://localhost:4321
-npm run build     # static site in dist/
+npm run dev          # draws the characters, then http://localhost:4321
+npm run build        # draws the characters, then the static site in dist/
+npm run characters   # just redraw the characters
+npm run feed -- cowrie.json   # turn a Cowrie log into Honeybot's log (see below)
 ```
 
-## Content
+`npm run dev` doesn't send the security headers; Vercel does, from `vercel.json`. So the shell's `headers` command shows ✗ locally and ✓ in production.
 
-Each project is one Markdown file in `src/content/projects/`. The frontmatter is checked by zod in `src/content.config.ts`: `order`, `slug`, `title`, `daemon`, `pid`, `oneLiner`, `type`, `year`, `role`, `team`, `stack`, `repo`, `live`, `metrics`, `stamp`, `cover`. The body uses three headings: What was wrong, What I built, What happened.
+## Three ways to see the site
 
-Search for `TODO(harshit)` to find facts still missing.
+- **The show (3D).** A Three.js server floor behind the page, drawn through an ink shader. The camera flies down the aisle as you scroll and stops at each daemon. It loads only after the page has painted, and only when the device can handle it.
+- **Static.** Under any of: no WebGL2, `prefers-reduced-motion`, Save-Data, `deviceMemory < 4`, or a touch screen narrower than 900px, the 3D never loads. Each station shows its daemon as a large drawing of the moment it foils the Intruder instead. The decision is in `src/lib/mode.ts`.
+- **Skip the show.** The toggle in the nav switches to a plain list of the projects, the logbook and contact. It's remembered in `localStorage`, and `public/mode-init.js` applies it before first paint.
+
+## Edit content
+
+### Projects
+
+One Markdown file per project in `src/content/projects/`. The home page stations, case-study pages, the shell's `ls`/`ps`/`open` and the plain list all come from these.
+
+Frontmatter, checked by zod in `src/content.config.ts`:
+
+| Field | What it does |
+|---|---|
+| `order` | Station number (1 to 7) |
+| `slug` | URL: `/projects/<slug>` |
+| `title`, `oneLiner` | Title and the one-sentence summary |
+| `daemon`, `pid` | The daemon's name and its 4-digit PID label |
+| `type` | `Security`, `ML`, `Systems` or `Web` |
+| `year`, `role`, `team`, `stack`, `repo`, `live` | The metadata line |
+| `metrics` | `[{ label, value }]`: real numbers only, drawn as hand-written numbers with a scribbled circle |
+| `stamp` | `VERIFIED`, `CAUGHT`, `PATCHED`, `SOLD`, `IN PROGRESS`, `CLASSIFIED` or `0-DAY` |
+| `cover`, `coverAlt` | Screenshot (see below). Leave out for the "screenshot goes here" placeholder |
+
+The body uses three headings: `## What was wrong`, `## What I built`, `## What happened`. Keep each under about 150 words. Search for `TODO(harshit)` to find facts still missing.
+
+Per-station extras (which daemon, the foiled-moment caption, margin notes, doodle) are in `src/data/stations.ts`. The hand-drawn diagram for each case study is in `src/data/diagrams.ts`; it's drawn at build time and inserted at the end of "What I built".
+
+### Screenshots
+
+1. Put the image in `src/assets/projects/<slug>/`, e.g. `src/assets/projects/ids/cover.png`.
+2. In the project's Markdown:
+   ```yaml
+   cover: ../../assets/projects/ids/cover.png
+   coverAlt: The IDS dashboard while an A1 poisoning run is going.
+   ```
+3. Build. Astro converts it to AVIF and WebP at a few sizes with explicit width and height. On the case-study page it's pinned down with tape.
+
+They go in `src/assets/` rather than `public/` because only files under `src/` get converted and resized.
+
+### Logbook, contact, resume
+
+- Logbook entries: the `entries` array at the top of `src/components/Logbook.astro`.
+- Contact links: `src/components/Jar.astro`, the `contact` command in `src/scripts/shell.ts`, and the plain list in `src/components/SkipList.astro`.
+- Resume: replace `public/resume.pdf`. Check it has no phone number on it.
+
+## Tweak the characters
+
+Each character is a file in `src/characters/` (`signe.ts`, `vayu.ts`, `honeybot.ts`, `redacto.ts`, `lockjaw.ts`, `auctioneers.ts`, `forge.ts`, `intruder.ts`). A character has an `idle`, `react` and `action` pose (the Intruder also has `caught`). Each pose is a `draw(p)` function using the pen in `src/characters/pen.ts`:
+
+```ts
+p.circle(128, 160, 124, { fill: 'green' });      // knock-out, riso fill (out of register), ink outline
+p.eye(128, 152, 20);                              // an eye socket; the pupil is added at runtime
+p.text('HONEYPOT', 90, 191, 8.4);                 // hand lettering (src/characters/font.ts)
+p.rect(80, 138, 96, 14, { dash: [6, 5] });        // dashed: not built yet
+```
+
+Shared bits (gloves, speech bubbles, sparks, motion lines) are in `src/characters/parts.ts`. Colours are only `ink`, `dim`, `pink`, `green`, `stamp` and `paper`.
+
+`npm run characters` (also run before every dev and build) renders, per character:
+
+- `public/characters/<id>/<pose>-0|1|2.svg`: three line-boil frames. The same drawing with different Rough.js seeds; CSS cycles them at about 10 fps, or once per 8th note while the sound is on.
+- `public/characters/<id>/<pose>-still.svg`: frame 0 with pupils, for plain images and the OG image.
+- `public/characters/<id>/sheet.webp`: every pose and frame on one sheet, the texture for the 3D floor.
+- `src/data/characters.json`: eye positions, alt text and sheet layout.
+
+These are generated, so they're not in git. To see the whole cast with boil and cursor-tracking pupils, open `/dev/characters`. It isn't linked anywhere and is kept out of search engines.
 
 ## Honeybot's log from Cowrie
 
+The IDS case study shows "Honeybot's log", which reads `src/data/honeybot-log.json`. Right now that's hand-written sample events, and the page says `SIMULATED · SAMPLE EVENTS`.
+
+To swap in real, anonymised events from the IDS testbed's Cowrie honeypot:
+
 ```bash
-npm run feed -- path/to/cowrie.json   # writes src/data/honeybot-log.json
+npm run feed -- path/to/cowrie.json
+npm run feed -- path/to/cowrie.json --out src/data/honeybot-log.json --limit 12
 ```
 
-IPv4 addresses keep only their first two octets, IPv6 addresses are hashed, and usernames, passwords, command text and download URLs are never copied.
+`cowrie.json` is Cowrie's JSON-lines log. The script keeps only the first two octets of IPv4 addresses (`45.83.xx.xx`), hashes IPv6 addresses, and never copies usernames, passwords, command text or download URLs. Once the file's `source` isn't `sample`, the label changes to "replayed · anonymised Cowrie log, not live". Read the output before committing it.
 
-## Fonts
+## The shell
 
-Self-hosted, all under the SIL Open Font License 1.1:
-
-- Redaction, © 2019 MCKL Inc. (also available under LGPL 2.1), via `@fontsource/redaction` and `@fontsource/redaction-50`
-- Departure Mono, © Helena Zhang, in `src/fonts/departure-mono/`
-- Schibsted Grotesk and Delicious Handrawn, via Fontsource
-
-The handwriting font is one CSS variable, `--font-hand` in `src/styles/tokens.css`.
+Press `~` (or the `~` in the nav). Commands: `help`, `whoami`, `ls`, `ps`, `open <daemon>`, `headers`, `contact`, `kill intruder`, `clear`. `headers` fetches this page and checks its real security headers. `kill intruder` yanks the Intruder into the jar and adds one to the jar's counter for this session.
 
 ## Deploy
 
-Vercel. `vercel.json` sets the security headers (strict CSP, HSTS, nosniff, referrer policy, permissions policy, COOP, frame denial) on every response.
+Vercel. `vercel.json` sets the build, clean URLs and these headers on every response:
+
+- `Content-Security-Policy`: `default-src 'self'`, no `unsafe-inline` or `unsafe-eval`, nothing from other origins
+- `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`
+- `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` (camera, mic, geolocation off), `Cross-Origin-Opener-Policy`, `X-Frame-Options: DENY`
+
+To keep the CSP strict, every script and stylesheet is its own file (`inlineStylesheets: 'never'`, `assetsInlineLimit: 0`), character textures are files built ahead of time (no `blob:`), and nothing uses `style="…"` attributes. Use classes and Astro-bundled `<script>` tags in new components.
+
+After the first deploy, set the real domain as `SITE` in `astro.config.ts`; canonical URLs, the sitemap, `robots.txt`, the OG image URL and `/.well-known/security.txt` use it. `security.txt` expires on 2027-10-20.
+
+## Fonts
+
+Self-hosted; the licences allow it:
+
+- **Redaction** © 2019 MCKL Inc., SIL Open Font License 1.1 or LGPL 2.1. The degraded cut (Redaction 50) is for big display text, the clean cut for smaller headings. Via `@fontsource/redaction` and `@fontsource/redaction-50`.
+- **Departure Mono** © Helena Zhang, SIL Open Font License 1.1, in `src/fonts/departure-mono/` with its licence.
+- **Schibsted Grotesk** (body) and **Delicious Handrawn** (handwriting), both SIL Open Font License 1.1, via Fontsource.
+
+The handwriting font is one variable, `--font-hand` in `src/styles/tokens.css`, so it can be swapped for a font of my own handwriting.
+
+## Layout of the code
+
+```
+src/
+  characters/        the cast, the pen they're drawn with, the lettering font
+  content/projects/  one Markdown file per project
+  data/              stations, diagrams, Honeybot's log
+  three/             the 3D floor: layout and camera path, world, ink shader, sprites
+  components/        Station, Hero, Logbook, Basement, Jar, Shell, Daemon, marks/…
+  lib/               Rough.js helpers, diagrams, the Markdown plugin, mode detection
+  scripts/           client code: arrivals, smooth scroll, cursor, eyes, shell, sound
+  styles/            tokens.css (every colour), global.css
+scripts/
+  build-characters.ts
+  cowrie-to-feed.ts
+```
