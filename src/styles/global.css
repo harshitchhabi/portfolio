@@ -233,6 +233,7 @@ button {
 
 .section-head {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
@@ -242,7 +243,8 @@ button {
 }
 
 .section-title {
-  font-size: clamp(44px, 9vw, 148px);
+  font-size: clamp(30px, 8.6vw, 148px);
+  overflow-wrap: anywhere;
 }
 
 /* Simple clip reveal on section headings, driven by scroll where supported. */
