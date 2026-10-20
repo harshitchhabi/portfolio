@@ -58,6 +58,11 @@ export function details(root: ParentNode = document) {
     });
   });
 
+  // logbook entries ink in: the underline draws (above), then the words appear
+  q<HTMLElement>('[data-logentry] [data-ink]').forEach((el) => {
+    gsap.from(el, { opacity: 0, y: 8, duration: 0.5, delay: 0.45, ease: ENTRANCE, scrollTrigger: at(el, 'top 88%') });
+  });
+
   // headlines: redaction bars peel off left to right
   q<HTMLElement>('[data-redact]').forEach((h) => {
     const lines = h.querySelectorAll<HTMLElement>(':scope > span, :scope > a');

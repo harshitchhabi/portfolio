@@ -1,0 +1,247 @@
+---
+// The Logbook: experience and timeline as a two-page spread from a lab log.
+// Entries ink in one by one: the underline draws, then the words appear.
+import Tape from './marks/Tape.astro';
+import Stamp from './marks/Stamp.astro';
+import Doodle from './marks/Doodle.astro';
+import RegMark from './marks/RegMark.astro';
+import { roughLine } from '../lib/rough';
+
+interface Entry {
+  date: string;
+  title: string;
+  where?: string;
+  text?: string;
+  link?: { href: string; label: string };
+  still?: string;
+  stamp?: 'CLASSIFIED' | 'IN PROGRESS' | 'VERIFIED' | '0-DAY';
+}
+
+const entries: Entry[] = [
+  {
+    date: '2026 – now',
+    title: 'Technical Head',
+    where: 'Dream Merchants Club, VIT Vellore',
+    text: "I build and host the platforms for the club's live events.",
+    link: { href: '/projects/dream-merchants', label: 'the Dream Merchants file' },
+    still: 'auctioneers/idle-still',
+    stamp: '0-DAY',
+  },
+  {
+    date: '2026',
+    title: 'Smart India Hackathon 2026',
+    text: 'Extending Vayu Rakshak.',
+    link: { href: '/projects/vayu-rakshak', label: 'the Vayu Rakshak file' },
+    still: 'vayu/react-still',
+    stamp: 'IN PROGRESS',
+  },
+  {
+    date: '2026',
+    title: 'Bharatiya Antariksh Hackathon 2026',
+    where: 'Team GEMs',
+    text: 'Built Vayu Rakshak.',
+    still: 'vayu/idle-still',
+  },
+  { date: '2026', title: 'SQL (Intermediate)', where: 'HackerRank' },
+  {
+    date: 'May – Jul 2025',
+    title: 'Cybersecurity Analyst Intern',
+    where: 'State Bank of India, Global IT Centre',
+    text: 'Web and application security testing, access control validation and threat analysis (VAPT). Applied encryption standards and secure coding in a regulated banking environment.',
+    link: { href: '/projects/secure-file-hashing', label: 'internship project: Secure File Hashing & Dual Encryption' },
+    still: 'lockjaw/idle-still',
+    stamp: 'CLASSIFIED',
+  },
+  { date: '2025', title: 'Oracle Cloud Infrastructure 2025 Certified AI Foundations Associate', where: 'Oracle' },
+  { date: '2024 – 2028', title: 'B.Tech CSE (Information Security)', where: 'VIT Vellore · CGPA 9.00', stamp: 'IN PROGRESS' },
+];
+
+const half = Math.ceil(entries.length / 2);
+const pages = [entries.slice(0, half), entries.slice(half)];
+const rule = (i: number) => roughLine(2, 5, 298, 4 + (i % 3), { seed: 300 + i * 5, strokeWidth: 1.8, roughness: 1.6 });
+---
+
+<section id="logbook" class="stop logbook wrap" aria-labelledby="lb-title">
+  <RegMark class="reg lr1" seed={21} />
+  <Doodle kind="plug" class="ld" seed={41} />
+  <h2 id="lb-title" class="display lb-title" data-redact><span>The Logbook</span></h2>
+  <p class="label lb-sub">experience, newest first · vol. 1</p>
+  <div class="spread">
+    <Tape class="sp-t1" seed={91} />
+    <Tape class="sp-t2" seed={93} w={90} />
+    {
+      pages.map((page, p) => (
+        <ol class:list={['page', p ? 'right' : 'left']} start={p ? half + 1 : 1}>
+          {page.map((e, i) => (
+            <li class="entry" data-logentry>
+              <p class="date mono">{e.date}</p>
+              <svg class="rule draw" viewBox="0 0 300 10" preserveAspectRatio="none" aria-hidden="true" set:html={rule(p * 10 + i)} />
+              <div class="entry-body" data-ink>
+                <h3 class="hand e-title">{e.title}</h3>
+                {e.where && <p class="where mono">{e.where}</p>}
+                {e.text && <p class="text">{e.text}</p>}
+                {e.link && (
+                  <a class="link hand" href={e.link.href} data-cursor="inspect">
+                    → {e.link.label}
+                  </a>
+                )}
+              </div>
+              {e.still && <img class="doodle-still" src={`/characters/${e.still}.svg`} alt="" width="256" height="256" loading="lazy" />}
+              {e.stamp && <Stamp text={e.stamp} color="deep" tilt={i % 2 ? 6 : -7} seed={400 + p * 10 + i} class="e-stamp" />}
+            </li>
+          ))}
+        </ol>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .logbook {
+    position: relative;
+    z-index: 1;
+    padding-block: 18vh 14vh;
+  }
+
+  .logbook :global(.reg) {
+    position: absolute;
+    top: 12vh;
+    right: 12px;
+  }
+
+  .logbook :global(.ld) {
+    left: 2%;
+    bottom: 6vh;
+  }
+
+  .lb-title {
+    font-size: clamp(56px, 10vw, 160px);
+  }
+
+  .lb-sub {
+    margin: 10px 0 36px;
+  }
+
+  .spread {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    background: #f2eee4;
+    color: #1d1813;
+    rotate: -0.5deg;
+    max-width: 1180px;
+  }
+
+  .spread::after {
+    /* the book's spine */
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background: rgba(0, 0, 0, 0.25);
+  }
+
+  .spread :global(.sp-t1) {
+    top: -14px;
+    left: 8%;
+    rotate: -7deg;
+  }
+
+  .spread :global(.sp-t2) {
+    bottom: -12px;
+    right: 10%;
+    rotate: 5deg;
+  }
+
+  .page {
+    padding: clamp(20px, 3vw, 44px);
+    display: grid;
+    gap: 26px;
+    align-content: start;
+  }
+
+  .entry {
+    position: relative;
+    padding-right: 96px;
+  }
+
+  .date {
+    font-size: 13px;
+    color: #6b6158;
+  }
+
+  .rule {
+    display: block;
+    width: 100%;
+    height: 10px;
+    color: #b0005a;
+    margin: 2px 0 6px;
+    overflow: visible;
+  }
+
+  .e-title {
+    font-size: clamp(24px, 2.2vw, 32px);
+    line-height: 1.05;
+    color: #16110c;
+  }
+
+  .where {
+    margin-top: 4px;
+    font-size: 13px;
+    color: #4a4138;
+  }
+
+  .text {
+    margin-top: 6px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #2a231c;
+  }
+
+  .link {
+    display: inline-block;
+    margin-top: 6px;
+    font-size: 21px;
+    color: #006b3a;
+  }
+
+  .link:hover {
+    color: #b0005a;
+  }
+
+  .doodle-still {
+    position: absolute;
+    right: 0;
+    top: 14px;
+    width: 86px;
+    height: 86px;
+    /* the drawings are white ink; on the light page they print dark */
+    filter: invert(0.92) hue-rotate(180deg);
+  }
+
+  .entry :global(.e-stamp) {
+    position: absolute;
+    right: -18px;
+    top: 104px;
+    scale: 0.62;
+    transform-origin: 100% 0;
+  }
+
+  @media (max-width: 860px) {
+    .spread {
+      grid-template-columns: 1fr;
+    }
+    .spread::after {
+      display: none;
+    }
+    .entry {
+      padding-right: 70px;
+    }
+    .doodle-still {
+      width: 64px;
+      height: 64px;
+    }
+  }
+</style>

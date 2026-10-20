@@ -5,7 +5,8 @@ import { roughRect } from '../../lib/rough';
 
 interface Props {
   text: string;
-  color?: 'stamp' | 'pink';
+  /** stamp = yellow, pink, deep = dark pink for light paper */
+  color?: 'stamp' | 'pink' | 'deep';
   tilt?: number;
   seed?: number;
   class?: string;
@@ -49,6 +50,10 @@ const tiltClass = `tilt-${Math.round(Math.max(-12, Math.min(12, tilt)) / 2) * 2}
 
   .stamp-pink {
     color: var(--riso-pink);
+  }
+
+  .stamp-deep {
+    color: #a3004f;
   }
 
   text {
