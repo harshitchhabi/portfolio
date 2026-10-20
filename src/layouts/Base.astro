@@ -14,6 +14,7 @@ import Nav from '../components/Nav.astro';
 import Shell from '../components/Shell.astro';
 import Cursor from '../components/Cursor.astro';
 import Wipe from '../components/Wipe.astro';
+import Walkman from '../components/Walkman.astro';
 
 interface Props {
   title: string;
@@ -67,6 +68,7 @@ const og = new URL(ogImage, Astro.site);
     <div transition:persist="shell"><Shell /></div>
     <div transition:persist="cursor"><Cursor /></div>
     <div transition:persist="wipe"><Wipe /></div>
+    <div transition:persist="walkman"><Walkman /></div>
     <script>
       import '../scripts/site';
     </script>
