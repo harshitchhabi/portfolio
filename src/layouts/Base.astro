@@ -3,12 +3,12 @@ import '@fontsource/redaction-50/latin-400.css';
 import '@fontsource/redaction/latin-400.css';
 import '@fontsource/redaction/latin-700.css';
 import '@fontsource/delicious-handrawn/latin-400.css';
-import '@fontsource-variable/schibsted-grotesk/wght.css';
+import '@fontsource/schibsted-grotesk/latin-400.css';
+import '@fontsource/schibsted-grotesk/latin-600.css';
 import '../styles/tokens.css';
 import '../styles/global.css';
 import displayUrl from '@fontsource/redaction-50/files/redaction-50-latin-400-normal.woff2?url';
-import bodyUrl from '@fontsource-variable/schibsted-grotesk/files/schibsted-grotesk-latin-wght-normal.woff2?url';
-import monoUrl from '../fonts/departure-mono/DepartureMono-Regular.woff2?url';
+import bodyUrl from '@fontsource/schibsted-grotesk/files/schibsted-grotesk-latin-400-normal.woff2?url';
 import Nav from '../components/Nav.astro';
 import Shell from '../components/Shell.astro';
 import Cursor from '../components/Cursor.astro';
@@ -51,7 +51,6 @@ const og = new URL(ogImage, Astro.site);
 
     <link rel="preload" href={displayUrl} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={bodyUrl} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={monoUrl} as="font" type="font/woff2" crossorigin />
     <script is:inline src="/mode-init.js"></script>
     <slot name="head" />
   </head>

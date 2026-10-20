@@ -17,7 +17,7 @@
   --font-head: 'Redaction', Georgia, serif;
   --font-hand: 'Delicious Handrawn', 'Comic Sans MS', cursive;
   --font-mono: 'Departure Mono', ui-monospace, monospace;
-  --font-body: 'Schibsted Grotesk Variable', 'Schibsted Grotesk', system-ui, sans-serif;
+  --font-body: 'Schibsted Grotesk', system-ui, sans-serif;
 
   /* print */
   --misregister: 3px; /* how far the pink layer slips off the ink */

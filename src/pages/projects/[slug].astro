@@ -46,7 +46,7 @@ const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
       </div>
       <div class="titles">
         <p class="label">daemon #{d.order} · the file on {d.daemon.toLowerCase()}</p>
-        <h1 class="head title" data-vt-title={d.slug} data-redact>{d.title}</h1>
+        <h1 class="display title" data-vt-title={d.slug} data-redact>{d.title}</h1>
         <p class="meta mono">
           {meta.map((m) => <span>{m} · </span>)}
           <a href={d.repo} rel="noopener">{shortUrl(d.repo)} ↗</a>
@@ -151,6 +151,9 @@ const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
 
   .vignette :global(.v-note) {
     margin-top: -8px;
+    /* reserve the room so the handwriting font arriving late can't shift the page */
+    height: 112px;
+    line-height: 1.1;
   }
 
   .titles {
@@ -159,7 +162,8 @@ const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
 
   .title {
     margin-top: 10px;
-    font-size: clamp(36px, 5.6vw, 78px);
+    font-size: clamp(38px, 5.8vw, 82px);
+    line-height: 0.95;
     max-width: 16ch;
     view-transition-name: project-title;
   }

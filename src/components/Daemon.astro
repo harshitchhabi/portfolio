@@ -40,6 +40,7 @@ const S = c.size;
                 width={S}
                 height={S}
                 loading={eager && name === pose ? 'eager' : 'lazy'}
+                fetchpriority={eager && name === pose && f === 0 ? 'high' : undefined}
                 decoding="async"
               />
             ))}
