@@ -1,0 +1,256 @@
+---
+// The Jar: where the Intruder ends up. Contact details sit next to it.
+import { roughCurve, roughLine, roughRect } from '../lib/rough';
+import rough from 'roughjs';
+import RegMark from './marks/RegMark.astro';
+import CropMarks from './marks/CropMarks.astro';
+import Note from './marks/Note.astro';
+import Doodle from './marks/Doodle.astro';
+
+const gen = rough.generator();
+const toSvg = (d: ReturnType<typeof gen.path>) =>
+  gen
+    .toPaths(d)
+    .map((p) => `<path d="${p.d.replace(/-?\d+\.\d+/g, (n) => (+n).toFixed(1))}" stroke="${p.stroke}" stroke-width="${p.strokeWidth}" fill="${p.fill ?? 'none'}" stroke-linecap="round"/>`)
+    .join('');
+const glass = toSvg(gen.path('M90 4 L90 30 Q40 44 40 98 L40 330 Q40 372 90 372 L250 372 Q300 372 300 330 L300 98 Q300 44 250 30 L250 4', { seed: 5, stroke: 'currentColor', strokeWidth: 2.6, roughness: 1.6 }));
+const lid =
+  roughRect(220, 44, { seed: 11, strokeWidth: 2.4, fill: '#00a95c', fillStyle: 'hachure', hachureGap: 5 }) +
+  roughLine(14, 22, 206, 22, { seed: 13, strokeWidth: 1.2 });
+const shine = roughCurve([[66, 120], [60, 210], [66, 300]], { seed: 17, strokeWidth: 3, roughness: 1 }) + roughCurve([[84, 140], [80, 170]], { seed: 19, strokeWidth: 2 });
+const email = 'harshitchhabi@gmail.com';
+---
+
+<section id="contact" class="stop jar-sec wrap" aria-labelledby="jar-title">
+  <RegMark class="reg jr1" seed={71} />
+  <Doodle kind="signal" class="jd" seed={73} />
+  <div class="jar-wrap">
+    <figure class="jar" data-jar aria-label="A glass jar with the Intruder curled up inside, sulking. The label counts intruders caught." role="img">
+      <svg class="lid" viewBox="0 0 220 44" aria-hidden="true" set:html={lid} />
+      <svg class="glass" viewBox="0 0 340 380" aria-hidden="true" set:html={glass + shine} />
+      <img class="inside" src="/characters/intruder/caught-still.svg" alt="" width="256" height="256" loading="lazy" />
+      <div class="label-card">
+        <span class="mono">intruders caught:</span>
+        <span class="count hand" data-jar-count>1</span>
+      </div>
+    </figure>
+    <Note arrow="up" color="pink" seed={79} class="jar-note">got it. finally.</Note>
+  </div>
+
+  <div class="contact">
+    <CropMarks />
+    <p class="label">the end of the night · pid 0</p>
+    <h2 id="jar-title" class="display talk" data-redact><span>Want to talk?</span></h2>
+    <p class="hand plain">Email me.</p>
+    <ul class="ways mono">
+      <li>
+        <span class="label">email</span>
+        <button type="button" class="copy" data-copy={email}>{email}</button>
+        <span class="copied hand" data-copied aria-live="polite"></span>
+      </li>
+      <li>
+        <span class="label">linkedin</span>
+        <a href="https://www.linkedin.com/in/harshit-chhabi-6007b4368" rel="noopener">linkedin.com/in/harshit-chhabi-6007b4368 ↗</a>
+      </li>
+      <li>
+        <span class="label">github</span>
+        <a href="https://github.com/harshitchhabi" rel="noopener">github.com/harshitchhabi ↗</a>
+      </li>
+      <li>
+        <span class="label">resume</span>
+        <a href="/resume.pdf">resume.pdf ↓</a>
+      </li>
+    </ul>
+    <noscript><p class="mono"><a href={`mailto:${email}`}>mailto:{email}</a></p></noscript>
+  </div>
+</section>
+
+<style>
+  .jar-sec {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding-block: 16vh 10vh;
+    display: grid;
+    grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+    gap: clamp(24px, 6vw, 96px);
+    align-items: center;
+    background: var(--paper);
+  }
+
+  .jar-sec :global(.reg) {
+    position: absolute;
+    top: 8vh;
+    left: 10px;
+  }
+
+  .jar-sec :global(.jd) {
+    right: 4%;
+    bottom: 8vh;
+  }
+
+  .jar-wrap {
+    position: relative;
+    justify-self: center;
+  }
+
+  .jar {
+    position: relative;
+    width: min(340px, 78vw);
+    aspect-ratio: 340 / 430;
+    margin: 0;
+    color: var(--ink);
+    transform-origin: 50% 100%;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .jar:hover {
+      animation: wobble 600ms ease-in-out;
+    }
+  }
+
+  @keyframes wobble {
+    0%,
+    100% {
+      rotate: 0deg;
+    }
+    20% {
+      rotate: -4deg;
+    }
+    45% {
+      rotate: 3deg;
+    }
+    70% {
+      rotate: -1.5deg;
+    }
+  }
+
+  .lid {
+    position: absolute;
+    left: 17.6%;
+    top: 0;
+    width: 64.7%;
+    height: auto;
+    z-index: 2;
+  }
+
+  .glass {
+    position: absolute;
+    left: 0;
+    top: 8.6%;
+    width: 100%;
+    height: auto;
+    z-index: 1;
+  }
+
+  .inside {
+    position: absolute;
+    left: 14%;
+    bottom: 3%;
+    width: 72%;
+    height: auto;
+    opacity: 0.92;
+  }
+
+  .label-card {
+    position: absolute;
+    left: 24%;
+    top: 36%;
+    z-index: 2;
+    display: grid;
+    justify-items: center;
+    padding: 6px 12px;
+    background: #f2eee4;
+    color: #16110c;
+    rotate: -4deg;
+  }
+
+  .label-card .mono {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .count {
+    font-size: 40px;
+    line-height: 1;
+    color: #a3004f;
+  }
+
+  .jar-wrap :global(.jar-note) {
+    margin: 4px 0 0 30%;
+  }
+
+  .contact {
+    position: relative;
+    padding: clamp(20px, 3vw, 40px);
+  }
+
+  .talk {
+    font-size: clamp(54px, 8vw, 128px);
+    margin-top: 10px;
+  }
+
+  .plain {
+    font-size: clamp(30px, 3vw, 44px);
+    color: var(--riso-pink);
+    margin-top: 6px;
+  }
+
+  .ways {
+    margin-top: 28px;
+    display: grid;
+    gap: 14px;
+    font-size: clamp(14px, 1.2vw, 17px);
+  }
+
+  .ways li {
+    position: relative;
+    display: grid;
+    grid-template-columns: 9ch 1fr;
+    gap: 12px;
+    align-items: baseline;
+  }
+
+  .ways a,
+  .copy {
+    overflow-wrap: anywhere;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 0.22em;
+    text-decoration-thickness: 1px;
+  }
+
+  .copy:hover,
+  .ways a:hover {
+    color: var(--riso-pink);
+  }
+
+  .copied {
+    position: absolute;
+    left: 9ch;
+    top: -30px;
+    font-size: 24px;
+    color: var(--riso-green);
+    rotate: -6deg;
+    pointer-events: none;
+  }
+
+  .copied:empty {
+    display: none;
+  }
+
+  @media (max-width: 860px) {
+    .jar-sec {
+      grid-template-columns: 1fr;
+    }
+    .ways li {
+      grid-template-columns: 1fr;
+      gap: 2px;
+    }
+    .copied {
+      left: auto;
+      right: 0;
+    }
+  }
+</style>
