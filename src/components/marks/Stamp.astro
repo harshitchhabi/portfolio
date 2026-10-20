@@ -1,0 +1,74 @@
+---
+// A rubber stamp: double hand-drawn border, degraded letters, patchy ink.
+// Stamps "thunk" down when they scroll into view (see scripts/details.ts).
+import { roughRect } from '../../lib/rough';
+
+interface Props {
+  text: string;
+  color?: 'stamp' | 'pink';
+  tilt?: number;
+  seed?: number;
+  class?: string;
+}
+const { text, color = 'stamp', tilt = -8, seed = 3, class: cls } = Astro.props;
+const w = Math.round(text.length * 19 + 44);
+const h = 58;
+const id = `ink-${seed}-${text.replace(/\W/g, '')}`;
+const tiltClass = `tilt-${Math.round(Math.max(-12, Math.min(12, tilt)) / 2) * 2}`.replace('-', 'n');
+---
+
+<span class:list={['stamp', `stamp-${color}`, tiltClass, cls]} data-stamp>
+  <svg viewBox={`0 0 ${w} ${h}`} width={w} height={h} role="img" aria-label={`Stamped: ${text}`}>
+    <defs>
+      <filter id={`${id}-f`} x="0" y="0" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" seed={seed} result="n"></feTurbulence>
+        <feColorMatrix in="n" values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -2.4 1.75"></feColorMatrix>
+      </filter>
+      <mask id={`${id}-m`}>
+        <rect width="100%" height="100%" filter={`url(#${id}-f)`}></rect>
+      </mask>
+    </defs>
+    <g mask={`url(#${id}-m)`}>
+      <g set:html={roughRect(w, h, { seed, roughness: 1.6, strokeWidth: 3 })} />
+      <g transform="translate(6 6)" set:html={roughRect(w - 12, h - 12, { seed: seed + 1, roughness: 1.2, strokeWidth: 1.6 })} />
+      <text x={w / 2} y={h / 2 + 1} text-anchor="middle" dominant-baseline="central">{text}</text>
+    </g>
+  </svg>
+</span>
+
+<style>
+  .stamp {
+    display: inline-block;
+    line-height: 0;
+    pointer-events: none;
+  }
+
+  .stamp-stamp {
+    color: var(--stamp);
+  }
+
+  .stamp-pink {
+    color: var(--riso-pink);
+  }
+
+  text {
+    font-family: 'Redaction 50', var(--font-display);
+    font-size: 30px;
+    letter-spacing: 0.06em;
+    fill: currentColor;
+  }
+
+  .tiltn12 { rotate: -12deg; }
+  .tiltn10 { rotate: -10deg; }
+  .tiltn8 { rotate: -8deg; }
+  .tiltn6 { rotate: -6deg; }
+  .tiltn4 { rotate: -4deg; }
+  .tiltn2 { rotate: -2deg; }
+  .tilt0 { rotate: 0deg; }
+  .tilt2 { rotate: 2deg; }
+  .tilt4 { rotate: 4deg; }
+  .tilt6 { rotate: 6deg; }
+  .tilt8 { rotate: 8deg; }
+  .tilt10 { rotate: 10deg; }
+  .tilt12 { rotate: 12deg; }
+</style>

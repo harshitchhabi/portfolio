@@ -1,0 +1,41 @@
+---
+// The stack, written as handwritten labels with tiny arrows instead of pills.
+import { roughArrow } from '../../lib/rough';
+
+interface Props {
+  items: string[];
+  seed?: number;
+}
+const { items, seed = 30 } = Astro.props;
+---
+
+<ul class="stack hand" aria-label="Built with">
+  {
+    items.map((item, i) => (
+      <li>
+        <svg viewBox="0 0 26 16" width="26" height="16" aria-hidden="true" set:html={roughArrow([[2, 12], [12, 4], [24, 8]], { seed: seed + i, strokeWidth: 1.4, roughness: 1.2 })} />
+        {item}
+      </li>
+    ))
+  }
+</ul>
+
+<style>
+  .stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 16px;
+    font-size: 21px;
+    color: var(--riso-green);
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+  }
+
+  svg {
+    color: var(--ink-dim);
+  }
+</style>

@@ -1,0 +1,58 @@
+---
+// A real number written by hand with a scribbled circle around it.
+import { roughEllipse } from '../../lib/rough';
+
+interface Props {
+  value: string;
+  label: string;
+  seed?: number;
+}
+const { value, label, seed = 6 } = Astro.props;
+const w = Math.max(110, value.length * 26 + 50);
+const ring = roughEllipse(w / 2, 40, w - 10, 70, { seed, roughness: 2.2, strokeWidth: 1.8 });
+---
+
+<div class="metric">
+  <span class="num hand">
+    <svg class="ring draw" viewBox={`0 0 ${w} 80`} width={w} height="80" aria-hidden="true" set:html={ring} />
+    <span class="v">{value}</span>
+  </span>
+  <span class="label">{label}</span>
+</div>
+
+<style>
+  .metric {
+    display: grid;
+    justify-items: start;
+    gap: 2px;
+  }
+
+  .num {
+    position: relative;
+    display: grid;
+    place-items: center;
+    min-height: 80px;
+    padding: 0 22px;
+    font-size: 42px;
+    color: var(--ink);
+  }
+
+  .ring {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    color: var(--riso-pink);
+    overflow: visible;
+  }
+
+  .v {
+    position: relative;
+  }
+
+  .label {
+    max-width: 18ch;
+    text-transform: none;
+    font-size: 12px;
+  }
+</style>

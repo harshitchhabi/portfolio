@@ -1,0 +1,42 @@
+---
+// A strip of masking tape with torn ends. Position it with a class from the parent.
+interface Props {
+  class?: string;
+  w?: number;
+  seed?: number;
+}
+const { class: cls, w = 110, seed = 1 } = Astro.props;
+const h = 30;
+// torn ends: small random zigzags, fixed per seed
+let r = seed * 9301 + 49297;
+const rnd = () => ((r = (r * 9301 + 49297) % 233280) / 233280);
+const left = Array.from({ length: 6 }, (_, i) => `${(rnd() * 5).toFixed(1)},${((i / 5) * h).toFixed(1)}`);
+const right = Array.from({ length: 6 }, (_, i) => `${(w - rnd() * 5).toFixed(1)},${(h - (i / 5) * h).toFixed(1)}`);
+const points = [...left, ...right].join(' ');
+---
+
+<svg class:list={['tape', cls]} viewBox={`0 0 ${w} ${h}`} width={w} height={h} aria-hidden="true" data-tape>
+  <polygon points={points}></polygon>
+  <line x1="6" y1="7" x2={w - 8} y2="8"></line>
+  <line x1="5" y1={h - 9} x2={w - 7} y2={h - 8}></line>
+</svg>
+
+<style>
+  .tape {
+    position: absolute;
+    z-index: 3;
+    pointer-events: none;
+    overflow: visible;
+  }
+
+  polygon {
+    fill: rgba(242, 238, 228, 0.22);
+    stroke: rgba(242, 238, 228, 0.35);
+    stroke-width: 1;
+  }
+
+  line {
+    stroke: rgba(242, 238, 228, 0.12);
+    stroke-width: 1;
+  }
+</style>
