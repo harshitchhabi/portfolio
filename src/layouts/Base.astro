@@ -11,6 +11,7 @@ import bodyUrl from '@fontsource-variable/schibsted-grotesk/files/schibsted-grot
 import monoUrl from '../fonts/departure-mono/DepartureMono-Regular.woff2?url';
 import Nav from '../components/Nav.astro';
 import Shell from '../components/Shell.astro';
+import Cursor from '../components/Cursor.astro';
 
 interface Props {
   title: string;
@@ -59,6 +60,7 @@ const og = new URL(ogImage, Astro.site);
       <slot />
     </main>
     <Shell />
+    <Cursor />
     <script>
       import '../scripts/site';
     </script>
