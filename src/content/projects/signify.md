@@ -7,8 +7,8 @@ pid: 1042
 oneLiner: Live video in, English text and speech out, without the predictions flickering frame to frame.
 type: ML
 year: '2026'
-role: 'TODO(harshit): your role'
-team: 'TODO(harshit): team size'
+role: Primary developer and builder
+team: Team project
 stack: [Python, PyTorch, scikit-learn, MediaPipe, OpenCV, FastAPI, Next.js]
 repo: https://github.com/harshitchhabi/Signify
 metrics:
@@ -34,8 +34,6 @@ The same pipeline also runs on uploaded video, so you can translate a recording.
 
 It translates from a live camera and from uploaded video, and majority voting keeps the output stable.
 
-- TODO(harshit): accuracy on a held-out set.
-- TODO(harshit): number of signs supported.
-- TODO(harshit): end-to-end latency per prediction.
+<!-- TODO(harshit): accuracy on a held-out set, number of signs supported, end-to-end latency per prediction. -->
 
 Next I'd add sentence-level signs, which a per-frame landmark model can't capture.

@@ -7,7 +7,7 @@ pid: 2207
 oneLiner: Formaldehyde hotspots from Sentinel-5P, checked against real fires and tied to ground AQI.
 type: ML
 year: '2026'
-role: 'TODO(harshit): your role on Team GEMs'
+role: Primary developer and builder
 team: Team GEMs, Bharatiya Antariksh Hackathon 2026
 stack: [Python, scikit-learn, XGBoost, Streamlit, Google Earth Engine]
 repo: https://github.com/harshitchhabi/S5P
@@ -34,4 +34,4 @@ The project grew past the hackathon into a satellite AQI map for all of India. S
 
 Built at Bharatiya Antariksh Hackathon 2026 with Team GEMs, then extended for Smart India Hackathon 2026.
 
-TODO(harshit): how many hotspots matched a FIRMS fire in the 2023 season.
+<!-- TODO(harshit): how many hotspots matched a FIRMS fire in the 2023 season. -->
