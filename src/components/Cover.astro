@@ -1,0 +1,102 @@
+---
+import { Picture } from 'astro:assets';
+import { statusClass, statusLabel, type Project } from '../lib/projects';
+
+interface Props {
+  project: Project;
+  widths?: number[];
+  sizes?: string;
+  eager?: boolean;
+}
+
+const { project, widths = [480, 800, 1200], sizes = '(min-width: 1000px) 60vw, 100vw', eager = false } = Astro.props;
+const d = project.data;
+---
+
+{
+  d.cover ? (
+    <Picture
+      src={d.cover}
+      alt={d.coverAlt ?? `Screenshot of ${d.title}`}
+      formats={['avif', 'webp']}
+      widths={widths}
+      sizes={sizes}
+      loading={eager ? 'eager' : 'lazy'}
+      class="cover-img"
+    />
+  ) : (
+    <div class:list={['ph', statusClass(d.status)]} role="img" aria-label={`Placeholder card for ${d.title}`}>
+      <span class="ph-tag">PLACEHOLDER · SCREENSHOT TO COME</span>
+      <span class="ph-code">{d.code}</span>
+      <span class="ph-title">{d.title}</span>
+      <span class="ph-status">
+        P{d.pos} · {statusLabel[d.status]}
+      </span>
+      <span class="ph-bar" />
+    </div>
+  )
+}
+
+<style>
+  .cover-img,
+  .cover-img :global(img) {
+    width: 100%;
+    height: auto;
+    display: block;
+    border: 1px solid var(--line);
+  }
+
+  .ph {
+    position: relative;
+    container-type: inline-size;
+    aspect-ratio: 16 / 10;
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    padding: 6cqi 6cqi 8cqi;
+    overflow: hidden;
+  }
+
+  .ph-tag,
+  .ph-status {
+    font-family: var(--font-mono);
+    font-size: max(9px, 2.6cqi);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .ph-code {
+    align-self: center;
+    font-family: var(--font-display);
+    font-variation-settings: 'wdth' 125;
+    font-weight: 900;
+    font-size: 30cqi;
+    line-height: 0.8;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .ph-title {
+    font-family: var(--font-mono);
+    font-size: max(10px, 3.4cqi);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin-bottom: 1.5cqi;
+  }
+
+  .ph-status {
+    color: var(--st);
+  }
+
+  .ph-bar {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3cqi;
+    background: var(--st);
+  }
+</style>
