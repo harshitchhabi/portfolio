@@ -40,7 +40,7 @@ export const STATION: Record<string, StationExtras> = {
   privacygate: {
     daemon: 'redacto',
     foil: 'Redacto blacks out the Intruder mid-sentence.',
-    notes: [{ text: 'team project. my part is in the file.', arrow: 'left', color: 'pink' }],
+    notes: [{ text: 'team project. I built most of it.', arrow: 'left', color: 'pink' }],
     doodle: 'plug',
   },
   'secure-file-hashing': {
