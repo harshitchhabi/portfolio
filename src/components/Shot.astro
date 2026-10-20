@@ -1,0 +1,85 @@
+---
+// A screenshot pinned down with tape, slightly rotated, with a handwritten
+// caption. Without a real screenshot it's a sketched "screenshot goes here" frame.
+import { Picture } from 'astro:assets';
+import Tape from './marks/Tape.astro';
+import RoughFrame from './marks/RoughFrame.astro';
+import type { Project } from '../lib/projects';
+
+interface Props {
+  project: Project;
+}
+const { project } = Astro.props;
+const d = project.data;
+---
+
+<figure class="shot">
+  <Tape class="s-t1" seed={61} />
+  <Tape class="s-t2" seed={67} w={80} />
+  {
+    d.cover ? (
+      <Picture src={d.cover} alt={d.coverAlt ?? `Screenshot of ${d.title}`} formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 900px) 760px, 100vw" class="img" />
+    ) : (
+      <RoughFrame class="placeholder" seed={71} w={760} h={420}>
+        <p class="hand">screenshot goes here</p>
+      </RoughFrame>
+    )
+  }
+  <figcaption class="hand">{d.cover ? d.coverAlt : `${d.title.split(':')[0]}, real screenshot coming soon`}</figcaption>
+</figure>
+
+<style>
+  .shot {
+    position: relative;
+    margin: 64px 0 0;
+    max-width: 760px;
+    rotate: 1.2deg;
+  }
+
+  .shot :global(.s-t1) {
+    top: -12px;
+    left: -20px;
+    rotate: -32deg;
+  }
+
+  .shot :global(.s-t2) {
+    top: -10px;
+    right: -14px;
+    rotate: 30deg;
+  }
+
+  @media (max-width: 640px) {
+    .shot :global(.s-t1) {
+      left: -4px;
+    }
+    .shot :global(.s-t2) {
+      right: 0;
+    }
+  }
+
+  .shot :global(.img),
+  .shot :global(.img img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .shot :global(.placeholder) {
+    aspect-ratio: 16 / 9;
+    display: grid;
+    place-content: center;
+    text-align: center;
+    background: var(--paper-2);
+  }
+
+  .shot :global(.placeholder .hand) {
+    font-size: clamp(28px, 4vw, 44px);
+    color: var(--ink-dim);
+  }
+
+  figcaption {
+    margin-top: 10px;
+    font-size: 20px;
+    color: var(--ink-dim);
+  }
+</style>
