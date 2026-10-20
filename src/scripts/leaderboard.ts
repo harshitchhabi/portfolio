@@ -22,34 +22,39 @@ export function leaderboard() {
   });
 
   // ---------- filters: rows overtake each other via Flip ----------
-  let running: gsap.core.Timeline | null = null;
+  // Fades are a CSS class (.is-out) so Flip only ever touches transforms.
+  let timer = 0;
 
   const apply = (filter: string) => {
     chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.filter === filter)));
     const show = (r: HTMLTableRowElement) => filter === 'All' || r.dataset.type === filter;
-    const leaving = rows.filter((r) => !r.hidden && !show(r));
-    const entering = rows.filter((r) => r.hidden && show(r));
     const count = rows.filter(show).length;
     if (status) status.textContent = `Showing ${count} ${filter === 'All' ? '' : filter + ' '}project${count === 1 ? '' : 's'}`;
 
-    running?.progress(1);
-
+    window.clearTimeout(timer);
     if (reducedMotion()) {
-      rows.forEach((r) => (r.hidden = !show(r)));
+      rows.forEach((r) => {
+        r.hidden = !show(r);
+        r.classList.remove('is-out');
+      });
       return;
     }
 
-    running = gsap.timeline();
     // Removed rows fade first, so nothing pops.
-    if (leaving.length) running.to(leaving, { opacity: 0, duration: 0.2, ease: 'none' });
-    running.add(() => {
-      const state = Flip.getState(rows);
-      rows.forEach((r) => (r.hidden = !show(r)));
-      gsap.set(entering, { opacity: 0 });
-      Flip.from(state, { duration: 0.55, ease: 'power3.inOut', stagger: 0.03 });
-      gsap.to(entering, { opacity: 1, duration: 0.3, delay: 0.25, ease: 'none' });
-      gsap.set(leaving, { clearProps: 'opacity' });
-    });
+    const leaving = rows.filter((r) => !r.hidden && !show(r));
+    leaving.forEach((r) => r.classList.add('is-out'));
+
+    timer = window.setTimeout(
+      () => {
+        const state = Flip.getState(rows);
+        const entering = rows.filter((r) => r.hidden && show(r));
+        rows.forEach((r) => (r.hidden = !show(r)));
+        entering.forEach((r) => r.classList.add('is-out'));
+        Flip.from(state, { duration: 0.55, ease: 'power3.inOut', stagger: 0.03 });
+        timer = window.setTimeout(() => rows.forEach((r) => r.classList.remove('is-out')), 250);
+      },
+      leaving.length ? 200 : 0,
+    );
   };
 
   chips.forEach((c) => c.addEventListener('click', () => apply(c.dataset.filter ?? 'All')));

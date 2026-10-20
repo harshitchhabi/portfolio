@@ -147,7 +147,13 @@ const filters = ['All', 'Security', 'ML', 'Systems', 'Web'];
   .row {
     border-bottom: 1px solid var(--line);
     cursor: pointer;
-    transition: background var(--t-fast) linear;
+    transition:
+      background var(--t-fast) linear,
+      opacity 200ms linear;
+  }
+
+  .row.is-out {
+    opacity: 0;
   }
 
   .row:hover,
