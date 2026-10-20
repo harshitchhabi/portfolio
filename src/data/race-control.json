@@ -1,0 +1,14 @@
+{
+  "source": "sample",
+  "note": "Hand-written sample events. Replace with output from scripts/cowrie-to-feed.ts.",
+  "events": [
+    { "time": "14:21:08", "kind": "resolved", "message": "SESSION CLOSED · HONEYPOT RESET TO CLEAN IMAGE", "outcome": "RESOLVED" },
+    { "time": "14:17:52", "kind": "investigation", "message": "FILE DOWNLOAD · wget · SHA-256 3f9a…c1 · NOT EXECUTED", "outcome": "NOTED" },
+    { "time": "14:16:40", "kind": "incident", "message": "LOGIN ACCEPTED (DECOY) · src 103.21.xx.xx · 9 COMMANDS", "outcome": "NOTED" },
+    { "time": "14:12:03", "kind": "decision", "message": "SRC 185.220.xx.xx FLAGGED · CLASSIFIER CONF 0.94", "outcome": "BLOCKED" },
+    { "time": "14:09:30", "kind": "decision", "message": "IP FLAGGED · CLASSIFIER CONF 0.97", "outcome": "BLOCKED" },
+    { "time": "14:05:47", "kind": "investigation", "message": "PORT SCAN · 1,024 PORTS · TCP SYN", "outcome": "NOTED" },
+    { "time": "14:02:11", "kind": "incident", "message": "SSH BRUTE FORCE · 212 ATTEMPTS · src 45.83.xx.xx", "outcome": "NOTED" },
+    { "time": "13:58:26", "kind": "investigation", "message": "SSH VERSION PROBE · 6 CLIENT BANNERS", "outcome": "NOTED" }
+  ]
+}
