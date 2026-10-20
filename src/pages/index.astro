@@ -1,159 +1,124 @@
 ---
-// Phase 0 shell: type, paper, riso layers and marks only. The server floor,
-// stations, logbook, basement and jar come in later phases.
 import Base from '../layouts/Base.astro';
-import RegMark from '../components/marks/RegMark.astro';
-import CropMarks from '../components/marks/CropMarks.astro';
-import RoughFrame from '../components/marks/RoughFrame.astro';
+import Daemon from '../components/Daemon.astro';
 import { getProjects, projectHref } from '../lib/projects';
-import { roughArrow } from '../lib/rough';
+import cast from '../data/characters.json';
 
 const projects = await getProjects();
-const arrow = roughArrow(
-  [
-    [6, 60],
-    [40, 30],
-    [96, 16],
-  ],
-  { seed: 5, strokeWidth: 1.6, roughness: 1.6 },
-);
+const ids = Object.keys(cast).filter((id) => id !== 'intruder') as (keyof typeof cast)[];
 ---
 
 <Base
   title="Harshit Chhabi · Daemons"
   description="I build security tools, ML systems and real-time platforms. Information Security student at VIT Vellore."
 >
-  <section class="hero wrap">
-    <RegMark class="reg tl" seed={3} />
-    <RegMark class="reg tr" seed={9} />
+  <canvas class="floor" aria-hidden="true"></canvas>
+
+  <section id="hero" class="stop hero wrap">
     <p class="label">fig. 00 · the server floor, after hours</p>
     <h1 class="display name">
-      <span class="riso-text riso-pink name-line" data-text="Harshit">Harshit</span>
-      <span class="riso-text riso-green name-line" data-text="Chhabi">Chhabi</span>
+      <span class="riso-text riso-pink" data-text="Harshit">Harshit</span>
+      <span class="riso-text riso-green" data-text="Chhabi">Chhabi</span>
     </h1>
-    <div class="note hand ink-pink" aria-hidden="true">
-      <svg viewBox="0 0 100 64" width="100" height="64" set:html={arrow} />
-      <span>this is me. the daemons are on their way.</span>
-    </div>
-    <p class="lede">
-      I build security tools, ML systems and real-time platforms. Information Security student at VIT Vellore.
-    </p>
-    <p class="links mono">
-      <a href="#work">meet the daemons ↓</a>
-      <a href="/resume.pdf">resume (pdf)</a>
-    </p>
+    <p class="lede">I build security tools, ML systems and real-time platforms. Information Security student at VIT Vellore.</p>
   </section>
 
-  <section id="work" class="wrap work" aria-labelledby="work-title">
-    <h2 id="work-title" class="head work-title">Seven daemons, seven projects</h2>
-    <RoughFrame class="list-frame" seed={12} w={900} h={520}>
-      <CropMarks />
-      <ol class="list">
-        {
-          projects.map((p) => (
-            <li>
-              <span class="label">
-                daemon #{p.data.order} · pid {p.data.pid}
-              </span>
-              <a class="head ptitle" href={projectHref(p)}>
-                {p.data.title}
-              </a>
-              <span class="hand daemon">{p.data.daemon}</span>
-            </li>
-          ))
-        }
-      </ol>
-    </RoughFrame>
-  </section>
+  <div id="work">
+    {
+      projects.map((p, i) => (
+        <section id={`station-${i + 1}`} class:list={['stop', 'station', i % 2 ? 'daemon-right' : 'daemon-left']}>
+          <div class="art">
+            <Daemon id={ids[i]} pose="action" size="lg" />
+          </div>
+          <div class="panel">
+            <p class="label">
+              daemon #{i + 1} · pid {p.data.pid}
+            </p>
+            <h2 class="head">{p.data.title}</h2>
+            <p>{p.data.oneLiner}</p>
+            <a href={projectHref(p)}>read the file →</a>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <section id="logbook" class="stop wrap"><h2 class="head">Logbook</h2></section>
+  <section id="basement" class="stop wrap"><h2 class="head">The Basement</h2></section>
+  <section id="contact" class="stop wrap"><h2 class="head">The Jar</h2></section>
+
+  <script>
+    import '../scripts/home';
+  </script>
 </Base>
 
 <style>
-  .hero {
+  .floor {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    display: block;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 600ms linear;
+  }
+
+  :global(html[data-floor='on']) .floor {
+    opacity: 1;
+  }
+
+  .stop {
     position: relative;
+    z-index: 1;
     min-height: 100vh;
-    padding-top: calc(var(--nav-h) + clamp(48px, 10vh, 120px));
-    padding-bottom: 64px;
   }
 
-  .hero :global(.reg) {
-    position: absolute;
-  }
-
-  .hero :global(.reg.tl) {
-    top: calc(var(--nav-h) + 12px);
-    left: 8px;
-  }
-
-  .hero :global(.reg.tr) {
-    top: calc(var(--nav-h) + 12px);
-    right: 8px;
+  .hero {
+    padding-top: calc(var(--nav-h) + 12vh);
   }
 
   .name {
-    margin-top: 20px;
     font-size: clamp(64px, 15vw, 240px);
   }
 
-  .name-line {
+  .name span {
     display: block;
     width: fit-content;
   }
 
-  .note {
-    display: flex;
-    align-items: flex-start;
-    gap: 6px;
-    margin: 8px 0 0 clamp(40px, 20vw, 360px);
-    font-size: clamp(20px, 2vw, 26px);
-    max-width: 22ch;
-  }
-
-  .note svg {
-    flex: none;
-    transform: scaleX(-1) rotate(-8deg);
-  }
-
   .lede {
-    max-width: 36ch;
-    margin-top: 40px;
+    max-width: 34ch;
+    margin-top: 32px;
     font-size: clamp(19px, 1.5vw, 23px);
-    line-height: 1.45;
   }
 
-  .links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px 28px;
-    margin-top: 28px;
-    font-size: 15px;
-  }
-
-  .work {
-    padding-block: 64px 120px;
-  }
-
-  .work-title {
-    font-size: clamp(32px, 5vw, 64px);
-    margin-bottom: 32px;
-  }
-
-  .list {
+  .station {
+    min-height: 130vh;
     display: grid;
-    gap: 22px;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding-inline: var(--margin);
   }
 
-  .list li {
+  .daemon-right .art {
+    order: 2;
+  }
+
+  .art {
     display: grid;
-    gap: 2px;
+    place-items: center;
   }
 
-  .ptitle {
-    font-size: clamp(20px, 2.2vw, 30px);
-    text-decoration: none;
+  /* With the 3D floor running, the daemon is drawn in the scene instead. */
+  :global(html[data-floor='on']) .art {
+    opacity: 0;
   }
 
-  .daemon {
-    font-size: 22px;
-    color: var(--riso-green);
+  .panel {
+    background: var(--paper-2);
+    padding: 32px;
+    max-width: 520px;
   }
 </style>
