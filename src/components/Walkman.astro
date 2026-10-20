@@ -1,0 +1,384 @@
+---
+// The music player, drawn as a sketched Walkman. It lives outside the page
+// (transition:persist in Base) so the music keeps going between pages.
+// Nothing here talks to YouTube until someone presses play: the player frame
+// is only created by scripts/walkman.ts after that click.
+import RoughFrame from './marks/RoughFrame.astro';
+import Tape from './marks/Tape.astro';
+import { roughCircle, roughLine, roughBox } from '../lib/rough';
+
+const reel = (seed: number) =>
+  roughCircle(30, 30, 52, { seed, strokeWidth: 1.8 }) +
+  roughCircle(30, 30, 16, { seed: seed + 1, strokeWidth: 1.4 }) +
+  [0, 1, 2].map((i) => {
+    const a = (i / 3) * Math.PI * 2;
+    return roughLine(30 + Math.cos(a) * 8, 30 + Math.sin(a) * 8, 30 + Math.cos(a) * 22, 30 + Math.sin(a) * 22, { seed: seed + 2 + i, strokeWidth: 1.4 });
+  }).join('');
+const tapeLine = roughLine(4, 10, 156, 12, { seed: 77, strokeWidth: 2, roughness: 0.8 });
+const screws = [8, 252].map((x, i) => roughCircle(x, 8, 7, { seed: 90 + i, strokeWidth: 1.2 })).join('') + roughBox(116, 0, 28, 10, { seed: 95, strokeWidth: 1.4 });
+---
+
+<aside class="walkman" data-walkman hidden aria-label="Music player">
+  <Tape class="wm-tape" seed={141} w={84} />
+  <RoughFrame class="wm-body" seed={147} w={300} h={560}>
+    <svg class="screws" viewBox="0 0 260 14" aria-hidden="true" set:html={screws} />
+    <div class="wm-head">
+      <p class="brand hand">daemon-man <span class="mono">auto reverse · stereo</span></p>
+      <div class="wm-win-btns">
+        <button type="button" class="mini mono" data-w-mini aria-pressed="false" aria-label="Make the player smaller">_</button>
+        <button type="button" class="mini mono" data-w-close aria-label="Stop the music and close the player">×</button>
+      </div>
+    </div>
+
+    <div class="window" data-tape-window>
+      <p class="window-idle hand">press play</p>
+    </div>
+
+    <div class="label-strip">
+      <span class="mono side">side a</span>
+      <span class="hand now" data-tape-label aria-live="polite">Loser · Tame Impala</span>
+    </div>
+
+    <div class="reels" aria-hidden="true">
+      <svg class="reel" viewBox="0 0 60 60" set:html={reel(201)} />
+      <svg class="tapeline" viewBox="0 0 160 20" set:html={tapeLine} />
+      <svg class="reel" viewBox="0 0 60 60" set:html={reel(211)} />
+    </div>
+
+    <div class="controls">
+      <button type="button" class="key mono" data-w-play aria-pressed="false">▶ play</button>
+      <button type="button" class="key mono" data-w-eject aria-expanded="false" aria-controls="wm-chooser">⏏ pick</button>
+      <button type="button" class="key mono" data-w-mute aria-pressed="false" title="Mute (M)">mute</button>
+    </div>
+    <label class="vol mono">
+      <span>vol</span>
+      <input type="range" min="0" max="100" step="1" value="40" data-w-volume aria-label="Volume" />
+    </label>
+
+    <div class="chooser" id="wm-chooser" data-w-chooser hidden>
+      <form class="row" data-w-search>
+        <label class="label" for="wm-q">search a song</label>
+        <div class="field">
+          <input id="wm-q" type="search" maxlength="80" placeholder="artist, song…" autocomplete="off" data-w-q />
+          <button type="submit" class="key mono">find</button>
+        </div>
+      </form>
+      <ol class="results" data-w-results></ol>
+      <form class="row" data-w-paste>
+        <label class="label" for="wm-url">or paste a YouTube link</label>
+        <div class="field">
+          <input id="wm-url" type="url" placeholder="youtube.com/watch?v=…" autocomplete="off" data-w-url />
+          <button type="submit" class="key mono">play</button>
+        </div>
+      </form>
+      <div class="row">
+        <label class="label" for="wm-file">or a file from your device (stays on your device)</label>
+        <input id="wm-file" type="file" accept="audio/*" data-w-file />
+      </div>
+      <button type="button" class="back hand" data-w-loser>← back to Loser</button>
+    </div>
+    <p class="status mono" data-w-status aria-live="polite"></p>
+    <audio data-w-audio loop preload="none"></audio>
+  </RoughFrame>
+</aside>
+
+<style>
+  .walkman {
+    position: fixed;
+    right: clamp(8px, 2vw, 24px);
+    bottom: clamp(8px, 2vw, 24px);
+    z-index: 58;
+    width: 284px;
+    max-height: calc(100vh - var(--nav-h) - 24px);
+    overflow-y: auto;
+    rotate: 1.2deg;
+    color: var(--ink);
+    font-size: 14px;
+  }
+
+  .walkman[hidden] {
+    display: none;
+  }
+
+  .walkman :global(.wm-body) {
+    background: var(--paper-2);
+    padding: 14px 16px 16px;
+  }
+
+  .walkman :global(.wm-tape) {
+    top: -10px;
+    left: 40%;
+    rotate: -4deg;
+  }
+
+  .screws {
+    width: 100%;
+    height: 12px;
+    color: var(--ink-dim);
+  }
+
+  .wm-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  .brand {
+    font-size: 22px;
+    color: var(--riso-pink);
+    line-height: 1;
+  }
+
+  .brand .mono {
+    display: block;
+    font-size: 10px;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-top: 2px;
+  }
+
+  .wm-win-btns {
+    display: flex;
+    gap: 6px;
+  }
+
+  .mini {
+    width: 26px;
+    height: 26px;
+    border: 1px dashed var(--ink-dim);
+    line-height: 1;
+  }
+
+  .mini:hover {
+    color: var(--riso-pink);
+  }
+
+  /* the cassette window: YouTube's player sits here and stays visible while it plays */
+  .window {
+    position: relative;
+    width: 232px;
+    height: 232px;
+    margin: 12px auto 0;
+    border: 2px solid var(--ink);
+    background: var(--paper);
+    display: grid;
+    place-items: center;
+  }
+
+  .window :global(iframe) {
+    position: absolute;
+    inset: 4px;
+    width: calc(100% - 8px);
+    height: calc(100% - 8px);
+    border: 0;
+  }
+
+  .window-idle {
+    font-size: 24px;
+    color: var(--ink-dim);
+  }
+
+  .label-strip {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    margin: 10px 0 0;
+    padding: 4px 8px;
+    background: #f2eee4;
+    color: #16110c;
+    rotate: -1deg;
+  }
+
+  .side {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: #6b6158;
+  }
+
+  .now {
+    font-size: 19px;
+    line-height: 1.05;
+    overflow-wrap: anywhere;
+  }
+
+  .reels {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-top: 8px;
+  }
+
+  .reel {
+    width: 46px;
+    height: 46px;
+  }
+
+  .tapeline {
+    width: 110px;
+    height: 14px;
+    color: var(--ink-dim);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .walkman[data-state='playing'] .reel {
+      animation: spin 2.4s linear infinite;
+    }
+  }
+
+  @keyframes spin {
+    to {
+      rotate: 360deg;
+    }
+  }
+
+  .controls {
+    display: flex;
+    gap: 6px;
+    margin-top: 10px;
+  }
+
+  .key {
+    flex: 1;
+    padding: 7px 4px;
+    border: 1px solid var(--ink);
+    font-size: 12px;
+    text-transform: uppercase;
+  }
+
+  .key:hover,
+  .key[aria-pressed='true'],
+  .key[aria-expanded='true'] {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  .vol {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 10px;
+    font-size: 11px;
+    text-transform: uppercase;
+    color: var(--ink-dim);
+  }
+
+  .vol input {
+    flex: 1;
+    accent-color: var(--riso-pink);
+  }
+
+  .chooser {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+    padding-top: 10px;
+    border-top: 1px dashed var(--ink-dim);
+  }
+
+  .chooser[hidden] {
+    display: none;
+  }
+
+  .row {
+    display: grid;
+    gap: 4px;
+  }
+
+  .row .label {
+    text-transform: none;
+    font-size: 11px;
+  }
+
+  .field {
+    display: flex;
+    gap: 4px;
+  }
+
+  .field input,
+  .row input[type='file'] {
+    flex: 1;
+    min-width: 0;
+    background: var(--paper);
+    color: var(--ink);
+    border: 1px solid var(--ink-dim);
+    padding: 6px;
+    font: inherit;
+    font-size: 16px;
+  }
+
+  .row input[type='file'] {
+    font-size: 12px;
+  }
+
+  .field .key {
+    flex: none;
+    padding: 6px 8px;
+  }
+
+  .results {
+    display: grid;
+    gap: 2px;
+  }
+
+  .results :global(button) {
+    width: 100%;
+    text-align: left;
+    padding: 5px 6px;
+    border-bottom: 1px dashed rgba(155, 151, 142, 0.4);
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .results :global(button:hover) {
+    color: var(--riso-pink);
+  }
+
+  .results :global(.ch) {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--ink-dim);
+  }
+
+  .back {
+    justify-self: start;
+    font-size: 19px;
+    color: var(--riso-green);
+  }
+
+  .status {
+    min-height: 1em;
+    margin-top: 8px;
+    font-size: 11px;
+    color: var(--ink-dim);
+  }
+
+  .status:empty {
+    display: none;
+  }
+
+  /* smaller: just the window and the keys */
+  .walkman[data-mini] .brand .mono,
+  .walkman[data-mini] .reels,
+  .walkman[data-mini] .vol,
+  .walkman[data-mini] .chooser,
+  .walkman[data-mini] .screws {
+    display: none;
+  }
+
+  .walkman[data-mini] {
+    width: 260px;
+  }
+
+  @media (max-width: 640px) {
+    .walkman {
+      right: 8px;
+      left: auto;
+      bottom: 8px;
+      width: min(284px, calc(100vw - 16px));
+    }
+  }
+</style>
