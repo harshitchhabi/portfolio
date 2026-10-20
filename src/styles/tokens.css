@@ -34,3 +34,10 @@
   /* driven by the audio clock when sound is on, 0 otherwise */
   --beat: 0;
 }
+
+/* on a phone the nav wraps to two rows */
+@media (max-width: 640px) {
+  :root {
+    --nav-h: 76px;
+  }
+}

@@ -30,7 +30,7 @@ const underline = roughLine(2, 6, 158, 5, { seed: 21, roughness: 1.8, strokeWidt
             music: <span data-music-label>off</span>
           </button>
         </li>
-        <li>
+        <li class="beat-li">
           <button type="button" data-audio-toggle aria-pressed="false" title="128 BPM kick and hat, made in your browser">
             beat: <span data-audio-label>off</span>
           </button>
@@ -132,8 +132,15 @@ const underline = roughLine(2, 6, 158, 5, { seed: 21, roughness: 1.8, strokeWidt
     }
 
     .links {
-      gap: 2px 12px;
-      max-width: 230px;
+      gap: 4px 12px;
+      max-width: 290px;
+      font-size: 12px;
+      padding: 4px 6px;
+    }
+
+    /* two rows on a phone: the beat still lives in the basement */
+    .links .beat-li {
+      display: none;
     }
   }
 </style>
