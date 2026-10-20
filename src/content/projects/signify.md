@@ -12,7 +12,7 @@ team: Team project
 stack: [Python, PyTorch, scikit-learn, MediaPipe, OpenCV, FastAPI, Next.js]
 repo: https://github.com/harshitchhabi/Signify
 metrics:
-  - { label: Input modes (live camera, video upload), value: '2' }
+  - { label: 'Input modes (live camera, video upload)', value: '2' }
 stamp: VERIFIED
 cover: ../../assets/projects/signify/cover.png
 coverAlt: The Signify web app with the live camera and translation panels.
