@@ -1,11 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import Daemon from '../components/Daemon.astro';
-import { getProjects, projectHref } from '../lib/projects';
-import cast from '../data/characters.json';
+import Hero from '../components/Hero.astro';
+import Station from '../components/Station.astro';
+import { getProjects } from '../lib/projects';
 
 const projects = await getProjects();
-const ids = Object.keys(cast).filter((id) => id !== 'intruder') as (keyof typeof cast)[];
 ---
 
 <Base
@@ -13,34 +12,10 @@ const ids = Object.keys(cast).filter((id) => id !== 'intruder') as (keyof typeof
   description="I build security tools, ML systems and real-time platforms. Information Security student at VIT Vellore."
 >
   <canvas class="floor" aria-hidden="true"></canvas>
-
-  <section id="hero" class="stop hero wrap">
-    <p class="label">fig. 00 · the server floor, after hours</p>
-    <h1 class="display name">
-      <span class="riso-text riso-pink" data-text="Harshit">Harshit</span>
-      <span class="riso-text riso-green" data-text="Chhabi">Chhabi</span>
-    </h1>
-    <p class="lede">I build security tools, ML systems and real-time platforms. Information Security student at VIT Vellore.</p>
-  </section>
-
+  <Hero />
   <div id="work">
-    {
-      projects.map((p, i) => (
-        <section id={`station-${i + 1}`} class:list={['stop', 'station', i % 2 ? 'daemon-right' : 'daemon-left']}>
-          <div class="art">
-            <Daemon id={ids[i]} pose="action" size="lg" />
-          </div>
-          <div class="panel">
-            <p class="label">
-              daemon #{i + 1} · pid {p.data.pid}
-            </p>
-            <h2 class="head">{p.data.title}</h2>
-            <p>{p.data.oneLiner}</p>
-            <a href={projectHref(p)}>read the file →</a>
-          </div>
-        </section>
-      ))
-    }
+    <h2 class="sr-only">Projects</h2>
+    {projects.map((p, i) => <Station project={p} index={i} />)}
   </div>
 
   <section id="logbook" class="stop wrap"><h2 class="head">Logbook</h2></section>
@@ -73,52 +48,5 @@ const ids = Object.keys(cast).filter((id) => id !== 'intruder') as (keyof typeof
     position: relative;
     z-index: 1;
     min-height: 100vh;
-  }
-
-  .hero {
-    padding-top: calc(var(--nav-h) + 12vh);
-  }
-
-  .name {
-    font-size: clamp(64px, 15vw, 240px);
-  }
-
-  .name span {
-    display: block;
-    width: fit-content;
-  }
-
-  .lede {
-    max-width: 34ch;
-    margin-top: 32px;
-    font-size: clamp(19px, 1.5vw, 23px);
-  }
-
-  .station {
-    min-height: 130vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    align-items: center;
-    padding-inline: var(--margin);
-  }
-
-  .daemon-right .art {
-    order: 2;
-  }
-
-  .art {
-    display: grid;
-    place-items: center;
-  }
-
-  /* With the 3D floor running, the daemon is drawn in the scene instead. */
-  :global(html[data-floor='on']) .art {
-    opacity: 0;
-  }
-
-  .panel {
-    background: var(--paper-2);
-    padding: 32px;
-    max-width: 520px;
   }
 </style>

@@ -1,0 +1,169 @@
+---
+import Tape from './marks/Tape.astro';
+import Note from './marks/Note.astro';
+import RegMark from './marks/RegMark.astro';
+import CropMarks from './marks/CropMarks.astro';
+import Doodle from './marks/Doodle.astro';
+import Daemon from './Daemon.astro';
+---
+
+<section id="hero" class="stop hero wrap" aria-labelledby="hero-name">
+  <RegMark class="reg reg-tl" seed={3} />
+  <RegMark class="reg reg-br" seed={9} />
+  <Doodle kind="cable" class="h-cable" seed={14} />
+  <div class="sheet">
+    <CropMarks />
+    <Tape class="t1" seed={2} />
+    <Tape class="t2" seed={7} w={90} />
+    <p class="label">fig. 00 · the server floor, after hours · pid 1</p>
+    <h1 id="hero-name" class="display name" data-redact>
+      <span class="riso-text riso-pink" data-text="Harshit">Harshit</span>
+      <span class="riso-text riso-green" data-text="Chhabi">Chhabi</span>
+    </h1>
+    <p class="lede">I build security tools, ML systems and real-time platforms. Information Security student at VIT Vellore.</p>
+    <p class="links mono">
+      <a href="#station-1" data-cursor="inspect">meet the daemons ↓</a>
+      <a href="/resume.pdf">resume (pdf)</a>
+    </p>
+  </div>
+  <Note arrow="down" color="pink" seed={11} class="h-note">something's sneaking around down there.</Note>
+  <div class="crew" aria-hidden="true">
+    <Daemon id="vayu" pose="idle" poses={['idle']} size="sm" class="c1" />
+    <Daemon id="signe" pose="react" poses={['react']} size="md" class="c2" />
+    <Daemon id="lockjaw" pose="idle" poses={['idle']} size="sm" class="c3" />
+    <p class="hand crew-note">the night shift</p>
+  </div>
+  <div class="peek" aria-hidden="true">
+    <Daemon id="intruder" pose="react" poses={['react']} size="sm" eager />
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    z-index: 1;
+    min-height: 100vh;
+    padding-top: calc(var(--nav-h) + 8vh);
+    padding-bottom: 12vh;
+  }
+
+  .sheet {
+    position: relative;
+    width: fit-content;
+    max-width: 100%;
+    padding: clamp(20px, 3vw, 40px);
+    background: rgba(14, 14, 16, 0.86);
+  }
+
+  .sheet :global(.t1) {
+    top: -14px;
+    left: 30px;
+    rotate: -4deg;
+  }
+
+  .sheet :global(.t2) {
+    top: -10px;
+    right: 40px;
+    rotate: 7deg;
+  }
+
+  .name {
+    margin-top: 14px;
+    font-size: clamp(64px, 14vw, 230px);
+  }
+
+  .name span {
+    display: block;
+    width: fit-content;
+  }
+
+  .lede {
+    max-width: 34ch;
+    margin-top: 28px;
+    font-size: clamp(19px, 1.5vw, 23px);
+    line-height: 1.45;
+  }
+
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 28px;
+    margin-top: 24px;
+    font-size: 15px;
+  }
+
+  .hero :global(.h-note) {
+    margin: 28px 0 0 clamp(20px, 30vw, 520px);
+  }
+
+  .hero :global(.reg) {
+    position: absolute;
+  }
+
+  .hero :global(.reg-tl) {
+    top: calc(var(--nav-h) + 10px);
+    left: 8px;
+  }
+
+  .hero :global(.reg-br) {
+    bottom: 6vh;
+    right: 12px;
+  }
+
+  .hero :global(.h-cable) {
+    right: 6%;
+    top: 22vh;
+    width: 200px;
+  }
+
+  .crew {
+    position: absolute;
+    right: 10%;
+    top: 30vh;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    align-items: end;
+  }
+
+  .crew :global(.c2) {
+    margin: 0 -30px;
+  }
+
+  .crew-note {
+    grid-column: 1 / -1;
+    justify-self: center;
+    font-size: 22px;
+    color: var(--ink-dim);
+    rotate: -3deg;
+  }
+
+  :global(html[data-floor='on']) .crew {
+    opacity: 0;
+  }
+
+  @media (max-width: 1100px) {
+    .crew {
+      display: none;
+    }
+  }
+
+  .peek {
+    position: absolute;
+    right: 8%;
+    bottom: 10vh;
+  }
+
+  :global(html[data-floor='on']) .peek {
+    opacity: 0;
+  }
+
+  @media (max-width: 760px) {
+    .hero :global(.h-cable) {
+      display: none;
+    }
+    .peek {
+      right: 2%;
+      bottom: 4vh;
+    }
+  }
+</style>
