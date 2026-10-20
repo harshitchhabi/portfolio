@@ -2,7 +2,7 @@
 
 My portfolio. In Unix a daemon is a process that runs quietly in the background, keeping things safe and working. Here each project is guarded by a hand-drawn daemon on a 3D server floor at night, printed in white ink and two riso colours. A scribbly Intruder sneaks through the whole site, gets stopped at every station, and ends up in a jar at the bottom.
 
-Astro (static) + TypeScript, Three.js for the floor, GSAP and Lenis for motion, Rough.js and perfect-freehand for everything hand-drawn. No trackers, no third-party requests, no inline scripts or styles.
+Astro (static) + TypeScript, Three.js for the floor, GSAP and Lenis for motion, Rough.js and perfect-freehand for everything hand-drawn. No trackers and no inline scripts or styles. Nothing is loaded from another site until a visitor presses play on the music.
 
 ## Run it
 
@@ -101,6 +101,24 @@ npm run feed -- path/to/cowrie.json --out src/data/honeybot-log.json --limit 12
 
 `cowrie.json` is Cowrie's JSON-lines log. The script keeps only the first two octets of IPv4 addresses (`45.83.xx.xx`), hashes IPv6 addresses, and never copies usernames, passwords, command text or download URLs. Once the file's `source` isn't `sample`, the label changes to "replayed · anonymised Cowrie log, not live". Read the output before committing it.
 
+## Music
+
+`music: off` in the nav opens the Walkman (`src/components/Walkman.astro`, `src/scripts/walkman.ts`). It never plays on its own; the first click starts Loser by Tame Impala on loop. **pick** lets a visitor search for a song, paste a YouTube or YouTube Music link, or play a file from their own device. Volume is a slider, and `M` mutes.
+
+- The player is YouTube's embed from `youtube-nocookie.com`, driven by `postMessage`. No YouTube script is loaded into the page, and nothing goes to YouTube before the click.
+- The Walkman sits in a `transition:persist` wrapper in `src/layouts/Base.astro`, so the song keeps going between pages. In Chrome and Edge the frame is moved, not reloaded. Other browsers reload it and pick up from the same second.
+- The chosen song and the volume are remembered in `localStorage`. A local file never is; it stays in the browser as a `blob:` URL.
+- YouTube's terms want the player visible and at least 200×200, which is why the cassette window shows the video.
+- The beat and the music stop each other.
+
+Search goes through `api/yt-search.ts`, a Vercel function, so the API key never reaches the browser. Set it in Vercel under Settings → Environment Variables:
+
+```
+YOUTUBE_API_KEY=<key with only the YouTube Data API v3 enabled>
+```
+
+Without it, search says it isn't set up and pasting a link still works. Restrict the key to the YouTube Data API v3 in Google Cloud.
+
 ## The shell
 
 Press `~` (or the `~` in the nav). Commands: `help`, `whoami`, `ls`, `ps`, `open <daemon>`, `headers`, `contact`, `kill intruder`, `clear`. `headers` fetches this page and checks its real security headers. `kill intruder` yanks the Intruder into the jar and adds one to the jar's counter for this session.
@@ -109,11 +127,11 @@ Press `~` (or the `~` in the nav). Commands: `help`, `whoami`, `ls`, `ps`, `open
 
 Vercel. `vercel.json` sets the build, clean URLs and these headers on every response:
 
-- `Content-Security-Policy`: `default-src 'self'`, no `unsafe-inline` or `unsafe-eval`, nothing from other origins
+- `Content-Security-Policy`: `default-src 'self'`, no `unsafe-inline` or `unsafe-eval`. The only other origin is `frame-src https://www.youtube-nocookie.com` for the music player, plus `media-src blob:` for a visitor's own audio file
 - `Strict-Transport-Security: max-age=63072000; includeSubDomains; preload`
 - `X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy` (camera, mic, geolocation off), `Cross-Origin-Opener-Policy`, `X-Frame-Options: DENY`
 
-To keep the CSP strict, every script and stylesheet is its own file (`inlineStylesheets: 'never'`, `assetsInlineLimit: 0`), character textures are files built ahead of time (no `blob:`), and nothing uses `style="…"` attributes. Use classes and Astro-bundled `<script>` tags in new components.
+To keep the CSP strict, every script and stylesheet is its own file (`inlineStylesheets: 'never'`, `assetsInlineLimit: 0`), character textures are files built ahead of time, and nothing uses `style="…"` attributes. Astro's `transition:name` writes an inline `<style>`, so the title morph between pages sets `view-transition-name` from `src/scripts/vt.ts` instead. Use classes and Astro-bundled `<script>` tags in new components.
 
 After the first deploy, set the real domain as `SITE` in `astro.config.ts`; canonical URLs, the sitemap, `robots.txt`, the OG image URL and `/.well-known/security.txt` use it. `security.txt` expires on 2027-10-20.
 
@@ -137,7 +155,9 @@ src/
   three/             the 3D floor: layout and camera path, world, ink shader, sprites
   components/        Station, Hero, Logbook, Basement, Jar, Shell, Daemon, marks/…
   lib/               Rough.js helpers, diagrams, the Markdown plugin, mode detection
-  scripts/           client code: arrivals, smooth scroll, cursor, eyes, shell, sound
+  scripts/           client code: arrivals, smooth scroll, cursor, eyes, shell, sound, walkman
+api/
+  yt-search.ts       song search for the Walkman (needs YOUTUBE_API_KEY)
   styles/            tokens.css (every colour), global.css
 scripts/
   build-characters.ts
