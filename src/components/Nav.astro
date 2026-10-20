@@ -126,6 +126,11 @@ const underline = roughLine(2, 6, 158, 5, { seed: 21, roughness: 1.8, strokeWidt
   }
 
   @media (max-width: 640px) {
+    /* a strip of paper behind the logo too, so drawings don't scroll through it */
+    .nav {
+      background: linear-gradient(var(--paper) 78%, transparent);
+    }
+
     .nav-inner {
       align-items: flex-start;
       padding-top: 8px;
