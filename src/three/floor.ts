@@ -14,6 +14,8 @@ import { Sprite3D } from './sprites';
 import { BASEMENT_Y, BASEMENT_Z, STATIONS, STOPS, camPath, lookPath } from './layout';
 
 gsap.registerPlugin(ScrollTrigger);
+// keep ScrollTrigger in step with the smooth scroller
+window.lenis?.on('scroll', ScrollTrigger.update);
 
 const DAEMONS = ['signe', 'vayu', 'honeybot', 'redacto', 'lockjaw', 'auctioneers', 'forge'] as const;
 const FOIL_MS = 2000;
