@@ -15,7 +15,10 @@ metrics:
   - { label: 'Input modes (live camera, video upload)', value: '2' }
 stamp: VERIFIED
 cover: ../../assets/projects/signify/cover.png
-coverAlt: The Signify web app with the live camera and translation panels.
+coverAlt: "Signify's home page: Sign to Text, Instantly, with the live camera and video upload modes."
+shots:
+  - src: ../../assets/projects/signify/about.png
+    alt: Signify's About page, explaining how it works and that video is never stored.
 ---
 
 ## What was wrong
@@ -28,7 +31,7 @@ MediaPipe pulls 21 hand landmarks per frame and OpenCV handles the video. The la
 
 The trade-off: a raw per-frame prediction flickers between signs while your hand moves. I put a sliding window over the last few frames and only emit the sign that wins a majority vote. That adds a few frames of delay, but the output stops jumping around, which mattered more.
 
-The same pipeline also runs on uploaded video, so you can translate a recording.
+The same pipeline also runs on uploaded video, so you can translate a recording. It reads American Sign Language. Video is processed as it arrives and never stored; only the text translation is kept, in your history, and only if you turn that on.
 
 ## What happened
 
