@@ -11,7 +11,6 @@ role: Solo. Cleaning, schema, queries and experiments
 team: Solo, Database Systems Lab case study, VIT
 stack: [PostgreSQL, SQL, Python, pandas, NumPy, matplotlib, Docker]
 repo: https://github.com/harshitchhabi/mandi-price-db
-repoPrivate: true
 metrics:
   - { label: 'real price rows, after cleaning', value: '6.78M' }
   - { label: tables in 3NF, value: '16' }
