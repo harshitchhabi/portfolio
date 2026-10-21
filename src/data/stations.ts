@@ -2,7 +2,7 @@
 // moment, and the handwritten margin notes. Notes only say things that are true.
 
 export interface StationExtras {
-  daemon: 'signe' | 'vayu' | 'honeybot' | 'redacto' | 'lockjaw' | 'auctioneers' | 'forge';
+  daemon: 'signe' | 'vayu' | 'honeybot' | 'redacto' | 'lockjaw' | 'auctioneers' | 'forge' | 'tula';
   /** What happens to the Intruder here, in a few words (also used as a caption). */
   foil: string;
   notes: { text: string; arrow: 'left' | 'right' | 'down' | 'up' | 'none'; color: 'pink' | 'green' | 'ink' }[];
@@ -68,5 +68,14 @@ export const STATION: Record<string, StationExtras> = {
       { text: 'compiler, passes and an IDE. all of it mine.', arrow: 'right', color: 'pink' },
     ],
     doodle: 'signal',
+  },
+  mandi: {
+    daemon: 'tula',
+    foil: 'The Intruder tries to slip in a bad row. Tula: CHECK VIOLATED.',
+    notes: [
+      { text: '26.5M raw rows in, 6.78M clean ones out', arrow: 'right', color: 'green' },
+      { text: 'measured my own design. it lost.', arrow: 'none', color: 'pink' },
+    ],
+    doodle: 'plug',
   },
 };

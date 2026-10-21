@@ -103,4 +103,17 @@ export const DIAGRAMS: Record<string, DiagramSpec> = {
       { label: 'tools', nodes: [{ text: 'NovaCraft IDE', state: 'best' }] },
     ],
   },
+  mandi: {
+    caption: 'fig. a · from two messy CSV files to six measured experiments',
+    rows: [
+      {
+        label: 'data',
+        nodes: [{ text: 'AGMARKNET CSVs (26.5M rows)' }, { text: 'clean + match markets' }, { text: '6.78M price rows' }],
+      },
+      {
+        label: 'database',
+        nodes: [{ text: '16 tables, 3NF' }, { text: 'GiST: no double booking' }, { text: '20 queries' }, { text: '6 experiments', state: 'best' }],
+      },
+    ],
+  },
 };
