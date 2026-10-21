@@ -17,8 +17,8 @@ stamp: VERIFIED
 cover: ../../assets/projects/signify/cover.png
 coverAlt: "Signify's home page: Sign to Text, Instantly, with the live camera and video upload modes."
 shots:
-  - src: ../../assets/projects/signify/about.png
-    alt: Signify's About page, explaining how it works and that video is never stored.
+  - src: ../../assets/projects/signify/live.webp
+    alt: Me signing to Signify's live camera while the translation fills in beside it, at 76% confidence.
 ---
 
 ## What was wrong
