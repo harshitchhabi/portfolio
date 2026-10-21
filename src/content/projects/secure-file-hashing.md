@@ -16,6 +16,11 @@ metrics:
   - { label: file cipher, value: AES-256 }
   - { label: key wrap, value: RSA-2048 }
 stamp: VERIFIED
+cover: ../../assets/projects/secure-file-hashing/cover.png
+coverAlt: The signed-in dashboard, where you upload a file to encrypt it and decrypt, delete or download the ones already stored.
+shots:
+  - src: ../../assets/projects/secure-file-hashing/encrypted.png
+    alt: A stored file with its RSA-wrapped AES key and its SHA-256 hash, the hash it gets checked against when it comes back out.
 ---
 
 ## What was wrong
