@@ -25,6 +25,10 @@ coverAlt: Bricks by Bid's sign-in page, block-built for the event. Each team sig
 shots:
   - src: ../../assets/projects/dream-merchants/bricks-by-bid-auction.webp
     alt: The Bricks by Bid moderator console running the stage 1 materials auction, one live lot at a time.
+  - src: ../../assets/projects/dream-merchants/dream-team-console.webp
+    alt: The Dream Team auctioneer's console, with the current and next player, the bid controls and every team's remaining purse.
+  - src: ../../assets/projects/dream-merchants/dream-team-screen.webp
+    alt: The Dream Team big screen the room watches, showing the player up for auction, his rating and the current and next bid.
 ---
 
 I'm the Technical Head of the Dream Merchants Club at VIT Vellore (2026 to now). The club runs live events, and I build and host the platforms they run on, including the AWS setup.
@@ -47,7 +51,7 @@ The trade-off: one server, on purpose. A single writer is far simpler to keep co
 
 ### Dream Team
 
-A real-time IPL-style player auction. Teams bid live on a 250-player pool with purses and squad rules enforced by the server, and an admin console runs the auction. Go and PostgreSQL behind WebSockets, with a Next.js frontend, shipped in Docker behind Caddy.
+A real-time IPL-style player auction. Teams bid live on a 250-player pool with purses and squad rules enforced by the server, and an admin console runs the auction: raise or lower the bid, end bidding or mark a player unsold, with every team's remaining purse in view, while a big-screen display shows the room the player, his rating and the current and next bid. Go and PostgreSQL behind WebSockets, with a Next.js frontend, shipped in Docker behind Caddy.
 
 ### Bricks by Bid
 
