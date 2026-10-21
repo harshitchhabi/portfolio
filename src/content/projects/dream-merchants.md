@@ -34,6 +34,8 @@ Every event has a hard deadline: it starts at a fixed time and everyone logs in 
 
 A live stock-market simulation for about 700 participants, in teams. Prices come from a scenario the organisers write; teams buy and sell at the current price, two trades a minute.
 
+It plays like a real trading app: companies across 16 sectors with live prices and charts, a watchlist, holdings, funds and live standings. A news wire drops headlines (a GST cut, an oil spike, a rumour about a bank) that the organisers use to move the market, and an organiser console runs the event phase by phase.
+
 The first backend was TypeScript and it lagged once a few hundred people were trading at once, so I rewrote it in Go. It's now one Go binary that serves the app, the API and the WebSocket feed, and writes every trade to disk before confirming it.
 
 The trade-off: one server, on purpose. A single writer is far simpler to keep correct than a cluster, and the load tests showed one machine had plenty of headroom. Login is the real bottleneck, because bcrypt is slow by design.
