@@ -76,6 +76,7 @@ const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
     {d.slug === 'ids' && <HoneybotLog />}
 
     <Shot project={project} />
+    {d.shots.map((s, i) => <Shot project={project} src={s.src} alt={s.alt} flip={i % 2 === 0} />)}
 
     <nav class="pn" aria-label="Other daemons">
       {

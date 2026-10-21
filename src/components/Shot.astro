@@ -4,28 +4,36 @@
 import { Picture } from 'astro:assets';
 import Tape from './marks/Tape.astro';
 import RoughFrame from './marks/RoughFrame.astro';
+import type { ImageMetadata } from 'astro';
 import type { Project } from '../lib/projects';
 
 interface Props {
   project: Project;
+  /** an extra screenshot instead of the cover */
+  src?: ImageMetadata;
+  alt?: string;
+  /** tilts the other way, for alternating extra screenshots */
+  flip?: boolean;
 }
-const { project } = Astro.props;
+const { project, src, alt, flip = false } = Astro.props;
 const d = project.data;
+const img = src ?? d.cover;
+const text = src ? alt : d.coverAlt;
 ---
 
-<figure class="shot">
+<figure class:list={['shot', { flip }]}>
   <Tape class="s-t1" seed={61} />
   <Tape class="s-t2" seed={67} w={80} />
   {
-    d.cover ? (
-      <Picture src={d.cover} alt={d.coverAlt ?? `Screenshot of ${d.title}`} formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 900px) 760px, 100vw" class="img" />
+    img ? (
+      <Picture src={img} alt={text ?? `Screenshot of ${d.title}`} formats={['avif', 'webp']} widths={[480, 800, 1200]} sizes="(min-width: 900px) 760px, 100vw" class="img" />
     ) : (
       <RoughFrame class="placeholder" seed={71} w={760} h={420}>
         <p class="hand">screenshot goes here</p>
       </RoughFrame>
     )
   }
-  <figcaption class="hand">{d.cover ? d.coverAlt : `${d.title.split(':')[0]}, real screenshot coming soon`}</figcaption>
+  <figcaption class="hand">{img ? text : `${d.title.split(':')[0]}, real screenshot coming soon`}</figcaption>
 </figure>
 
 <style>
@@ -34,6 +42,11 @@ const d = project.data;
     margin: 64px 0 0;
     max-width: 760px;
     rotate: 1.2deg;
+  }
+
+  .shot.flip {
+    rotate: -1deg;
+    margin-left: auto;
   }
 
   .shot :global(.s-t1) {

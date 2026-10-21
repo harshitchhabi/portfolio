@@ -29,6 +29,8 @@ const projects = defineCollection({
       // Leave out to get the "screenshot goes here" placeholder.
       cover: image().optional(),
       coverAlt: z.string().optional(),
+      // More screenshots, shown under the cover on the case page.
+      shots: z.array(z.object({ src: image(), alt: z.string() })).default([]),
     }),
 });
 
