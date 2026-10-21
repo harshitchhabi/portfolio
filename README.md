@@ -92,7 +92,7 @@ These are generated, so they're not in git. To see the whole cast with boil and 
 
 The IDS case study shows "Honeybot's log", which reads `src/data/honeybot-log.json`. Right now that's hand-written sample events, and the page says `SIMULATED · SAMPLE EVENTS`.
 
-To swap in real, anonymised events from the IDS testbed's Cowrie honeypot:
+To swap in real, anonymised events from the IDS project's Cowrie honeypot:
 
 ```bash
 npm run feed -- path/to/cowrie.json
