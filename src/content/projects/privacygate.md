@@ -35,5 +35,3 @@ The app is a Streamlit "pre-LLM privacy firewall". You upload PDF, DOCX or PPTX 
 ## What happened
 
 It was our team's submission for Optiv's case study 2.
-
-<!-- TODO(harshit): results and test numbers. -->

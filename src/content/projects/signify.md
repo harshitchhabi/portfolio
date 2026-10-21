@@ -37,6 +37,4 @@ The same pipeline also runs on uploaded video, so you can translate a recording.
 
 It translates from a live camera and from uploaded video, and majority voting keeps the output stable.
 
-<!-- TODO(harshit): accuracy on a held-out set, number of signs supported, end-to-end latency per prediction. -->
-
 Next I'd add sentence-level signs, which a per-frame landmark model can't capture.

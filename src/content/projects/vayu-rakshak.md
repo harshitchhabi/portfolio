@@ -38,5 +38,3 @@ The trade-off: I tried XGBoost for the AQI model and dropped it. Early stopping 
 The project grew past the hackathon into Vaayu Rakshak, a satellite AQI map for all of India. Pick a city or click anywhere on the map for its AQI: a nowcast anchored to the day's CPCB bulletin, a satellite day before it and a forecast two days ahead, with city rankings and a fire/HCHO hotspot layer. Scored on years it never saw (Jan 2025 to Oct 2026, 519 stations), the area-level AQI estimate reaches R² 0.83 with an error of about ±19 AQI points.
 
 Built at Bharatiya Antariksh Hackathon 2026 with Team GEMs, then extended for Smart India Hackathon 2026.
-
-<!-- TODO(harshit): how many hotspots matched a FIRMS fire in the 2023 season. -->
