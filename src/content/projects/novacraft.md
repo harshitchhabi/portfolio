@@ -18,6 +18,9 @@ metrics:
 stamp: VERIFIED
 cover: ../../assets/projects/novacraft/cover.png
 coverAlt: The NovaCraft Web IDE benchmarking sumArray with the proven bounds check removed against the fully checked build.
+shots:
+  - src: ../../assets/projects/novacraft/run.png
+    alt: The NovaCraft Web IDE compiling and running sumArray, with tabs for every stage from tokens to WAT.
 ---
 
 ## What was wrong
