@@ -26,10 +26,12 @@
     "three": "^0.186.1"
   },
   "devDependencies": {
+    "@types/node": "^24.19.2",
     "@types/three": "^0.186.0",
-    "sharp": "^0.35.5"
+    "sharp": "^0.35.5",
+    "typescript": "^5.9.3"
   },
   "engines": {
-    "node": ">=22.18"
+    "node": ">=22.18 <25"
   }
 }
