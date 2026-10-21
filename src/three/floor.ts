@@ -16,7 +16,7 @@ import { BASEMENT_Y, BASEMENT_Z, STATIONS, STOPS, camPath, lookPath } from './la
 
 gsap.registerPlugin(ScrollTrigger);
 
-const DAEMONS = ['signe', 'vayu', 'honeybot', 'redacto', 'lockjaw', 'auctioneers', 'forge'] as const;
+const DAEMONS = ['signe', 'vayu', 'honeybot', 'redacto', 'lockjaw', 'auctioneers', 'forge', 'tula'] as const;
 const FOIL_MS = 2000;
 
 export interface Floor {
@@ -61,10 +61,11 @@ export function startFloor(canvas: HTMLCanvasElement): Floor {
   scene.add(intruder.group);
 
   // the basement: everyone is at the rave
-  const crowd = DAEMONS.filter((id) => id !== 'forge' && id !== 'lockjaw').map((id, i) => {
+  const dancers = DAEMONS.filter((id) => id !== 'forge' && id !== 'lockjaw');
+  const crowd = dancers.map((id, i) => {
     const d = new Sprite3D(id, 1.7, i % 2 ? 'react' : 'idle');
     // a loose arc on the far side of the dance floor
-    const a = Math.PI + (i / 4) * Math.PI;
+    const a = Math.PI + (i / (dancers.length - 1)) * Math.PI;
     d.group.position.set(Math.cos(a) * 3.4, BASEMENT_Y, BASEMENT_Z - 0.6 + Math.sin(a) * 1.8);
     scene.add(d.group);
     return d;

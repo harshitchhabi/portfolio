@@ -183,11 +183,22 @@ function prop(i: number, side: number, z: number, m: Mats) {
       for (let k = 0; k < 3; k++) g.add(cube(k === 1 ? m.green : m.plain, 0.7, 0.7, 0.7, x + (k - 1) * 0.8, 0.35 + (k === 1 ? 0.7 : 0), z + 1.7 - (k === 1 ? 0.3 : 0)));
       break;
     }
-    default: {
-      // NovaCraft: a furnace and a stack of half-made bricks
+    case 6: {
+      // NovaCraft: a furnace and a stack of finished WebAssembly bricks
       g.add(cube(m.plain, 1.5, 1.8, 1.2, side * 4.3, 0.9, z - 1.2));
       g.add(cube(m.pink, 0.05, 0.6, 0.8, side * 4.3 - side * 0.76, 0.7, z - 1.2));
-      for (let k = 0; k < 5; k++) g.add(cube(k < 3 ? m.green : m.plain, 0.5, 0.25, 0.25, x - side * 0.2 + (k % 3) * 0.52 - 0.5, 0.125 + Math.floor(k / 3) * 0.26, z + 1.6));
+      for (let k = 0; k < 5; k++) g.add(cube(m.green, 0.5, 0.25, 0.25, x - side * 0.2 + (k % 3) * 0.52 - 0.5, 0.125 + Math.floor(k / 3) * 0.26, z + 1.6));
+      break;
+    }
+    default: {
+      // Mandi: a market weighing scale and sacks of produce
+      g.add(mesh(new CylinderGeometry(0.06, 0.08, 2.2, 8), m.plain, x, 1.1, z - 1.2));
+      g.add(cube(m.plain, 1.7, 0.07, 0.07, x, 2.2, z - 1.2));
+      for (const d of [-0.8, 0.8]) {
+        g.add(cube(m.plain, 0.02, 0.6, 0.02, x + d, 1.9, z - 1.2));
+        g.add(mesh(new CylinderGeometry(0.34, 0.28, 0.06, 12), d < 0 ? m.pink : m.green, x + d, 1.6, z - 1.2));
+      }
+      for (let k = 0; k < 3; k++) g.add(mesh(new CylinderGeometry(0.28, 0.34, 0.75, 10), k === 1 ? m.pink : m.plain, x - side * 0.3 + (k - 1) * 0.72, 0.375, z + 1.6));
     }
   }
   return g;

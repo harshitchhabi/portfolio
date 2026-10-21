@@ -3,12 +3,12 @@
 
 import { CatmullRomCurve3, Vector3 } from 'three';
 
-export const STATION_COUNT = 7;
+export const STATION_COUNT = 8;
 export const FIRST_Z = -14;
 export const STEP_Z = 15;
-export const FLOOR_END = -126; // where the stairwell opens
+export const FLOOR_END = -141; // where the stairwell opens
 export const BASEMENT_Y = -6;
-export const BASEMENT_Z = -142;
+export const BASEMENT_Z = -157;
 
 export interface Station {
   index: number;
