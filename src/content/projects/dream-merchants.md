@@ -20,6 +20,11 @@ metrics:
   - { label: Stockastic participants, value: '~700' }
   - { label: 'Stockastic errors at 750 teams, 6× pace', value: '0' }
 stamp: SOLD
+cover: ../../assets/projects/dream-merchants/bricks-by-bid-login.webp
+coverAlt: Bricks by Bid's sign-in page, block-built for the event. Each team signs in with the login its moderator hands out.
+shots:
+  - src: ../../assets/projects/dream-merchants/bricks-by-bid-auction.webp
+    alt: The Bricks by Bid moderator console running the stage 1 materials auction, one live lot at a time.
 ---
 
 I'm the Technical Head of the Dream Merchants Club at VIT Vellore (2026 to now). The club runs live events, and I build and host the platforms they run on, including the AWS setup.
