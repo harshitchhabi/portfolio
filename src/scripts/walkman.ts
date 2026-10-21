@@ -6,6 +6,7 @@
 // YouTube's player is driven with postMessage (no YouTube script on the page),
 // through the privacy-enhanced youtube-nocookie.com domain.
 
+import { watchMore } from '../lib/more';
 import { getPref, setPref } from '../lib/prefs';
 
 const YT = 'https://www.youtube-nocookie.com';
@@ -55,6 +56,7 @@ export function walkman() {
   const root = document.querySelector<HTMLElement>('[data-walkman]');
   if (!root || root.dataset.ready) return;
   root.dataset.ready = '1';
+  watchMore(root);
 
   const $ = <T extends Element>(sel: string) => root.querySelector<T>(sel)!;
   const win = $<HTMLElement>('[data-tape-window]');

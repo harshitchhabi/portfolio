@@ -104,6 +104,25 @@ const screws = [8, 252].map((x, i) => roughCircle(x, 8, 7, { seed: 90 + i, strok
     display: none;
   }
 
+  /* more below than fits (the chooser open on a short screen): fade the
+     bottom edge (lib/more.ts) */
+  .walkman::after {
+    content: '';
+    position: sticky;
+    bottom: 0;
+    display: block;
+    height: 40px;
+    margin-top: -40px;
+    background: linear-gradient(rgba(22, 22, 26, 0), var(--paper-2) 80%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 200ms linear;
+  }
+
+  .walkman[data-more]:not([data-tucked])::after {
+    opacity: 1;
+  }
+
   .walkman :global(.wm-body) {
     background: var(--paper-2);
     padding: 14px 16px 16px;

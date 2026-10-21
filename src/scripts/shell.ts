@@ -1,4 +1,5 @@
 // The ~ shell. Output is always written with textContent, never innerHTML.
+import { watchMore } from '../lib/more';
 import { gsap } from 'gsap';
 import { caught } from './jar';
 import { reducedMotion } from '../lib/prefs';
@@ -29,6 +30,7 @@ export function shell() {
   const input = document.querySelector<HTMLInputElement>('[data-shell-input]')!;
   const closeBtn = document.querySelector<HTMLButtonElement>('[data-shell-close]');
   if (!root || !out || !form || !input || !closeBtn) return;
+  watchMore(out);
 
   const projects: P[] = JSON.parse(root.dataset.projects ?? '[]');
   let intruderGone = false;
