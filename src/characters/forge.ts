@@ -1,5 +1,5 @@
 // Forge guards NovaCraft: a blacksmith bot that hammers source code into
-// WebAssembly bricks. Its anvil is only half built, like the compiler's newest pass.
+// WebAssembly bricks on a finished anvil.
 import type { Character } from './types.ts';
 import type { Pen } from './pen.ts';
 import { burst, place, rounded, spark } from './parts.ts';
@@ -10,13 +10,13 @@ function hammer(p: Pen, x: number, y: number, deg: number) {
   p.poly(P([[-18, -64], [20, -64], [20, -84], [-18, -84]]), { fill: 'green', style: 'solid', sw: 2.4 });
 }
 
-// half-built anvil: the left half is done, the right half is still a dashed plan
+// the anvil: horn, face and heel all inked in, like the finished compiler
 function anvil(p: Pen) {
   p.poly([[176, 192], [176, 176], [150, 172], [146, 166], [188, 162], [200, 162], [200, 192]], { fill: 'green', gap: 4, sw: 2.6 });
-  p.poly([[200, 162], [236, 162], [236, 176], [216, 180], [216, 192], [200, 192]], { stroke: 'dim', sw: 2, dash: [6, 5], opaque: false });
+  p.poly([[200, 162], [236, 162], [236, 176], [216, 180], [216, 192], [200, 192]], { fill: 'green', gap: 4, sw: 2.6 });
   p.poly([[184, 192], [216, 192], [224, 216], [176, 216]], { sw: 2.4 });
   p.poly([[168, 216], [232, 216], [236, 244], [164, 244]], { fill: 'green', style: 'zigzag', gap: 4, sw: 2.4 });
-  p.text('WIP', 206, 196, 6, { stroke: 'dim', sw: 1.2 });
+  p.text('WASM', 182, 222, 6, { stroke: 'ink', sw: 1.2 });
 }
 
 function smith(p: Pen, look: 'calm' | 'up') {
@@ -43,10 +43,10 @@ export const forge: Character = {
   id: 'forge',
   name: 'Forge',
   project: 'novacraft',
-  look: 'Forge, a stout blacksmith robot with goggles and a pink apron, a hammer, and a green anvil that is only half built',
+  look: 'Forge, a stout blacksmith robot with goggles and a pink apron, a hammer, and a green anvil',
   poses: {
     idle: {
-      alt: 'resting its hammer on its shoulder next to the half-built anvil',
+      alt: 'resting its hammer on its shoulder next to its anvil',
       gaze: [0.6, 0.4],
       draw(p) {
         anvil(p);
