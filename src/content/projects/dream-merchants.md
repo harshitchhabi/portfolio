@@ -20,9 +20,13 @@ metrics:
   - { label: Stockastic participants, value: '~700' }
   - { label: 'Stockastic errors at 750 teams, 6× pace', value: '0' }
 stamp: SOLD
-cover: ../../assets/projects/dream-merchants/bricks-by-bid-login.webp
-coverAlt: Bricks by Bid's sign-in page, block-built for the event. Each team signs in with the login its moderator hands out.
+cover: ../../assets/projects/dream-merchants/stockastic-explore.png
+coverAlt: Stockastic mid-event, with companies across every sector trading live and the news wire that moves the market down the side.
 shots:
+  - src: ../../assets/projects/dream-merchants/stockastic-trade.png
+    alt: A Stockastic company page, with its live price chart, open, high and low, and the trade ticket.
+  - src: ../../assets/projects/dream-merchants/bricks-by-bid-login.webp
+    alt: Bricks by Bid's sign-in page, block-built for the event. Each team signs in with the login its moderator hands out.
   - src: ../../assets/projects/dream-merchants/bricks-by-bid-auction.webp
     alt: The Bricks by Bid moderator console running the stage 1 materials auction, one live lot at a time.
   - src: ../../assets/projects/dream-merchants/dream-team-console.webp
