@@ -319,36 +319,14 @@ html.fonts-wait :is(h1, .display) {
   visibility: hidden;
 }
 
-/* Scrollbars: a thin pencil line, no arrows, no grey trough. Chrome, Edge and
-   Safari take the ::-webkit-scrollbar rules (the standard properties below
-   would switch those off in Chrome), Firefox takes the standard ones.
-   A panel on light paper sets --sb-thumb to a darker pencil. */
+/* No visible scrollbars anywhere: the page, the shell and the Walkman still
+   scroll by wheel, touch, trackpad and keyboard. */
+* {
+  scrollbar-width: none;
+}
+
 ::-webkit-scrollbar {
-  width: 7px;
-  height: 7px;
-}
-
-::-webkit-scrollbar-track,
-::-webkit-scrollbar-corner {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: var(--sb-thumb, var(--ink-dim));
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: var(--riso-pink);
-}
-
-::-webkit-scrollbar-button {
   display: none;
-}
-
-@supports not selector(::-webkit-scrollbar) {
-  * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--sb-thumb, var(--ink-dim)) transparent;
-  }
+  width: 0;
+  height: 0;
 }
