@@ -23,7 +23,7 @@ const projects = defineCollection({
       live: z.string().url().optional(),
       // A project made of several builds (the club's event platforms): each gets its own line and repo.
       platforms: z.array(z.object({ name: z.string(), what: z.string(), repo: z.string().url() })).default([]),
-      // Only real numbers. Anything unknown stays a TODO in the body, not here.
+      // Only real numbers.
       metrics: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
       stamp: z.enum(STAMPS),
       // Leave out to get the "screenshot goes here" placeholder.

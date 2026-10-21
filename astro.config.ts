@@ -2,7 +2,6 @@ import { defineConfig } from 'astro/config';
 import { satteri } from '@astrojs/markdown-satteri';
 import { casePlugin } from './src/lib/case-plugin';
 
-// TODO(harshit): swap in the real domain once the Vercel project is set up.
 const SITE = 'https://harshitchhabi.vercel.app';
 
 export default defineConfig({

@@ -44,7 +44,7 @@ Frontmatter, checked by zod in `src/content.config.ts`:
 | `stamp` | `VERIFIED`, `CAUGHT`, `PATCHED`, `SOLD`, `IN PROGRESS`, `CLASSIFIED` or `0-DAY` |
 | `cover`, `coverAlt` | Screenshot (see below). Leave out for the "screenshot goes here" placeholder |
 
-The body uses three headings: `## What was wrong`, `## What I built`, `## What happened`. Keep each under about 150 words. Search for `TODO(harshit)` to find facts still missing.
+The body uses three headings: `## What was wrong`, `## What I built`, `## What happened`. Keep each under about 150 words.
 
 Per-station extras (which daemon, the foiled-moment caption, margin notes, doodle) are in `src/data/stations.ts`. The hand-drawn diagram for each case study is in `src/data/diagrams.ts`; it's drawn at build time and inserted at the end of "What I built".
 
@@ -133,7 +133,7 @@ Vercel. `vercel.json` sets the build, clean URLs and these headers on every resp
 
 To keep the CSP strict, every script and stylesheet is its own file (`inlineStylesheets: 'never'`, `assetsInlineLimit: 0`), character textures are files built ahead of time, and nothing uses `style="…"` attributes. Astro's `transition:name` writes an inline `<style>`, so the title morph between pages sets `view-transition-name` from `src/scripts/vt.ts` instead. Use classes and Astro-bundled `<script>` tags in new components.
 
-After the first deploy, set the real domain as `SITE` in `astro.config.ts`; canonical URLs, the sitemap, `robots.txt`, the OG image URL and `/.well-known/security.txt` use it. `security.txt` expires on 2027-10-20.
+The site lives at `harshitchhabi.vercel.app`, set as `SITE` in `astro.config.ts`; canonical URLs, the sitemap, `robots.txt`, the OG image URL and `/.well-known/security.txt` use it. `security.txt` expires on 2027-10-20.
 
 ## Fonts
 
