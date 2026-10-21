@@ -16,6 +16,8 @@ metrics:
   - { label: City-days in training, value: '255,807' }
   - { label: Stations in out-of-time check, value: '519' }
 stamp: VERIFIED
+cover: ../../assets/projects/vayu-rakshak/cover.png
+coverAlt: Vaayu Rakshak's dashboard, with today's AQI for Delhi, the day picker from satellite day to two-day forecast, and the India map of CPCB cities over the satellite estimate.
 ---
 
 ## What was wrong
@@ -30,7 +32,7 @@ The trade-off: I tried XGBoost for the AQI model and dropped it. Early stopping 
 
 ## What happened
 
-The project grew past the hackathon into a satellite AQI map for all of India. Scored on years it never saw (Jan 2025 to Oct 2026, 519 stations), the area-level AQI estimate reaches R² 0.83 with an error of about ±19 AQI points.
+The project grew past the hackathon into Vaayu Rakshak, a satellite AQI map for all of India. Pick a city or click anywhere on the map for its AQI: a nowcast anchored to the day's CPCB bulletin, a satellite day before it and a forecast two days ahead, with city rankings and a fire/HCHO hotspot layer. Scored on years it never saw (Jan 2025 to Oct 2026, 519 stations), the area-level AQI estimate reaches R² 0.83 with an error of about ±19 AQI points.
 
 Built at Bharatiya Antariksh Hackathon 2026 with Team GEMs, then extended for Smart India Hackathon 2026.
 
