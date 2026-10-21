@@ -18,6 +18,9 @@ metrics:
 stamp: VERIFIED
 cover: ../../assets/projects/vayu-rakshak/cover.png
 coverAlt: Vaayu Rakshak's dashboard, with today's AQI for Delhi, the day picker from satellite day to two-day forecast, and the India map of CPCB cities over the satellite estimate.
+shots:
+  - src: ../../assets/projects/vayu-rakshak/city.png
+    alt: Pithampur up close, Very Poor at 309, with its week from satellite day to forecast and the day's most and least polluted cities.
 ---
 
 ## What was wrong
