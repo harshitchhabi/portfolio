@@ -71,7 +71,7 @@ const n = index + 1;
       }
       <p class="links mono">
         <a href={projectHref(project)} data-cursor="inspect">read the file →</a>
-        {d.platforms.length === 0 && <a href={d.repo} rel="noopener">{shortUrl(d.repo)} ↗</a>}
+        {d.platforms.length === 0 && (d.repoPrivate ? <span class="private">private repo</span> : <a href={d.repo} rel="noopener">{shortUrl(d.repo)} ↗</a>)}
       </p>
       {d.slug === 'ids' && <IdsTwist />}
       <Stamp text={d.stamp} color={index % 3 === 1 ? 'pink' : 'stamp'} tilt={index % 2 ? 8 : -10} seed={n * 19} class="panel-stamp" />
@@ -213,6 +213,10 @@ const n = index + 1;
     gap: 10px 24px;
     margin-top: 22px;
     font-size: 14px;
+  }
+
+  .links .private {
+    color: var(--ink-dim);
   }
 
   .panel-wrap :global(.panel-stamp) {

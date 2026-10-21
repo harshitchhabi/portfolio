@@ -50,7 +50,7 @@ const meta = [d.role, d.team, d.year, d.stack.join(' / ')];
         <h1 class="display title" data-vt-title={d.slug} data-redact>{d.title}</h1>
         <p class="meta mono">
           {meta.map((m) => <span>{m} · </span>)}
-          {d.platforms.length === 0 && <a href={d.repo} rel="noopener">{shortUrl(d.repo)} ↗</a>}
+          {d.platforms.length === 0 && (d.repoPrivate ? <span>private repo</span> : <a href={d.repo} rel="noopener">{shortUrl(d.repo)} ↗</a>)}
           {d.platforms.map((pl, i) => <>{i > 0 && ' · '}<a href={pl.repo} rel="noopener">{pl.name} ↗</a></>)}
           {d.live && <> · <a href={d.live} rel="noopener">live ↗</a></>}
         </p>

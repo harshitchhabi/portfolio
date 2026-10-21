@@ -14,12 +14,14 @@ const projects = defineCollection({
       daemon: z.string(),
       pid: z.number().int().min(1000).max(9999),
       oneLiner: z.string(),
-      type: z.enum(['Security', 'ML', 'Systems', 'Web']),
+      type: z.enum(['Security', 'ML', 'Systems', 'Web', 'Data']),
       year: z.string(),
       role: z.string(),
       team: z.string(),
       stack: z.array(z.string()).min(1),
       repo: z.string().url(),
+      // A private repo: shown as text, since the link would 404 for visitors.
+      repoPrivate: z.boolean().default(false),
       live: z.string().url().optional(),
       // A project made of several builds (the club's event platforms): each gets its own line and repo.
       platforms: z.array(z.object({ name: z.string(), what: z.string(), repo: z.string().url() })).default([]),
