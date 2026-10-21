@@ -34,9 +34,10 @@ const COMMANDS: Record<string, string> = {
 
 export function shell() {
   const root = document.querySelector<HTMLElement>('[data-shell]');
-  const out = document.querySelector<HTMLElement>('[data-shell-out]');
+  // asserted here, checked just below: the nested functions can't see that check
+  const out = document.querySelector<HTMLElement>('[data-shell-out]')!;
   const form = document.querySelector<HTMLFormElement>('[data-shell-form]');
-  const input = document.querySelector<HTMLInputElement>('[data-shell-input]');
+  const input = document.querySelector<HTMLInputElement>('[data-shell-input]')!;
   const closeBtn = document.querySelector<HTMLButtonElement>('[data-shell-close]');
   if (!root || !out || !form || !input || !closeBtn) return;
 

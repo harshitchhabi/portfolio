@@ -11,7 +11,7 @@ declare global {
   }
 }
 
-const idle = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : window.setTimeout(fn, 200));
+const idle = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 1500 }) : setTimeout(fn, 200));
 
 export function mount(): () => void {
   const html = document.documentElement;
