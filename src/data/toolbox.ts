@@ -2,7 +2,7 @@
 // Only tools a project here actually shows. `used` names project slugs;
 // 'site' is this portfolio and 'sbi' the internship in the logbook.
 
-export type Use = 'signify' | 'vayu-rakshak' | 'ids' | 'privacygate' | 'secure-file-hashing' | 'dream-merchants' | 'novacraft' | 'site' | 'sbi';
+export type Use = 'signify' | 'vayu-rakshak' | 'ids' | 'privacygate' | 'secure-file-hashing' | 'dream-merchants' | 'novacraft' | 'mandi' | 'site' | 'sbi';
 
 export interface Tool {
   name: string;
@@ -22,6 +22,7 @@ export const USES: Record<Use, { label: string; href: string }> = {
   'secure-file-hashing': { label: 'File Hashing', href: '/projects/secure-file-hashing' },
   'dream-merchants': { label: 'Dream Merchants', href: '/projects/dream-merchants' },
   novacraft: { label: 'NovaCraft', href: '/projects/novacraft' },
+  mandi: { label: 'Mandi', href: '/projects/mandi' },
   site: { label: 'this site', href: '/' },
   sbi: { label: 'SBI internship', href: '/#logbook' },
 };
@@ -30,11 +31,11 @@ export const SHELVES: Shelf[] = [
   {
     name: 'languages',
     tools: [
-      { name: 'Python', used: ['signify', 'vayu-rakshak', 'ids', 'privacygate'] },
+      { name: 'Python', used: ['signify', 'vayu-rakshak', 'ids', 'privacygate', 'mandi'] },
       { name: 'TypeScript', used: ['dream-merchants', 'novacraft', 'site'] },
       { name: 'Go', used: ['dream-merchants'] },
       { name: 'JavaScript', used: ['secure-file-hashing', 'dream-merchants'] },
-      { name: 'SQL', used: ['secure-file-hashing', 'dream-merchants'] },
+      { name: 'SQL', used: ['mandi', 'secure-file-hashing', 'dream-merchants'] },
     ],
   },
   {
@@ -65,17 +66,18 @@ export const SHELVES: Shelf[] = [
   {
     name: 'data',
     tools: [
-      { name: 'PostgreSQL', used: ['dream-merchants'] },
+      { name: 'PostgreSQL', used: ['mandi', 'dream-merchants'] },
       { name: 'MySQL', used: ['secure-file-hashing'] },
       { name: 'Drizzle ORM', used: ['dream-merchants'] },
       { name: 'SQLite', used: ['ids'] },
+      { name: 'pandas', used: ['mandi'] },
       { name: 'Google Earth Engine', used: ['vayu-rakshak'] },
     ],
   },
   {
     name: 'deployment',
     tools: [
-      { name: 'Docker', used: ['dream-merchants'] },
+      { name: 'Docker', used: ['dream-merchants', 'mandi'] },
       { name: 'Caddy', used: ['dream-merchants'] },
       { name: 'AWS', used: ['dream-merchants'] },
       { name: 'Vercel', used: ['site'] },

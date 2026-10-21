@@ -34,12 +34,13 @@ Frontmatter, checked by zod in `src/content.config.ts`:
 
 | Field | What it does |
 |---|---|
-| `order` | Station number (1 to 7) |
+| `order` | Station number (1 to 8) |
 | `slug` | URL: `/projects/<slug>` |
 | `title`, `oneLiner` | Title and the one-sentence summary |
 | `daemon`, `pid` | The daemon's name and its 4-digit PID label |
-| `type` | `Security`, `ML`, `Systems` or `Web` |
+| `type` | `Security`, `ML`, `Systems`, `Web` or `Data` |
 | `year`, `role`, `team`, `stack`, `repo`, `live` | The metadata line |
+| `repoPrivate` | `true` shows "private repo" instead of a link that would 404 for visitors |
 | `metrics` | `[{ label, value }]`: real numbers only, drawn as hand-written numbers with a scribbled circle |
 | `stamp` | `VERIFIED`, `CAUGHT`, `PATCHED`, `SOLD`, `IN PROGRESS`, `CLASSIFIED` or `0-DAY` |
 | `cover`, `coverAlt` | Screenshot (see below). Leave out for the "screenshot goes here" placeholder |
@@ -69,7 +70,7 @@ They go in `src/assets/` rather than `public/` because only files under `src/` g
 
 ## Tweak the characters
 
-Each character is a file in `src/characters/` (`signe.ts`, `vayu.ts`, `honeybot.ts`, `redacto.ts`, `lockjaw.ts`, `auctioneers.ts`, `forge.ts`, `intruder.ts`). A character has an `idle`, `react` and `action` pose (the Intruder also has `caught`). Each pose is a `draw(p)` function using the pen in `src/characters/pen.ts`:
+Each character is a file in `src/characters/` (`signe.ts`, `vayu.ts`, `honeybot.ts`, `redacto.ts`, `lockjaw.ts`, `auctioneers.ts`, `forge.ts`, `tula.ts`, `intruder.ts`). A character has an `idle`, `react` and `action` pose (the Intruder also has `caught`). Each pose is a `draw(p)` function using the pen in `src/characters/pen.ts`:
 
 ```ts
 p.circle(128, 160, 124, { fill: 'green' });      // knock-out, riso fill (out of register), ink outline
