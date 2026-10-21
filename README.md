@@ -63,6 +63,7 @@ They go in `src/assets/` rather than `public/` because only files under `src/` g
 ### Logbook, contact, resume
 
 - Logbook entries: the `entries` array at the top of `src/components/Logbook.astro`.
+- Toolbox (skills): `src/data/toolbox.ts`. Each tool lists the projects that used it; add a tool only when a project shows it.
 - Contact links: `src/components/Jar.astro`, the `contact` command in `src/scripts/shell.ts`, and the plain list in `src/components/SkipList.astro`.
 - Resume: replace `public/resume.pdf`. Check it has no phone number on it.
 
