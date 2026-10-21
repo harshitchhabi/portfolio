@@ -10,22 +10,11 @@ interface P {
   title: string;
 }
 
-const SECURITY_HEADERS = [
-  'content-security-policy',
-  'strict-transport-security',
-  'x-content-type-options',
-  'referrer-policy',
-  'permissions-policy',
-  'cross-origin-opener-policy',
-  'x-frame-options',
-];
-
 const COMMANDS: Record<string, string> = {
   help: 'list commands',
   whoami: 'who I am, in three lines',
   ls: 'list the daemons with their PIDs',
   open: 'open <daemon>: go to its case study, e.g. open honeybot',
-  headers: "check this site's real security headers",
   ps: 'list running daemons',
   kill: 'kill intruder: put the Intruder in the jar',
   contact: 'how to reach me',
@@ -98,27 +87,6 @@ export function shell() {
     opener?.focus();
   };
 
-  async function headers() {
-    // Reserve a spot so the answer stays under its command even if more are typed meanwhile.
-    const group = document.createElement('div');
-    out.append(group);
-    const say = (text: string, cls = '') => line(text, cls, group);
-    say('HEAD ' + location.href, 'dim');
-    try {
-      const res = await fetch(location.href, { method: 'HEAD', cache: 'no-store' });
-      let pass = 0;
-      for (const h of SECURITY_HEADERS) {
-        const v = res.headers.get(h);
-        if (v) pass += 1;
-        const shown = v ? (v.length > 72 ? v.slice(0, 72) + '…' : v) : 'missing';
-        say(`${v ? '✓' : '✗'} ${h.padEnd(27)} ${shown}`, v ? 'ok' : 'bad');
-      }
-      say(`${pass}/${SECURITY_HEADERS.length} present${pass < SECURITY_HEADERS.length ? ' (local dev servers skip these; production sets them in vercel.json)' : ''}`, 'dim');
-    } catch {
-      say('✗ request failed', 'bad');
-    }
-  }
-
   function run(raw: string) {
     const [cmd = '', ...args] = raw.trim().split(/\s+/);
     line('$ ' + raw, 'cmd');
@@ -147,9 +115,6 @@ export function shell() {
         window.location.href = `/projects/${p.slug}`;
         return;
       }
-      case 'headers':
-        void headers();
-        return;
       case 'contact':
         line('email     harshitchhabi@gmail.com');
         line('linkedin  linkedin.com/in/harshit-chhabi-6007b4368');

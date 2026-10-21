@@ -16,7 +16,7 @@ npm run characters   # just redraw the characters
 npm run feed -- cowrie.json   # turn a Cowrie log into Honeybot's log (see below)
 ```
 
-`npm run dev` doesn't send the security headers; Vercel does, from `vercel.json`. So the shell's `headers` command shows ✗ locally and ✓ in production.
+`npm run dev` doesn't send the security headers; Vercel does, from `vercel.json`.
 
 ## Three ways to see the site
 
@@ -121,7 +121,7 @@ Without it, search says it isn't set up and pasting a link still works. Restrict
 
 ## The shell
 
-Press `~` (or the `~` in the nav). Commands: `help`, `whoami`, `ls`, `ps`, `open <daemon>`, `headers`, `contact`, `kill intruder`, `clear`. `headers` fetches this page and checks its real security headers. `kill intruder` yanks the Intruder into the jar and adds one to the jar's counter for this session.
+Press `~` (or the `~` in the nav). Commands: `help`, `whoami`, `ls`, `ps`, `open <daemon>`, `contact`, `kill intruder`, `clear`. `kill intruder` yanks the Intruder into the jar and adds one to the jar's counter for this session.
 
 ## Deploy
 
