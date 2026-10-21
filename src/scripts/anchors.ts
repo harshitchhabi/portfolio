@@ -6,8 +6,8 @@
 // every such jump goes through Lenis (or native smooth scroll without it), and
 // links from other pages land on their spot once the home page has swapped in.
 
-import type Lenis from 'lenis';
 import { reducedMotion } from '../lib/prefs';
+import { getLenis } from './smooth';
 
 const html = document.documentElement;
 
@@ -28,8 +28,7 @@ export function scrollToHash(hash: string, immediate = false): boolean {
   const el = target(hash);
   if (!el) return false;
   const y = el.getBoundingClientRect().top + window.scrollY - navOffset();
-  // lenis ships its own (narrower) window.lenis type
-  const lenis = window.lenis as unknown as Lenis | undefined;
+  const lenis = getLenis();
   if (lenis) lenis.scrollTo(Math.max(0, y), { immediate, force: true });
   else window.scrollTo({ top: Math.max(0, y), behavior: immediate || reducedMotion() ? 'auto' : 'smooth' });
   return true;

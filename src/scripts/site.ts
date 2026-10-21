@@ -8,7 +8,7 @@ import { pickMode, setMode, type Mode } from '../lib/mode';
 import { shell } from './shell';
 import { sound } from './sound';
 import { caught } from './jar';
-import { smooth } from './smooth';
+import { getLenis, smooth } from './smooth';
 import { details } from './details';
 import { mountEyes } from './eyes';
 import { titleTransitions } from './vt';
@@ -25,7 +25,7 @@ smooth();
 titleTransitions();
 anchors();
 
-const later = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2000 }) : window.setTimeout(fn, 300));
+const later = (fn: () => void) => ('requestIdleCallback' in window ? requestIdleCallback(fn, { timeout: 2000 }) : setTimeout(fn, 300));
 later(() => import('./cursor').then((m) => m.cursor()));
 later(() => import('./walkman').then((m) => m.walkman()));
 
@@ -88,7 +88,7 @@ async function mountPage() {
   const mine = ++token;
   renderSkip();
   caught();
-  window.lenis?.resize();
+  getLenis()?.resize();
   cleanups.push(details(), mountEyes(), bindCopy());
   const page = document.querySelector<HTMLElement>('main[data-page]')?.dataset.page;
   const mod = page === 'home' ? await import('./home') : page === 'case' ? await import('./case') : null;

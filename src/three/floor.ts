@@ -11,6 +11,7 @@ import { buildWorld } from './world';
 import { shared } from './materials';
 import { InkShader } from './ink-pass';
 import { Sprite3D, allSheets, disposeSheets, sheetsLoaded } from './sprites';
+import { getLenis } from '../scripts/smooth';
 import { BASEMENT_Y, BASEMENT_Z, STATIONS, STOPS, camPath, lookPath } from './layout';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -39,7 +40,7 @@ const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 
 export function startFloor(canvas: HTMLCanvasElement): Floor {
   const renderer = new WebGLRenderer({ canvas, antialias: false, powerPreference: 'high-performance' });
   // keep ScrollTrigger in step with the smooth scroller
-  const unLenis = window.lenis?.on('scroll', ScrollTrigger.update);
+  const unLenis = getLenis()?.on('scroll', ScrollTrigger.update);
   const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
   renderer.setPixelRatio(dpr);
   renderer.setClearColor(0x000000, 0);
