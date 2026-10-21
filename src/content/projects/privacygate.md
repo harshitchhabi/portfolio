@@ -25,6 +25,8 @@ This is a team project. A teammate put up the first MVP; I was the primary devel
 
 The pipeline extracts text from PDF, Word and PowerPoint (with OCR for scans), detects PII with regex rules, company-specific ID patterns and Presidio/spaCy NER, classifies risk, swaps each finding for a stable token like `[PERSON_001]`, then rescans the sanitised output. If anything is left, or a step errors, the document is blocked rather than sent.
 
+The app is a Streamlit "pre-LLM privacy firewall". You upload PDF, DOCX or PPTX files, or batch several so the same person gets the same pseudonym token across all of them. You choose between strict fail-closed (one pass, block if anything remains) and iterative auto-clean (re-run until clean). It shows exactly what a model would receive and the gate's verdict, and a local mock model call refuses to run unless the gate approved the document.
+
 ## What happened
 
 It was our team's submission for Optiv's case study 2.
