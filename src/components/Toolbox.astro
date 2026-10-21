@@ -1,0 +1,165 @@
+---
+// The Toolbox: skills as an inventory sheet. No ratings; each tool points at
+// the projects that used it, which says more than a bar at 80% would.
+import Tape from './marks/Tape.astro';
+import RegMark from './marks/RegMark.astro';
+import { SHELVES, USES } from '../data/toolbox';
+---
+
+<section id="toolbox" class="stop toolbox wrap" aria-labelledby="tb-title">
+  <RegMark class="reg tr1" seed={113} />
+  <h2 id="tb-title" class="display tb-title" data-redact><span>The Toolbox</span></h2>
+  <p class="label tb-sub">inventory · what the daemons are built with · and where</p>
+  <div class="shelves">
+    {
+      SHELVES.map((shelf, i) => (
+        <div class="shelf" data-panel>
+          {i % 3 === 0 && <Tape class="sh-tape" seed={120 + i} w={70} />}
+          <h3 class="hand shelf-name">{shelf.name}</h3>
+          <ul class="tools">
+            {shelf.tools.map((t) => (
+              <li>
+                <span class="mono tool">{t.name}</span>
+                <span class="used">
+                  {t.used.length === 0 ? (
+                    <span class="dim">everything</span>
+                  ) : (
+                    t.used.map((u, k) => (
+                      <>
+                        {k > 0 && <span class="dim">, </span>}
+                        <a href={USES[u].href}>{USES[u].label}</a>
+                      </>
+                    ))
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<style>
+  .toolbox {
+    position: relative;
+    z-index: 1;
+    padding-block: 14vh 12vh;
+    /* solid paper: the floor stays behind, the list stays readable */
+    background: var(--paper);
+  }
+
+  .toolbox :global(.reg) {
+    position: absolute;
+    top: 10vh;
+    left: 10px;
+  }
+
+  .tb-title {
+    font-size: clamp(56px, 10vw, 160px);
+  }
+
+  .tb-sub {
+    margin-top: 8px;
+  }
+
+  .shelves {
+    margin-top: 48px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 22px;
+  }
+
+  .shelf {
+    position: relative;
+    padding: 16px 18px 18px;
+    background: var(--paper-2);
+    border: 1.5px solid var(--ink);
+  }
+
+  .shelf:nth-child(3n + 2) {
+    rotate: 0.6deg;
+  }
+
+  .shelf:nth-child(3n) {
+    rotate: -0.5deg;
+  }
+
+  .shelf :global(.sh-tape) {
+    top: -12px;
+    right: 22px;
+    rotate: 6deg;
+  }
+
+  .shelf-name {
+    font-size: 30px;
+    line-height: 1;
+    color: var(--riso-pink);
+  }
+
+  .tools {
+    margin-top: 12px;
+    display: grid;
+    gap: 9px;
+  }
+
+  .tools li {
+    display: grid;
+    gap: 1px;
+    padding-bottom: 7px;
+    border-bottom: 1px dashed rgba(155, 151, 142, 0.35);
+  }
+
+  .tools li:last-child {
+    border-bottom: 0;
+    padding-bottom: 0;
+  }
+
+  .tool {
+    font-size: 15px;
+    color: var(--ink);
+  }
+
+  .used {
+    font-size: 13px;
+    color: var(--ink-dim);
+  }
+
+  .used::before {
+    content: '↳ ';
+  }
+
+  .used a {
+    color: var(--riso-green);
+    text-decoration: none;
+  }
+
+  .used a:hover {
+    color: var(--riso-pink);
+    text-decoration: underline;
+  }
+
+  .dim {
+    color: var(--ink-dim);
+  }
+
+  /* on a phone: tool and where it was used on one line */
+  @media (max-width: 640px) {
+    .tools {
+      gap: 6px;
+    }
+
+    .tools li {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0 10px;
+      padding-bottom: 5px;
+    }
+
+    .shelf-name {
+      font-size: 26px;
+    }
+  }
+</style>

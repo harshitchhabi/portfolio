@@ -3,6 +3,7 @@ import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import Station from '../components/Station.astro';
 import Logbook from '../components/Logbook.astro';
+import Toolbox from '../components/Toolbox.astro';
 import Basement from '../components/Basement.astro';
 import Jar from '../components/Jar.astro';
 import SkipList from '../components/SkipList.astro';
@@ -24,6 +25,7 @@ const projects = await getProjects();
     {projects.map((p, i) => <Station project={p} index={i} />)}
   </div>
   <Logbook />
+  <Toolbox />
   <Basement />
   <Jar />
 
