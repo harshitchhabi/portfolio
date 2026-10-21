@@ -6,6 +6,9 @@ import RegMark from './marks/RegMark.astro';
 import CropMarks from './marks/CropMarks.astro';
 import Note from './marks/Note.astro';
 import Doodle from './marks/Doodle.astro';
+import Tape from './marks/Tape.astro';
+import { Picture } from 'astro:assets';
+import me from '../assets/me/harshit-riso.webp';
 
 const gen = rough.generator();
 const toSvg = (d: ReturnType<typeof gen.path>) =>
@@ -42,6 +45,7 @@ const email = 'harshitchhabi@gmail.com';
     <p class="label">the end of the night · pid 0</p>
     <h2 id="jar-title" class="display talk" data-redact><span>Want to talk?</span></h2>
     <p class="hand plain">Email me.</p>
+    <div class="reach">
     <ul class="ways mono">
       <li>
         <span class="label">email</span>
@@ -61,6 +65,12 @@ const email = 'harshitchhabi@gmail.com';
         <a href="/resume.pdf">resume.pdf ↓</a>
       </li>
     </ul>
+    <figure class="me">
+      <Tape class="me-tape" seed={83} w={78} />
+      <Picture src={me} alt="Harshit Chhabi, printed in the site's ink and pink." formats={['avif', 'webp']} widths={[180, 360]} sizes="180px" class="me-img" loading="lazy" />
+      <figcaption class="hand">the human behind the daemons</figcaption>
+    </figure>
+    </div>
     <noscript><p class="mono"><a href={`mailto:${email}`}>mailto:{email}</a></p></noscript>
   </div>
 </section>
@@ -195,6 +205,51 @@ const email = 'harshitchhabi@gmail.com';
     font-size: clamp(30px, 3vw, 44px);
     color: var(--riso-pink);
     margin-top: 6px;
+  }
+
+  /* the links, and a small taped-down print of me beside them */
+  .reach {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 28px 40px;
+    margin-top: 28px;
+  }
+
+  .reach .ways {
+    flex: 1 1 320px;
+    margin-top: 0;
+  }
+
+  .me {
+    position: relative;
+    flex: 0 0 auto;
+    width: 180px;
+    margin: 6px 0 0;
+    padding: 8px 8px 0;
+    background: var(--ink);
+    color: var(--paper);
+    rotate: 3deg;
+  }
+
+  .me :global(.me-img),
+  .me :global(.me-img img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .me :global(.me-tape) {
+    top: -14px;
+    left: 50px;
+    rotate: -6deg;
+  }
+
+  .me figcaption {
+    padding: 6px 2px 8px;
+    font-size: 17px;
+    line-height: 1.1;
+    text-align: center;
   }
 
   .ways {
