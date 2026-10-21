@@ -13,6 +13,11 @@ stack: [Python, Microsoft Presidio, spaCy, PyMuPDF, Tesseract, Streamlit]
 repo: https://github.com/Mohit-Nanda-Krishna/PrivacyGate
 metrics: []
 stamp: PATCHED
+cover: ../../assets/projects/privacygate/cover.png
+coverAlt: PrivacyGate's upload screen, with the firewall policy (strict fail-closed or iterative auto-clean) in the sidebar.
+shots:
+  - src: ../../assets/projects/privacygate/gate.png
+    alt: What the AI model would see, run on my own NovaCraft report. 91 pseudonym tokens, but my name and registration number were still in it, so the gate blocked it. (The number is blacked out here by hand.)
 ---
 
 ## What was wrong
